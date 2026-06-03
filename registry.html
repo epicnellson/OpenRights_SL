@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creator Registry — OpenRights SL</title>
+  <meta name="description" content="Discover Sierra Leonean creators and their open source projects. Join the public directory of digital creators.">
+  <meta property="og:title" content="Creator Registry">
+  <meta property="og:description" content="Directory of Sierra Leonean open source creators.">
+  <meta name="keywords" content="creator registry, open source, Sierra Leone, digital creators, directory">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="text-white font-sans">
+      <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-lang="nav.home" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-lang="nav.license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-lang="nav.compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-lang="nav.tools" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-lang="nav.scanner" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-lang="nav.analyzer" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-lang="nav.registry" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-lang="nav.dashboard" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        
+        <a href="about.html" id="nav-about" data-lang="nav.about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-lang="nav.home" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-lang="nav.license" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-lang="nav.compare" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-lang="nav.about" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-lang="nav.chat" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" class="pt-28 pb-20 px-4 flex justify-center items-center min-h-screen">
+  <div class="glass-card rounded-3xl w-full max-w-5xl p-8 border border-white/10 shadow-2xl relative overflow-hidden min-h-[600px]">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-600/20 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-orange-600/20 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
+
+    <div class="flex justify-between items-end mb-8 relative z-10 border-b border-white/10 pb-4">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Creator Registry</h1>
+        <p class="text-gray-400">Discover Sierra Leonean creators and their open source projects.</p>
+      </div>
+      <button onclick="showConfigModal()" class="text-xs text-gray-500 hover:text-white transition flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md border border-white/10">⚙️ Configure</button>
+    </div>
+
+    <div class="relative z-10">
+      <div class="flex justify-between items-center mb-6">
+        <input type="text" id="search-registry" onkeyup="filterRegistry()" class="w-full max-w-md bg-black/30 border border-white/20 rounded-xl px-4 py-2 text-white placeholder-gray-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition" placeholder="Search creators or projects...">
+        <button onclick="fetchRegistry()" class="ml-4 bg-yellow-600 hover:bg-yellow-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-lg">
+          🔄 Refresh
+        </button>
+      </div>
+
+      <div id="registry-loading" class="hidden flex-col items-center justify-center py-12">
+        <div class="w-10 h-10 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p class="text-yellow-300 animate-pulse">Loading registry data from JSONBin.io...</p>
+      </div>
+
+      <div id="registry-empty" class="hidden flex-col items-center justify-center py-12 text-gray-500">
+        <span class="text-5xl mb-4">📭</span>
+        <p>No creators found or registry not configured.</p>
+        <button onclick="showConfigModal()" class="mt-4 text-yellow-400 hover:underline">Setup JSONBin</button>
+      </div>
+
+      <div id="registry-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Cards injected here -->
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Config Modal -->
+<div id="config-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+  <div class="glass-card rounded-2xl w-full max-w-md p-6 border border-white/10">
+    <h2 class="text-xl font-bold text-white mb-4">Registry Configuration</h2>
+    <p class="text-gray-400 text-sm mb-4">Connect to JSONBin.io to sync the creator registry.</p>
+    
+    <label class="block text-sm text-gray-300 mb-1">JSONBin ID (Bin ID)</label>
+    <input type="text" id="bin-id" class="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white mb-4" placeholder="e.g. 64a...">
+    
+    <label class="block text-sm text-gray-300 mb-1">X-Master-Key (Optional for public bins)</label>
+    <input type="password" id="bin-key" class="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white mb-6" placeholder="Secret Key">
+    
+    <div class="flex gap-3">
+      <button onclick="saveConfig()" class="flex-1 bg-yellow-600 hover:bg-yellow-500 text-white py-2 rounded-lg font-bold transition">Save & Sync</button>
+      <button onclick="closeConfigModal()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition">Cancel</button>
+    </div>
+  </div>
+</div>
+  <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity and open source knowledge.</p>
+          <p class="text-green-400 text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-green-400 transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-green-400 transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-green-400 transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-green-400 transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-green-400 transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo Mode</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+<script src="js/utils.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/registry.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+<!-- Back to Top Button -->
+<button id="back-to-top" aria-label="Back to top" style="display:none; position:fixed; bottom:24px; right:24px; z-index:1000; background:#1EB53A; color:white; border:none; border-radius:50%; width:44px; height:44px; font-size:20px; cursor:pointer; box-shadow:0 4px 15px rgba(30,181,58,0.4); align-items:center; justify-content:center">
+  ↑
+</button>
+
+<script>
+// Back to top
+const backBtn = document.getElementById('back-to-top');
+if (backBtn) {
+  window.addEventListener('scroll', () => {
+    backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  });
+  backBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Error boundary
+window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
+window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
+
+if (window.location.protocol === 'file:') {
+  showToast('\u26A0\uFE0F Please use a local server (live-server) for full functionality.', 'warning', 8000);
+}
+</script>
+</body>
+</html>

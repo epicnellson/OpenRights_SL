@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en-SL">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Legal tools for Sierra Leonean creators. Protect your creative work with open source licenses.">
+  <meta name="author" content="Limkokwing University DLAW207">
+  <meta name="license" content="MIT">
+  <title>Home — OpenRights SL</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207 IT Law and IPR
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- SECTION 1: LOADING SPLASH SCREEN -->
+  <div id="splash-screen"
+    class="fixed inset-0 z-[9999] bg-[#0f0c29] flex flex-col items-center justify-center transition-opacity duration-500">
+    <div class="text-6xl mb-4 animate-bounce">⚖️</div>
+    <h1 class="text-3xl font-bold text-white mb-6 opacity-0 animate-[fadeIn_0.5s_ease-out_0.5s_forwards]">OpenRights SL
+    </h1>
+    <div class="w-64 h-2 bg-white/10 rounded-full overflow-hidden">
+      <div class="h-full bg-gradient-to-r from-purple-500 to-[#1EB53A] animate-[loading_1.5s_ease-in-out_forwards]">
+      </div>
+    </div>
+  </div>
+
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+
+      <div id="sw-update-banner" style="display:none"
+        class="fixed top-0 left-0 right-0 z-[9999] bg-green-600 text-white text-center py-3 text-sm font-medium">
+        🔄 OpenRights SL has been updated!
+        <button onclick="window.location.reload()" class="ml-4 underline font-bold">Refresh Now</button>
+        <button onclick="this.parentElement.style.display='none'" class="ml-4 opacity-70">Later</button>
+      </div>
+
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-i18n="nav.home" data-lang="nav.home"
+          class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-i18n="nav.license" data-lang="nav.license"
+          class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-i18n="nav.compare" data-lang="nav.compare"
+          class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-i18n="nav.tools" data-lang="nav.tools"
+            class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu"
+            class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-i18n="nav.scanner" data-lang="nav.scanner"
+              class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-i18n="nav.analyzer" data-lang="nav.analyzer"
+              class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-i18n="nav.registry" data-lang="nav.registry"
+              class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-i18n="nav.dashboard" data-lang="nav.dashboard"
+              class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-i18n="nav.batch" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋
+              Batch Generator</a>
+          </div>
+        </div>
+
+        <a href="about.html" id="nav-about" data-i18n="nav.about" data-lang="nav.about"
+          class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-i18n="nav.chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬
+          Chat</a>
+
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" data-i18n="nav.profile.default" data-lang="nav.profile.default"
+          class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up
+          Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false"
+        aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-i18n="nav.home" data-lang="nav.home"
+        class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-i18n="nav.license" data-lang="nav.license"
+        class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-i18n="nav.compare" data-lang="nav.compare"
+        class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-i18n="nav.about" data-lang="nav.about"
+        class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-i18n="nav.chat" data-lang="nav.chat"
+        class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-i18n="nav.tools" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-i18n="nav.scanner" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License
+            Scanner</a>
+          <a href="analyzer.html" data-i18n="nav.analyzer" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract
+            Analyzer</a>
+          <a href="registry.html" data-i18n="nav.registry" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator
+            Registry</a>
+          <a href="dashboard.html" data-i18n="nav.dashboard" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact
+            Dashboard</a>
+          <a href="batch.html" data-i18n="nav.batch" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch
+            Generator</a>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" data-i18n="nav.profile.default" data-lang="nav.profile.default"
+          class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" role="main">
+
+    <!-- SECTION 2: HERO -->
+    <section class="relative pt-32 pb-20 px-4 min-h-[90vh] flex items-center overflow-hidden">
+      <!-- Particles -->
+      <div class="absolute inset-0 z-0 opacity-50">
+        <div class="absolute w-2 h-2 bg-purple-400 rounded-full top-[20%] left-[10%] animate-[float_8s_infinite]"></div>
+        <div class="absolute w-3 h-3 bg-pink-400 rounded-full top-[60%] left-[20%] animate-[float_12s_infinite]"></div>
+        <div class="absolute w-2 h-2 bg-[#1EB53A] rounded-full top-[30%] right-[20%] animate-[float_10s_infinite]">
+        </div>
+        <div class="absolute w-4 h-4 bg-purple-500 rounded-full top-[70%] right-[10%] animate-[float_14s_infinite]">
+        </div>
+      </div>
+
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+        <!-- Left Side -->
+        <div>
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <span id="hero-typing"
+              class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent border-r-4 border-pink-400 pr-2"></span>
+          </h1>
+          <p class="text-xl text-gray-300 mb-8 max-w-lg" data-i18n="hero.sub" data-lang="hero.sub">
+            Free legal tools for developers, musicians, writers and creators across Sierra Leone.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a href="recommender.html"
+              class="btn-primary rounded-xl px-6 py-4 font-semibold text-lg inline-flex items-center gap-2">
+              <span data-i18n="hero.cta1" data-lang="hero.cta1">🚀 Get My License →</span>
+            </a>
+            <a href="chatbot.html"
+              class="btn-secondary rounded-xl px-6 py-4 font-semibold text-lg inline-flex items-center gap-2">
+              <span data-i18n="hero.cta2" data-lang="hero.cta2">💬 Ask AI Assistant</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="flex justify-center md:justify-end">
+          <div class="glass-card p-6 rounded-2xl w-full max-w-sm animate-[float_6s_infinite_ease-in-out]">
+            <div class="text-center mb-6">
+              <div
+                class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 animate-[pulse_2s_infinite]">
+                <span class="text-3xl">⚖️</span>
+              </div>
+              <h2 class="text-2xl font-bold text-white">MIT License</h2>
+            </div>
+            <div class="space-y-3 mb-6">
+              <div class="flex items-center gap-3">
+                <span class="text-[#1EB53A]">✅</span>
+                <span class="text-sm text-gray-200">Commercial Use Allowed</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-[#1EB53A]">✅</span>
+                <span class="text-sm text-gray-200">Modification Allowed</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-[#1EB53A]">✅</span>
+                <span class="text-sm text-gray-200">Distribution Allowed</span>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-white/10 text-center">
+              <p class="text-xs text-gray-400">Generated by OpenRights SL 🇸🇱</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: ANIMATED STATS BAR -->
+    <section class="glass border-y border-white/10 py-8">
+      <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <div class="text-3xl font-bold text-white mb-2"><span class="counter" data-target="47">0</span>+</div>
+          <div class="text-sm text-gray-400 uppercase tracking-wider">📄 Licenses Generated</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-white mb-2"><span class="counter" data-target="23">0</span>+</div>
+          <div class="text-sm text-gray-400 uppercase tracking-wider">🔍 Conflicts Detected</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-white mb-2"><span class="counter" data-target="12">0</span>+</div>
+          <div class="text-sm text-gray-400 uppercase tracking-wider">👥 Creators Registered</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-[#1EB53A] mb-2"><span class="counter" data-target="1">0</span></div>
+          <div class="text-sm text-gray-400 uppercase tracking-wider">🇸🇱 Nation Served</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: SDG ALIGNMENT -->
+    <section class="py-20 px-4">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">Aligned with Global Goals</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div class="glass-card p-8 rounded-2xl flex gap-4 items-start">
+            <div class="text-4xl">⚖️</div>
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">SDG 16 — Peace, Justice & Strong Institutions</h3>
+              <p class="text-gray-300 text-sm">Democratising access to legal frameworks previously only available to
+                those who could afford lawyers.</p>
+            </div>
+          </div>
+          <div class="glass-card p-8 rounded-2xl flex gap-4 items-start">
+            <div class="text-4xl">🏗️</div>
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">SDG 9 — Industry, Innovation & Infrastructure</h3>
+              <p class="text-gray-300 text-sm">Accelerating local tech innovation by making open source licensing
+                accessible to every Sierra Leonean developer.</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#1EB53A]/20 border border-[#1EB53A]/30 rounded-xl p-6 text-center">
+          <p class="text-lg font-medium text-white">
+            🇸🇱 Addressing Sierra Leone's Digital Rights Gap — where 9 in 10 local creators have no legal protection
+            for their work.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: FEATURE CARDS -->
+    <section class="py-20 px-4 bg-white/5 border-y border-white/5">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">Everything You Need</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a href="recommender.html" class="glass-card p-6 rounded-2xl slide-in">
+            <div class="text-4xl mb-4">🔍</div>
+            <h3 class="text-xl font-bold text-white mb-2">License Recommender</h3>
+            <p class="text-gray-400 text-sm mb-4">Answer 4 questions. Get your perfect license instantly.</p>
+            <span class="text-purple-400 text-sm font-medium">Try it →</span>
+          </a>
+
+          <a href="generator.html" class="glass-card p-6 rounded-2xl slide-in" style="transition-delay: 100ms">
+            <div class="text-4xl mb-4">📄</div>
+            <h3 class="text-xl font-bold text-white mb-2">Document Generator</h3>
+            <p class="text-gray-400 text-sm mb-4">Download LICENSE.txt, Privacy Policy, and PDF Creation Record.</p>
+            <span class="text-purple-400 text-sm font-medium">Generate →</span>
+          </a>
+
+          <a href="chatbot.html" class="glass-card p-6 rounded-2xl slide-in" style="transition-delay: 200ms">
+            <div class="text-4xl mb-4">💬</div>
+            <h3 class="text-xl font-bold text-white mb-2">AI Legal Assistant</h3>
+            <p class="text-gray-400 text-sm mb-4">Ask anything about IP law in plain English or Krio.</p>
+            <span class="text-purple-400 text-sm font-medium">Chat now →</span>
+          </a>
+
+          <a href="scanner.html" class="glass-card p-6 rounded-2xl slide-in" style="transition-delay: 300ms">
+            <div class="text-4xl mb-4">🔎</div>
+            <h3 class="text-xl font-bold text-white mb-2">Conflict Scanner</h3>
+            <p class="text-gray-400 text-sm mb-4">Detect license conflicts in your project dependencies.</p>
+            <span class="text-purple-400 text-sm font-medium">Scan code →</span>
+          </a>
+
+          <a href="analyzer.html" class="glass-card p-6 rounded-2xl slide-in" style="transition-delay: 400ms">
+            <div class="text-4xl mb-4">🛡️</div>
+            <h3 class="text-xl font-bold text-white mb-2">Contract Analyzer</h3>
+            <p class="text-gray-400 text-sm mb-4">AI scans contracts for red flags against Sierra Leone law.</p>
+            <span class="text-purple-400 text-sm font-medium">Analyze →</span>
+          </a>
+
+          <a href="registry.html" class="glass-card p-6 rounded-2xl slide-in" style="transition-delay: 500ms">
+            <div class="text-4xl mb-4">🗂️</div>
+            <h3 class="text-xl font-bold text-white mb-2">Creator Registry</h3>
+            <p class="text-gray-400 text-sm mb-4">Join the public directory of Sierra Leonean open source projects.</p>
+            <span class="text-purple-400 text-sm font-medium">Browse →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: HOW IT WORKS -->
+    <section class="py-20 px-4">
+      <div class="max-w-6xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-12">How It Works</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="relative">
+            <div
+              class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 relative z-10">
+              1</div>
+            <h3 class="text-xl font-bold mb-3">Answer Questions</h3>
+            <p class="text-gray-400 text-sm">Answer 4 simple questions about your project type and goals.</p>
+            <div class="hidden md:block absolute top-8 left-[60%] right-[-40%] h-[2px] bg-white/10 z-0"></div>
+          </div>
+          <div class="relative">
+            <div
+              class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 relative z-10">
+              2</div>
+            <h3 class="text-xl font-bold mb-3">Get Recommendation</h3>
+            <p class="text-gray-400 text-sm">Receive your license recommendation with full explanation instantly.</p>
+            <div class="hidden md:block absolute top-8 left-[60%] right-[-40%] h-[2px] bg-white/10 z-0"></div>
+          </div>
+          <div>
+            <div
+              class="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+              3</div>
+            <h3 class="text-xl font-bold mb-3">Download Docs</h3>
+            <p class="text-gray-400 text-sm">Download LICENSE.txt, Privacy Policy, and a signed PDF Creation Record.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: WHO IS IT FOR -->
+    <section class="py-20 px-4 bg-white/5 border-t border-white/5">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-8">Built for Sierra Leone's Creators</h2>
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <span class="glass px-6 py-2 rounded-full text-sm">📱 App Developers</span>
+          <span class="glass px-6 py-2 rounded-full text-sm">🎵 Musicians & Artists</span>
+          <span class="glass px-6 py-2 rounded-full text-sm">✍️ Writers & NGOs</span>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 rounded-3xl relative text-left">
+          <div class="text-6xl text-purple-500/30 absolute top-4 left-6">"</div>
+          <p class="text-lg md:text-xl text-gray-200 italic mb-6 relative z-10">
+            Kadija is a developer in Freetown. She built a mobile health app but had no idea how to protect it legally.
+            She couldn't afford a lawyer. OpenRights SL gave her an Apache 2.0 license, a privacy policy, and a PDF
+            certificate — in under 2 minutes. For free.
+          </p>
+          <p class="text-[#1EB53A] font-bold">— A Sierra Leonean Creator Story</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity
+            and open source knowledge.</p>
+          <p class="text-[#1EB53A] text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-[#1EB53A] transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-[#1EB53A] transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-[#1EB53A] transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-[#1EB53A] transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-[#1EB53A] transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-[#1EB53A] transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-[#1EB53A] transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo
+                Mode</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Splash Screen
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        splash.style.opacity = '0';
+        setTimeout(() => splash.remove(), 500);
+      }, 2000);
+    });
+
+    // Hero Typing Animation
+    const phrases = [
+      "Protect Your Creative Work in Sierra Leone",
+      "License Your Code the Right Way",
+      "Generate Legal Documents Instantly",
+      "Know Your Digital Rights 🇸🇱"
+    ];
+    let pIdx = 0, cIdx = 0, isDel = false;
+    const heroTyping = document.getElementById('hero-typing');
+
+    function type() {
+      const cur = phrases[pIdx];
+      if (isDel) {
+        heroTyping.textContent = cur.substring(0, cIdx - 1);
+        cIdx--;
+      } else {
+        heroTyping.textContent = cur.substring(0, cIdx + 1);
+        cIdx++;
+      }
+      if (!isDel && cIdx === cur.length) {
+        isDel = true;
+        setTimeout(type, 2000);
+      } else if (isDel && cIdx === 0) {
+        isDel = false;
+        pIdx = (pIdx + 1) % phrases.length;
+        setTimeout(type, 500);
+      } else {
+        setTimeout(type, isDel ? 30 : 70);
+      }
+    }
+    setTimeout(type, 2500);
+
+    // Intersection Observer for Animations (Stats & Slide-ins)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (entry.target.classList.contains('slide-in')) {
+            entry.target.classList.add('visible');
+          }
+          if (entry.target.classList.contains('counter-trigger')) {
+            startCounters();
+            observer.unobserve(entry.target);
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.slide-in').forEach(el => observer.observe(el));
+
+    // Stats Counter Animation
+    const firstCounter = document.querySelector('.counter');
+    if (firstCounter) {
+      const statsSection = firstCounter.closest('section');
+      if (statsSection) {
+        statsSection.classList.add('counter-trigger');
+        observer.observe(statsSection);
+      } else {
+        startCounters();
+      }
+    } else {
+      startCounters();
+    }
+
+    function startCounters() {
+      document.querySelectorAll('.counter').forEach(el => {
+        const target = +el.getAttribute('data-target');
+        let count = 0;
+        const inc = target / 50; // 50 frames
+        const update = () => {
+          count += inc;
+          if (count < target) {
+            el.innerText = Math.ceil(count);
+            requestAnimationFrame(update);
+          } else {
+            el.innerText = target;
+          }
+        };
+        update();
+      });
+    }
+
+    // Navbar scripts
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar')
+      if (nav) {
+        if (window.scrollY > 50) {
+          nav.classList.add('scrolled')
+        } else {
+          nav.classList.remove('scrolled')
+        }
+      }
+    })
+
+    const burger = document.getElementById('hamburger')
+    const mobileMenu = document.getElementById('mobile-menu')
+    if (burger && mobileMenu) {
+      burger.addEventListener('click', (e) => {
+        e.stopPropagation()
+        const open = mobileMenu.classList.toggle('hidden')
+        mobileMenu.classList.toggle('menu-open')
+        burger.setAttribute('aria-expanded', (!open).toString())
+      })
+      document.addEventListener('click', e => {
+        const nav = document.getElementById('navbar')
+        if (nav && !nav.contains(e.target) && !mobileMenu.contains(e.target)) {
+          mobileMenu.classList.add('hidden')
+          mobileMenu.classList.remove('menu-open')
+          burger.setAttribute('aria-expanded', 'false')
+        }
+      })
+    }
+
+    const toolsBtn = document.getElementById('tools-btn')
+    const toolsMenu = document.getElementById('tools-menu')
+    if (toolsBtn && toolsMenu) {
+      toolsBtn.addEventListener('click', e => {
+        e.stopPropagation()
+        toolsMenu.classList.toggle('hidden')
+      })
+      document.addEventListener('click', () => {
+        toolsMenu.classList.add('hidden')
+      })
+    }
+
+    const profile = JSON.parse(localStorage.getItem('creatorProfile') || 'null')
+    const profileEl = document.getElementById('navbar-profile')
+    const mobileProfileEl = document.getElementById('mobile-navbar-profile')
+    if (profile && profile.fullName) {
+      const name = '👤 ' + profile.fullName.split(' ')[0];
+      if (profileEl) profileEl.textContent = name;
+      if (mobileProfileEl) mobileProfileEl.textContent = name;
+    }
+
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    const navMap = {
+      'index.html': 'nav-index',
+      'recommender.html': 'nav-license',
+      'generator.html': 'nav-license',
+      'comparison.html': 'nav-compare',
+      'chatbot.html': 'nav-chat',
+      'about.html': 'nav-about',
+      'scanner.html': 'tools-btn',
+      'analyzer.html': 'tools-btn',
+      'registry.html': 'tools-btn',
+      'dashboard.html': 'tools-btn',
+      'batch.html': 'tools-btn'
+    };
+    const activeId = navMap[path];
+    if (activeId) {
+      const el = document.getElementById(activeId);
+      if (el) el.classList.add('active-nav-link');
+    }
+
+    // Language Toggle — handled globally by js/i18n.js
+
+  </script>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" aria-label="Back to top" style="display:none; position:fixed; bottom:24px; right:24px; z-index:1000; background:#1EB53A; color:white; border:none; border-radius:50%; width:44px; height:44px; font-size:20px; cursor:pointer; box-shadow:0 4px 15px rgba(30,181,58,0.4); align-items:center; justify-content:center">
+    ↑
+  </button>
+
+  <script>
+    // Back to top
+    const backBtn = document.getElementById('back-to-top');
+    if (backBtn) {
+      window.addEventListener('scroll', () => {
+        backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+      });
+      backBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+
+  </script>
+
+
+
+  <!-- Error Boundary -->
+  <script>
+    window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
+    window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
+
+    // File protocol detection
+    if (window.location.protocol === 'file:') {
+      showToast('⚠️ Please use a local server (live-server) for full functionality. Some features may not work when opening files directly.', 'warning', 8000);
+    }
+  </script>
+
+  <script src="js/utils.js"></script>
+  <script src="js/i18n.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.warn('Service worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>

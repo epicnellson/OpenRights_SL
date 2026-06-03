@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Contract Analyzer — OpenRights SL</title>
+  <meta name="description" content="AI-powered contract analyzer for Sierra Leone Cyber Act compliance. Detect IP risks, red flags, and compliance issues in contracts and terms of service.">
+  <meta property="og:title" content="AI Contract Analyzer">
+  <meta property="og:description" content="Scan contracts for risks under Sierra Leone law.">
+  <meta name="keywords" content="contract analyzer, TOS, EULA, NDA, Sierra Leone, Cyber Act, legal AI">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="text-white font-sans">
+      <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-lang="nav.home" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-lang="nav.license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-lang="nav.compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-lang="nav.tools" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-lang="nav.scanner" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-lang="nav.analyzer" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-lang="nav.registry" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-lang="nav.dashboard" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        
+        <a href="about.html" id="nav-about" data-lang="nav.about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-lang="nav.home" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-lang="nav.license" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-lang="nav.compare" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-lang="nav.about" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-lang="nav.chat" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" class="pt-28 pb-20 px-4 flex justify-center items-center min-h-screen">
+  <div class="glass-card rounded-3xl w-full max-w-5xl p-8 border border-white/10 shadow-2xl relative overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-600/20 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
+
+    <div class="text-center mb-8 relative z-10">
+      <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">AI Contract & TOS Analyzer</h1>
+      <p class="text-gray-400">Scan contracts and terms of service for Sierra Leone Cyber Act compliance and IP risks.</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8 relative z-10 h-full">
+      <!-- Input Section -->
+      <div class="flex-1 flex flex-col">
+        <label for="contract-text" class="block text-sm font-medium text-gray-300 mb-2">Paste Contract Text</label>
+        <textarea id="contract-text" rows="10" class="w-full bg-black/30 border border-white/20 rounded-xl p-4 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition custom-scrollbar" placeholder="Paste your Terms of Service, EULA, or NDA here..."></textarea>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <button onclick="loadSample('nda')" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg transition text-gray-300 flex items-center gap-1">📄 Sample NDA</button>
+          <button onclick="loadSample('tos')" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg transition text-gray-300 flex items-center gap-1">📋 Sample Terms</button>
+          <button onclick="loadSample('eula')" class="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg transition text-gray-300 flex items-center gap-1">⚖️ Sample EULA</button>
+        </div>
+        
+        <button id="btn-analyze" onclick="analyzeContract()" class="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-xl transition shadow-lg w-full flex justify-center items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          Analyze Contract
+        </button>
+      </div>
+
+      <!-- Output Section -->
+      <div class="flex-1 flex flex-col bg-black/20 rounded-xl border border-white/10 p-6 h-[500px] relative">
+        <h2 class="text-xl font-semibold text-white mb-4 border-b border-white/10 pb-2">Analysis Report</h2>
+        
+        <div id="loading-state" class="hidden flex-col items-center justify-center flex-1 py-12">
+          <div class="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p class="text-purple-300 animate-pulse">AI is reviewing clauses...</p>
+        </div>
+
+        <div id="empty-state" class="flex flex-col items-center justify-center flex-1 text-gray-500 py-12">
+          <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+          <p>Paste a contract to generate a report.</p>
+        </div>
+
+        <div id="results-state" class="hidden flex-col flex-1 overflow-y-auto pr-2 custom-scrollbar">
+          <div id="report-content" class="text-sm text-gray-300 space-y-4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<style>
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(167, 139, 250, 0.3); border-radius: 3px; }
+.report-section { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border-left: 3px solid #a855f7; margin-bottom: 12px; }
+.report-title { font-weight: bold; color: #fff; margin-bottom: 4px; display: block; }
+</style>
+  <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity and open source knowledge.</p>
+          <p class="text-green-400 text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-green-400 transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-green-400 transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-green-400 transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-green-400 transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-green-400 transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo Mode</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+<script src="js/utils.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/analyzer.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+  <!-- Toast container -->
+  <div id="toast" class="toast" role="alert">
+    <span>✓</span>
+    <span id="toast-message"></span>
+  </div>
+<!-- Back to Top Button -->
+<button id="back-to-top" aria-label="Back to top" style="display:none; position:fixed; bottom:24px; right:24px; z-index:1000; background:#1EB53A; color:white; border:none; border-radius:50%; width:44px; height:44px; font-size:20px; cursor:pointer; box-shadow:0 4px 15px rgba(30,181,58,0.4); align-items:center; justify-content:center">
+  ↑
+</button>
+
+<script>
+// Back to top
+const backBtn = document.getElementById('back-to-top');
+if (backBtn) {
+  window.addEventListener('scroll', () => {
+    backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  });
+  backBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Error boundary
+window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
+window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
+
+if (window.location.protocol === 'file:') {
+  showToast('\u26A0\uFE0F Please use a local server (live-server) for full functionality.', 'warning', 8000);
+}
+</script>
+</body>
+</html>

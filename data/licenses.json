@@ -1,0 +1,83 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "text": "What type of work are you creating?",
+      "options": [
+        { "label": "Code / Software", "next": "q2" },
+        { "label": "Creative Content", "next": "q4" }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Do you want to allow commercial use of your code?",
+      "options": [
+        { "label": "Yes", "next": "q3" },
+        { "label": "No", "result": "GPL-v3" }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Do you need patent protection for your work?",
+      "options": [
+        { "label": "Yes", "result": "Apache-2.0" },
+        { "label": "No", "result": "MIT" }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Do you want to allow commercial reuse of your content?",
+      "options": [
+        { "label": "Yes", "result": "CC-BY-4.0" },
+        { "label": "No", "result": "CC-BY-NC-4.0" }
+      ]
+    }
+  ],
+  "licenses": {
+    "MIT": {
+      "name": "MIT License",
+      "summary": "A permissive license that allows reuse with minimal restrictions. Users must include the original copyright notice.",
+      "bestFor": "Simple open source projects, libraries, and frameworks that want maximum adoption",
+      "commercial": true,
+      "patentProtection": false,
+      "copyleft": false,
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "Apache-2.0": {
+      "name": "Apache License 2.0",
+      "summary": "A permissive license similar to MIT but also provides express grant of patent rights from contributors.",
+      "bestFor": "Open source projects that need both permissiveness and patent protection",
+      "commercial": true,
+      "patentProtection": true,
+      "copyleft": false,
+      "url": "https://opensource.org/licenses/Apache-2.0"
+    },
+    "GPL-v3": {
+      "name": "GNU General Public License v3",
+      "summary": "A strong copyleft license requiring that derivative works be distributed under the same license terms.",
+      "bestFor": "Projects that want to ensure all derivatives remain open source",
+      "commercial": true,
+      "patentProtection": true,
+      "copyleft": true,
+      "url": "https://opensource.org/licenses/GPL-3.0"
+    },
+    "CC-BY-4.0": {
+      "name": "Creative Commons Attribution 4.0",
+      "summary": "A Creative Commons license that allows others to distribute, remix, and adapt your content, even commercially, as long as they credit you.",
+      "bestFor": "Creative works like articles, images, videos, and educational content where you want wide distribution",
+      "commercial": true,
+      "patentProtection": false,
+      "copyleft": false,
+      "url": "https://creativecommons.org/licenses/by/4.0"
+    },
+    "CC-BY-NC-4.0": {
+      "name": "Creative Commons Attribution-NonCommercial 4.0",
+      "summary": "A Creative Commons license that allows others to remix and adapt your work for non-commercial purposes only, with attribution.",
+      "bestFor": "Creative works where you want to share but prevent commercial exploitation",
+      "commercial": false,
+      "patentProtection": false,
+      "copyleft": false,
+      "url": "https://creativecommons.org/licenses/by-nc/4.0"
+    }
+  }
+}

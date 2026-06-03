@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sierra Leone Law — OpenRights SL</title>
+  <meta name="description" content="Learn about Sierra Leone's Cyber Security and Crime Act 2021 and how open source licensing works under Sierra Leone law.">
+  <meta property="og:title" content="Sierra Leone Legal Framework">
+  <meta property="og:description" content="Understanding Sierra Leone's cyber laws and digital rights.">
+  <meta name="keywords" content="Sierra Leone law, Cyber Security Act 2021, digital rights, DPG, DLAW207">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+    .glass-card:hover { transform: translateY(-2px); }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #a78bfa;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .sl-flag-gradient {
+      background: linear-gradient(90deg, #1EB53A 0%, #FFFFFF 50%, #0072C6 100%);
+    }
+    .did-you-know {
+      background: linear-gradient(135deg, rgba(30, 181, 58, 0.2) 0%, rgba(0, 114, 198, 0.2) 100%);
+      border-left: 4px solid;
+      border-image: linear-gradient(to bottom, #1EB53A, #FFFFFF, #0072C6) 1;
+    }
+  </style>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="text-white font-sans">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-lang="nav.home" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-lang="nav.license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-lang="nav.compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-lang="nav.tools" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-lang="nav.scanner" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-lang="nav.analyzer" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-lang="nav.registry" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-lang="nav.dashboard" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        
+        <a href="about.html" id="nav-about" data-lang="nav.about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-lang="nav.home" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-lang="nav.license" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-lang="nav.compare" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-lang="nav.about" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-lang="nav.chat" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" role="main" class="pt-28 pb-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <div class="sl-flag-gradient h-2 rounded-full mb-4 max-w-xs mx-auto"></div>
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">Sierra Leone Legal Context</h1>
+        <p class="text-gray-400">How open source licensing works under Sierra Leone law</p>
+      </div>
+
+      <!-- Cyber Security Act Section -->
+      <section class="glass-card rounded-2xl p-6 md:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-3xl" aria-hidden="true">🛡️</span>
+          <h2 class="text-2xl font-bold">Cyber Security and Crime Act 2021</h2>
+        </div>
+        <p class="text-gray-300 mb-4">
+          Sierra Leone's Cyber Security and Crime Act 2021 is the primary legislation governing digital activities. It addresses:
+        </p>
+        <ul class="space-y-3 text-gray-300">
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span><strong>Cyber crimes</strong> — Unauthorized access, hacking, and digital fraud</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span><strong>Electronic evidence</strong> — Rules for digital evidence in court</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span><strong>Data protection</strong> — Framework for personal data handling</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-green-400 mt-1">✓</span>
+            <span><strong>Critical infrastructure</strong> — Protection of essential digital systems</span>
+          </li>
+        </ul>
+        <div class="mt-4 p-4 bg-yellow-900/20 border border-yellow-600/30 rounded-xl">
+          <p class="text-yellow-300 text-sm">
+            <strong>Key for creators:</strong> The Act provides the legal basis for digital transactions and can support open source licensing decisions when disputes arise.
+          </p>
+        </div>
+      </section>
+
+      <!-- Open Source Under SL Law -->
+      <section class="glass-card rounded-2xl p-6 md:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-3xl" aria-hidden="true">📜</span>
+          <h2 class="text-2xl font-bold">Open Source Under Sierra Leone Law</h2>
+        </div>
+        <p class="text-gray-300 mb-4">
+          Open source licenses work in Sierra Leone through international copyright frameworks that Sierra Leone participates in:
+        </p>
+        <ul class="space-y-3 text-gray-300">
+          <li class="flex items-start gap-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>Berne Convention</strong> — Sierra Leone is a member, automatically granting copyright protection internationally</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>TRIPS Agreement</strong> — WTO agreement Sierra Leone follows on IP rights</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong>WIPO</strong> — World Intellectual Property Organization membership</span>
+          </li>
+        </ul>
+        <p class="text-gray-400 text-sm mt-4">
+          Using internationally-recognized licenses (MIT, GPL, CC) provides robust protection that aligns with these frameworks.
+        </p>
+      </section>
+
+      <!-- Digital Public Good -->
+      <section class="glass-card rounded-2xl p-6 md:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-3xl" aria-hidden="true">🌐</span>
+          <h2 class="text-2xl font-bold">What is a Digital Public Good (DPG)?</h2>
+        </div>
+        <p class="text-gray-300 mb-4">
+          A Digital Public Good is open source technology, data, or standards that are freely available and can improve people's lives. It's defined by:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="glass rounded-xl p-4">
+            <h3 class="font-semibold text-purple-400 mb-2">Open Source</h3>
+            <p class="text-gray-400 text-sm">Source code is publicly available</p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <h3 class="font-semibold text-purple-400 mb-2">Data</h3>
+            <p class="text-gray-400 text-sm">Collected information that benefits the public</p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <h3 class="font-semibold text-purple-400 mb-2">Standards</h3>
+            <p class="text-gray-400 text-sm">Technical specifications for interoperability</p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <h3 class="font-semibold text-purple-400 mb-2">Algorithms</h3>
+            <p class="text-gray-400 text-sm">Decision-making processes</p>
+          </div>
+        </div>
+        <p class="text-gray-400 text-sm mt-4">
+          <strong>Why DPG matters for Sierra Leone:</strong> DPGs can accelerate digital transformation while reducing costs and increasing transparency in government services.
+        </p>
+      </section>
+
+      <!-- Resources -->
+      <section class="glass-card rounded-2xl p-6 md:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-3xl" aria-hidden="true">🔗</span>
+          <h2 class="text-2xl font-bold">Official Resources</h2>
+        </div>
+        <ul class="space-y-3">
+          <li>
+            <a href="https://slci.gov.sl" target="_blank" rel="noopener" class="text-purple-400 hover:text-purple-300 flex items-center gap-2">
+              <span>→</span> Sierra Leone Cyber Security Industry (Official)
+            </a>
+          </li>
+          <li>
+            <a href="https://mcit.gov.sl" target="_blank" rel="noopener" class="text-purple-400 hover:text-purple-300 flex items-center gap-2">
+              <span>→</span> Ministry of Communications
+            </a>
+          </li>
+          <li>
+            <a href="https://opensourcesh SL.org" target="_blank" rel="noopener" class="text-purple-400 hover:text-purple-300 flex items-center gap-2">
+              <span>→</span> Open Source Initiative
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Did You Know -->
+      <section class="did-you-know glass-card rounded-2xl p-6 md:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-3xl" aria-hidden="true">💡</span>
+          <h2 class="text-2xl font-bold">Did You Know?</h2>
+        </div>
+        <p class="text-xl">
+          Sierra Leone launched its <strong>National Digital Transformation Policy</strong> in 2021, aiming to make Sierra Leone a digital hub in West Africa by 2030.
+        </p>
+        <p class="text-gray-400 mt-4">
+          This policy supports digital public goods adoption and creates opportunities for Sierra Leonean developers and creators.
+        </p>
+      </section>
+
+      <!-- Disclaimer -->
+      <div class="p-4 bg-purple-900/30 rounded-xl border border-purple-500/30">
+        <p class="text-sm text-purple-300">
+          <strong>Disclaimer:</strong> This information is for educational purposes only. For legal advice specific to your situation, consult a qualified legal professional in Sierra Leone.
+        </p>
+      </div>
+    </div>
+  </main>
+
+    <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity and open source knowledge.</p>
+          <p class="text-green-400 text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-green-400 transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-green-400 transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-green-400 transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-green-400 transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-green-400 transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo Mode</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+      });
+      mobileMenu.querySelectorAll('a, button').forEach(link => link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      }));
+    }
+
+    window.startOver = function() {
+      if (confirm('Start a new license search? This will clear your current selection.')) {
+        localStorage.removeItem('selectedLicense');
+        window.location.href = 'index.html';
+      }
+    };
+
+    window.toggleChat = function() {
+      window.location.href = 'chatbot.html';
+    };
+  </script>
+
+<script src="js/utils.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.warn('Service worker registration failed:', err);
+    });
+  });
+}
+</script>
+</body>
+</html>
+
+
+

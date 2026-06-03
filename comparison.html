@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare Licenses — OpenRights SL</title>
+  <meta name="description" content="Compare open source licenses side by side: MIT, Apache 2.0, GPL v3, CC-BY, and CC-BY-NC. Find the right license for your project.">
+  <meta property="og:title" content="Compare Open Source Licenses">
+  <meta property="og:description" content="Find the perfect license for your Sierra Leonean creative projects.">
+  <meta name="keywords" content="compare licenses, MIT, Apache, GPL, Creative Commons, Sierra Leone, open source">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #a78bfa;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .badge-yes { background: #166534; color: #bbf7d0; }
+    .badge-no { background: #991b1b; color: #fecaca; }
+    .badge-conditional { background: #854d0e; color: #fef08a; }
+    .license-mit { border-top: 4px solid #3b82f6; }
+    .license-apache { border-top: 4px solid #f97316; }
+    .license-gpl { border-top: 4px solid #ef4444; }
+    .license-ccby { border-top: 4px solid #22c55e; }
+    .license-ccbync { border-top: 4px solid #a855f7; }
+    .slide-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .slide-in.visible { opacity: 1; transform: translateY(0); }
+    .matrix-cell { transition: background 0.2s; }
+    .matrix-cell:hover { background: rgba(167, 139, 250, 0.3); }
+  </style>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="text-white font-sans">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+        <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-lang="nav.home" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-lang="nav.license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-lang="nav.compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-lang="nav.tools" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-lang="nav.scanner" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-lang="nav.analyzer" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-lang="nav.registry" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-lang="nav.dashboard" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        
+        <a href="about.html" id="nav-about" data-lang="nav.about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-lang="nav.home" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-lang="nav.license" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-lang="nav.compare" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-lang="nav.about" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-lang="nav.chat" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" role="main" class="pt-28 pb-20 px-4">
+
+    <div id="lang-warning" class="hidden bg-yellow-500/20 border border-yellow-500/50 text-yellow-200 p-4 mb-8 rounded-xl text-center max-w-4xl mx-auto shadow-lg backdrop-blur-md">
+      <p class="text-sm font-semibold flex items-center justify-center gap-2" data-lang="legal.warning">
+        ⚠️ Note: The detailed legal texts below remain in English to maintain absolute legal accuracy under Sierra Leone law.
+      </p>
+    </div>
+
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4 text-center">Compare Licenses</h1>
+      <p class="text-gray-400 text-center mb-8 max-w-2xl mx-auto">
+        Compare open source licenses side by side to find the perfect one for your project.
+      </p>
+
+      <div class="overflow-x-auto">
+      <div class="overflow-x-auto w-full pb-4">
+        <table class="w-full glass-card rounded-2xl" role="table" aria-label="License comparison table">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left p-4 font-semibold">Feature</th>
+              <th class="p-4 font-semibold text-blue-400 license-mit">MIT</th>
+              <th class="p-4 font-semibold text-orange-400 license-apache">Apache 2.0</th>
+              <th class="p-4 font-semibold text-red-400 license-gpl">GPL v3</th>
+              <th class="p-4 font-semibold text-green-400 license-ccby">CC-BY</th>
+              <th class="p-4 font-semibold text-purple-400 license-ccbync">CC-BY-NC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium">Commercial Use</td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-no px-2 py-1 rounded-full text-sm">✗ No</span></td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium">Patent Protection</td>
+              <td class="p-4 text-center"><span class="badge-no px-2 py-1 rounded-full text-sm">✗ No</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-conditional px-2 py-1 rounded-full text-sm">⚠ Limited</span></td>
+              <td class="p-4 text-center"><span class="badge-no px-2 py-1 rounded-full text-sm">✗ No</span></td>
+              <td class="p-4 text-center"><span class="badge-no px-2 py-1 rounded-full text-sm">✗ No</span></td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium">Copyleft</td>
+              <td class="p-4 text-center"><span class="badge-no px-2 py-1 rounded-full text-sm">✗ No</span></td>
+              <td class="p-4 text-center"><span class="badge-no px-2 py-1 rounded-full text-sm">✗ No</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-no px-2 py-1 rounded-full text-sm">✗ No</span></td>
+              <td class="p-4 text-center"><span class="badge-no px-2 py-1 rounded-full text-sm">✗ No</span></td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium">Modify & Distribute</td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium">Attribution Required</td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+              <td class="p-4 text-center"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Yes</span></td>
+            </tr>
+            <tr>
+              <td class="p-4 font-medium">Best For</td>
+              <td class="p-4 text-sm text-gray-400">Libraries, prototypes, maximum adoption</td>
+              <td class="p-4 text-sm text-gray-400">Projects needing patent protection</td>
+              <td class="p-4 text-sm text-gray-400">Ensuring all derivatives stay open</td>
+              <td class="p-4 text-sm text-gray-400">Content, articles, media</td>
+              <td class="p-4 text-sm text-gray-400">Non-commercial content sharing</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+
+      <h2 class="text-2xl font-bold mt-12 mb-4 text-center">License Compatibility Matrix</h2>
+      <p class="text-gray-400 text-center mb-6 max-w-2xl mx-auto">
+        See which licenses can be included in projects using different licenses. This helps you understand how your choice affects downstream users.
+      </p>
+
+      <div class="overflow-x-auto">
+      <div class="overflow-x-auto w-full pb-4">
+        <table class="w-full glass-card rounded-2xl" role="table" aria-label="License compatibility matrix">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left p-4 font-semibold">Your License ↓ / Including →</th>
+              <th class="p-4 font-semibold text-blue-400">MIT</th>
+              <th class="p-4 font-semibold text-orange-400">Apache 2.0</th>
+              <th class="p-4 font-semibold text-red-400">GPL v3</th>
+              <th class="p-4 font-semibold text-green-400">CC-BY</th>
+              <th class="p-4 font-semibold text-purple-400">CC-BY-NC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium text-blue-400">MIT</td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium text-orange-400">Apache 2.0</td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium text-red-400">GPL v3</td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-conditional px-2 py-1 rounded-full text-sm">⚠ Note</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-conditional px-2 py-1 rounded-full text-sm">⚠ Note</span></td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="p-4 font-medium text-green-400">CC-BY</td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-conditional px-2 py-1 rounded-full text-sm">⚠ Note</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+            </tr>
+            <tr>
+              <td class="p-4 font-medium text-purple-400">CC-BY-NC</td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-no px-2 py-1 rounded-full text-sm">✕ No</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-no px-2 py-1 rounded-full text-sm">✕ No</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-no px-2 py-1 rounded-full text-sm">✕ No</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+              <td class="p-4 text-center matrix-cell"><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+
+      <div class="glass rounded-xl p-4 mt-6 mb-12">
+        <h3 class="font-semibold mb-2">Understanding Compatibility</h3>
+        <ul class="text-gray-400 text-sm space-y-2">
+          <li><span class="badge-yes px-2 py-1 rounded-full text-sm">✓ Compatible</span> — Your code can be included in projects using this license</li>
+          <li><span class="badge-no px-2 py-1 rounded-full text-sm">✕ No</span> — Cannot combine due to incompatible terms</li>
+          <li><span class="badge-conditional px-2 py-1 rounded-full text-sm">⚠ Note</span> — May require additional attribution or have restrictions</li>
+        </ul>
+      </div>
+
+      <!-- Drag & Drop Compatibility Mixer -->
+      <h2 class="text-2xl font-bold mt-16 mb-4 text-center">Drag & Drop Compatibility Mixer</h2>
+      <p class="text-gray-400 text-center mb-6 max-w-2xl mx-auto">
+        Drag a license and drop it into your project to see if they are compatible.
+      </p>
+
+      <div class="glass-card rounded-2xl p-8 mb-6 flex flex-col md:flex-row gap-8 items-center justify-center">
+        <!-- Draggable Licenses -->
+        <div class="flex-1 w-full max-w-sm border border-white/10 rounded-xl p-4 bg-black/20">
+          <h3 class="text-center font-semibold mb-4 text-gray-300">Available Licenses (Drag)</h3>
+          <div class="flex flex-wrap gap-3 justify-center">
+            <div draggable="true" ondragstart="dragStart(event, 'MIT')" class="cursor-move bg-blue-600/30 border border-blue-500/50 text-blue-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-600/50 transition shadow-lg">MIT</div>
+            <div draggable="true" ondragstart="dragStart(event, 'Apache-2.0')" class="cursor-move bg-orange-600/30 border border-orange-500/50 text-orange-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-orange-600/50 transition shadow-lg">Apache 2.0</div>
+            <div draggable="true" ondragstart="dragStart(event, 'GPL-v3')" class="cursor-move bg-red-600/30 border border-red-500/50 text-red-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600/50 transition shadow-lg">GPL v3</div>
+            <div draggable="true" ondragstart="dragStart(event, 'CC-BY-4.0')" class="cursor-move bg-green-600/30 border border-green-500/50 text-green-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-600/50 transition shadow-lg">CC-BY</div>
+            <div draggable="true" ondragstart="dragStart(event, 'CC-BY-NC-4.0')" class="cursor-move bg-purple-600/30 border border-purple-500/50 text-purple-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-purple-600/50 transition shadow-lg">CC-BY-NC</div>
+          </div>
+        </div>
+
+        <div class="text-3xl text-gray-500 hidden md:block">→</div>
+        <div class="text-3xl text-gray-500 md:hidden">↓</div>
+
+        <!-- Drop Target -->
+        <div class="flex-1 w-full max-w-sm">
+          <h3 class="text-center font-semibold mb-2 text-gray-300">Your Project (Drop Here)</h3>
+          <div class="flex justify-center mb-3">
+            <select id="project-license-select" onchange="updateProjectLicense()" class="bg-black/30 border border-white/20 rounded-lg px-3 py-1.5 text-sm text-gray-300 outline-none hover:border-purple-400 transition cursor-pointer">
+              <option value="MIT">MIT Project</option>
+              <option value="Apache-2.0">Apache 2.0 Project</option>
+              <option value="GPL-v3">GPL v3 Project</option>
+              <option value="CC-BY-4.0">CC-BY Project</option>
+              <option value="CC-BY-NC-4.0">CC-BY-NC Project</option>
+            </select>
+          </div>
+          <div id="drop-zone" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event)" class="border-2 border-dashed border-gray-500 rounded-2xl h-32 flex flex-col items-center justify-center transition bg-black/10">
+            <span class="text-3xl mb-1">📥</span>
+            <span class="text-gray-400 text-sm">Drop license here</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Modal/Toast for Mixer -->
+      <div id="mixer-result" class="hidden glass-card rounded-xl p-4 text-center max-w-md mx-auto mb-16 transform transition-all duration-300">
+        <h4 id="mixer-title" class="text-xl font-bold mb-2"></h4>
+        <p id="mixer-desc" class="text-gray-300 text-sm"></p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-8">
+        <button onclick="chooseLicense('MIT')" class="glass-card license-mit rounded-xl p-4 hover:translate-y-[-2px] transition">
+          <h3 class="font-bold text-blue-400 mb-2">MIT License</h3>
+          <p class="text-gray-400 text-sm mb-4">Simple and permissive</p>
+          <span class="bg-blue-600/30 text-blue-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
+        </button>
+        <button onclick="chooseLicense('Apache-2.0')" class="glass-card license-apache rounded-xl p-4 hover:translate-y-[-2px] transition">
+          <h3 class="font-bold text-orange-400 mb-2">Apache 2.0</h3>
+          <p class="text-gray-400 text-sm mb-4">With patent grants</p>
+          <span class="bg-orange-600/30 text-orange-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
+        </button>
+        <button onclick="chooseLicense('GPL-v3')" class="glass-card license-gpl rounded-xl p-4 hover:translate-y-[-2px] transition">
+          <h3 class="font-bold text-red-400 mb-2">GPL v3</h3>
+          <p class="text-gray-400 text-sm mb-4">Strong copyleft</p>
+          <span class="bg-red-600/30 text-red-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
+        </button>
+        <button onclick="chooseLicense('CC-BY-4.0')" class="glass-card license-ccby rounded-xl p-4 hover:translate-y-[-2px] transition">
+          <h3 class="font-bold text-green-400 mb-2">CC-BY 4.0</h3>
+          <p class="text-gray-400 text-sm mb-4">Creative content</p>
+          <span class="bg-green-600/30 text-green-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
+        </button>
+        <button onclick="chooseLicense('CC-BY-NC-4.0')" class="glass-card license-ccbync rounded-xl p-4 hover:translate-y-[-2px] transition">
+          <h3 class="font-bold text-purple-400 mb-2">CC-BY-NC</h3>
+          <p class="text-gray-400 text-sm mb-4">Non-commercial</p>
+          <span class="bg-purple-600/30 text-purple-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+    <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity and open source knowledge.</p>
+          <p class="text-green-400 text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-green-400 transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-green-400 transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-green-400 transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-green-400 transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-green-400 transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo Mode</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+// Drag and Drop Compatibility Mixer Database
+const COMPATIBILITY_DB = {
+  'MIT': {
+    'MIT': { compat: 'YES', desc: 'Highly Compatible. MIT is a permissive license and matches perfectly.' },
+    'Apache-2.0': { compat: 'YES', desc: 'Compatible. You can incorporate permissive MIT code into an Apache 2.0 project.' },
+    'GPL-v3': { compat: 'YES', desc: 'Compatible. Permissive MIT code can be sublicensed under strong copyleft GPL v3.' },
+    'CC-BY-4.0': { compat: 'YES', desc: 'Compatible. Permissive MIT code can be combined under CC-BY attribution.' },
+    'CC-BY-NC-4.0': { compat: 'YES', desc: 'Compatible. Permissive MIT code can be combined under CC-BY-NC for non-commercial projects.' }
+  },
+  'Apache-2.0': {
+    'MIT': { compat: 'NO', desc: 'Incompatible. Apache 2.0 contains trademark and patent express grants which permissive MIT cannot inherit or enforce.' },
+    'Apache-2.0': { compat: 'YES', desc: 'Perfect Match. Both licenses are Apache 2.0.' },
+    'GPL-v3': { compat: 'YES', desc: 'Compatible. Apache 2.0 code can be merged into a GPL v3 project.' },
+    'CC-BY-4.0': { compat: 'YES', desc: 'Compatible. Can combine Apache 2.0 code with CC-BY content.' },
+    'CC-BY-NC-4.0': { compat: 'YES', desc: 'Compatible. Can combine under CC-BY-NC for non-commercial projects.' }
+  },
+  'GPL-v3': {
+    'MIT': { compat: 'NO', desc: "Incompatible. Strong copyleft GPL v3 requires the entire project to become GPL v3, which violates permissive MIT's sublicensing freedom." },
+    'Apache-2.0': { compat: 'NO', desc: 'Incompatible. Apache 2.0 cannot contain strong copyleft GPL v3 code unless the entire project transitions to GPL v3.' },
+    'GPL-v3': { compat: 'YES', desc: 'Perfect Match. Strong copyleft works seamlessly with GPL v3.' },
+    'CC-BY-4.0': { compat: 'NO', desc: 'Incompatible. Creative Commons licenses do not satisfy GPL v3\'s copyleft obligations.' },
+    'CC-BY-NC-4.0': { compat: 'NO', desc: 'Incompatible. GPL v3 allows commercial usage; CC-BY-NC prohibits commercial usage, creating a direct conflict.' }
+  },
+  'CC-BY-4.0': {
+    'MIT': { compat: 'YES', desc: 'Compatible with attribution. Creative Commons BY allows usage, provided original creator attribution is preserved.' },
+    'Apache-2.0': { compat: 'YES', desc: 'Compatible with attribution. Ensure CC-BY creators are fully credited in notices.' },
+    'GPL-v3': { compat: 'YES', desc: 'Compatible. CC-BY code can be included in GPL v3 projects.' },
+    'CC-BY-4.0': { compat: 'YES', desc: 'Perfect Match. Creative Commons Attribution matching.' },
+    'CC-BY-NC-4.0': { compat: 'YES', desc: 'Compatible. Creative Commons Attribution matches non-commercial combinations.' }
+  },
+  'CC-BY-NC-4.0': {
+    'MIT': { compat: 'NO', desc: 'Incompatible. Permissive MIT allows commercial usage; CC-BY-NC strictly prohibits commercial usage, creating a direct conflict.' },
+    'Apache-2.0': { compat: 'NO', desc: 'Incompatible. Apache 2.0 allows commercial usage, which conflicts with CC-BY-NC\'s commercial restriction.' },
+    'GPL-v3': { compat: 'NO', desc: 'Incompatible. GPL v3 allows commercial usage; CC-BY-NC prohibits commercial usage.' },
+    'CC-BY-4.0': { compat: 'NO', desc: 'Incompatible. CC-BY allows commercial usage; CC-BY-NC prohibits it.' },
+    'CC-BY-NC-4.0': { compat: 'YES', desc: 'Perfect Match. Non-commercial license restrictions align perfectly.' }
+  }
+};
+
+let activeDraggedLicense = null;
+
+function dragStart(e, licenseKey) {
+  activeDraggedLicense = licenseKey;
+  if (e.dataTransfer) {
+    e.dataTransfer.setData('text/plain', licenseKey);
+  }
+  // Highlight drop zone
+  const dz = document.getElementById('drop-zone');
+  if (dz) dz.classList.add('border-purple-500', 'bg-purple-950/20');
+  
+  // Mobile/Tap fallback: also treat a click/tap as an automatic drop!
+  if (dz) dz.setAttribute('data-mobile-dragged', licenseKey);
+}
+
+// Mobile compatibility tap-handler
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[draggable="true"]').forEach(el => {
+    el.addEventListener('click', () => {
+      const startAttr = el.getAttribute('ondragstart');
+      if (startAttr) {
+        const matches = startAttr.match(/'([^']+)'/);
+        if (matches && matches[1]) {
+          handleMixCompatibility(matches[1]);
+        }
+      }
+    });
+  });
+});
+
+function allowDrop(e) {
+  e.preventDefault();
+  const dz = document.getElementById('drop-zone');
+  if (dz) dz.classList.add('border-purple-400', 'bg-purple-900/30');
+}
+
+function dragLeave(e) {
+  const dz = document.getElementById('drop-zone');
+  if (dz) dz.classList.remove('border-purple-400', 'bg-purple-900/30');
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  const licenseKey = (e.dataTransfer ? e.dataTransfer.getData('text/plain') : null) || activeDraggedLicense;
+  const dz = document.getElementById('drop-zone');
+  if (dz) {
+    dz.classList.remove('border-purple-500', 'border-purple-400', 'bg-purple-950/20', 'bg-purple-900/30');
+  }
+  if (licenseKey) {
+    handleMixCompatibility(licenseKey);
+  }
+}
+
+function updateProjectLicense() {
+  const dz = document.getElementById('drop-zone');
+  if (dz) {
+    const lastKey = dz.getAttribute('data-last-mixed');
+    if (lastKey) {
+      handleMixCompatibility(lastKey);
+    }
+  }
+}
+
+function handleMixCompatibility(draggableKey) {
+  const projectSelect = document.getElementById('project-license-select');
+  if (!projectSelect) return;
+  const projectKey = projectSelect.value;
+  
+  const dz = document.getElementById('drop-zone');
+  if (dz) {
+    dz.setAttribute('data-last-mixed', draggableKey);
+    dz.innerHTML = `
+      <span class="text-xl font-bold text-purple-300">${draggableKey}</span>
+      <span class="text-xs text-gray-400">Dropped into ${projectKey} project</span>
+    `;
+  }
+  
+  const rule = COMPATIBILITY_DB[draggableKey]?.[projectKey] || { compat: 'NO', desc: 'Incompatible combinations.' };
+  
+  const resultDiv = document.getElementById('mixer-result');
+  const resultTitle = document.getElementById('mixer-title');
+  const resultDesc = document.getElementById('mixer-desc');
+  
+  if (resultDiv && resultTitle && resultDesc) {
+    resultDiv.classList.remove('hidden');
+    resultTitle.textContent = rule.compat === 'YES' ? '✓ Compatible' : '✕ Incompatible';
+    resultDesc.textContent = rule.desc;
+    
+    if (rule.compat === 'YES') {
+      resultDiv.className = 'glass-card rounded-xl p-6 text-center max-w-md mx-auto mb-16 border border-green-500/40 bg-green-950/20 scale-100 transition-all duration-300';
+      resultTitle.className = 'text-xl font-bold text-green-400 mb-2';
+    } else {
+      resultDiv.className = 'glass-card rounded-xl p-6 text-center max-w-md mx-auto mb-16 border border-red-500/40 bg-red-950/20 scale-100 transition-all duration-300';
+      resultTitle.className = 'text-xl font-bold text-red-400 mb-2';
+    }
+  }
+}
+
+function chooseLicense(key) {
+  const licenseData = {
+    'MIT': { name: 'MIT License', summary: 'A permissive license that allows reuse with minimal restrictions. Users must include the original copyright notice.', bestFor: 'Simple open source projects, libraries, and frameworks that want maximum adoption', commercial: true, patentProtection: false, copyleft: false, url: 'https://opensource.org/licenses/MIT' },
+    'Apache-2.0': { name: 'Apache License 2.0', summary: 'A permissive license similar to MIT but also provides express grant of patent rights from contributors.', bestFor: 'Open source projects that need both permissiveness and patent protection', commercial: true, patentProtection: true, copyleft: false, url: 'https://opensource.org/licenses/Apache-2.0' },
+    'GPL-v3': { name: 'GNU General Public License v3', summary: 'A strong copyleft license requiring that derivative works be distributed under the same license terms.', bestFor: 'Projects that want to ensure all derivatives remain open source', commercial: true, patentProtection: false, copyleft: true, url: 'https://opensource.org/licenses/GPL-3.0' },
+    'CC-BY-4.0': { name: 'Creative Commons Attribution 4.0', summary: 'A Creative Commons license that allows others to distribute, remix, and adapt your content, even commercially, as long as they credit you.', bestFor: 'Creative works like articles, images, videos, and educational content where you want wide distribution', commercial: true, patentProtection: false, copyleft: false, url: 'https://creativecommons.org/licenses/by/4.0' },
+    'CC-BY-NC-4.0': { name: 'Creative Commons Attribution-NonCommercial 4.0', summary: 'A Creative Commons license that allows others to remix and adapt your work for non-commercial purposes only, with attribution.', bestFor: 'Creative works where you want to share but prevent commercial exploitation', commercial: false, patentProtection: false, copyleft: false, url: 'https://creativecommons.org/licenses/by-nc/4.0' }
+  };
+  const data = licenseData[key] || { name: key, summary: '', bestFor: '', commercial: false, patentProtection: false, copyleft: false, url: '' };
+  const license = { key: key, ...data };
+  localStorage.setItem('selectedLicense', JSON.stringify(license));
+  
+  // Show a beautiful toast and redirect
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-5 right-5 bg-green-600 text-white px-6 py-3.5 rounded-xl font-bold shadow-2xl z-50 animate-bounce border border-green-400 flex items-center gap-2';
+  toast.innerHTML = `<span>✓</span> <span>${data.name} Selected! Redirecting to Generator...</span>`;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    window.location.href = 'generator.html';
+  }, 1200);
+}
+
+// Expose functions globally for HTML event attributes
+window.dragStart = dragStart;
+window.allowDrop = allowDrop;
+window.dragLeave = dragLeave;
+window.handleDrop = handleDrop;
+window.updateProjectLicense = updateProjectLicense;
+window.chooseLicense = chooseLicense;
+</script>
+<script src="js/utils.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+<!-- Back to Top Button -->
+<button id="back-to-top" aria-label="Back to top" style="display:none; position:fixed; bottom:24px; right:24px; z-index:1000; background:#1EB53A; color:white; border:none; border-radius:50%; width:44px; height:44px; font-size:20px; cursor:pointer; box-shadow:0 4px 15px rgba(30,181,58,0.4); align-items:center; justify-content:center">
+  ↑
+</button>
+
+<script>
+// Back to top
+const backBtn = document.getElementById('back-to-top');
+if (backBtn) {
+  window.addEventListener('scroll', () => {
+    backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  });
+  backBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Error boundary
+window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
+window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
+
+if (window.location.protocol === 'file:') {
+  showToast('\u26A0\uFE0F Please use a local server (live-server) for full functionality.', 'warning', 8000);
+}
+</script>
+</body>
+</html>
+
+
+

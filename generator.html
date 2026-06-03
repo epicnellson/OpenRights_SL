@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Generator — OpenRights SL</title>
+  <meta name="description" content="Generate LICENSE files, privacy policies, and creation record certificates for your projects.">
+  <meta property="og:title" content="Document Generator">
+  <meta property="og:description" content="Generate professional legal documents for your creative works.">
+  <meta name="keywords" content="document generator, LICENSE, privacy policy, PDF certificate, Sierra Leone">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+  window.addEventListener('load', () => {
+    if (typeof window.jspdf === 'undefined' && typeof jsPDF === 'undefined') {
+      const fallbackPdf = document.createElement('script');
+      fallbackPdf.src = 'https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js';
+      document.head.appendChild(fallbackPdf);
+    }
+    if (typeof QRCode === 'undefined') {
+      const fallbackQr = document.createElement('script');
+      fallbackQr.src = 'https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js';
+      document.head.appendChild(fallbackQr);
+    }
+  });
+</script>
+<style>
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+    .form-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3);
+    }
+    .form-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+    .form-input.error { border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3); }
+    .download-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    .download-btn:hover { background: rgba(167, 139, 250, 0.3); border-color: #a78bfa; transform: translateY(-2px); }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #a78bfa;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .preview-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .char-counter { font-size: 12px; color: #64748b; text-align: right; }
+    .char-counter.warning { color: #f59e0b; }
+    .char-counter.error { color: #ef4444; }
+    .error-message { color: #ef4444; font-size: 12px; margin-top: 4px; display: none; }
+    .error-message.show { display: block; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #22c55e;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="text-white font-sans">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+        <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-lang="nav.home" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-lang="nav.license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-lang="nav.compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-lang="nav.tools" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-lang="nav.scanner" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-lang="nav.analyzer" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-lang="nav.registry" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-lang="nav.dashboard" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        
+        <a href="about.html" id="nav-about" data-lang="nav.about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-lang="nav.home" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-lang="nav.license" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-lang="nav.compare" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-lang="nav.about" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-lang="nav.chat" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" role="main" class="pt-28 pb-20 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Left Column: Form -->
+        <div class="lg:w-1/2">
+          <div id="license-badge" class="glass rounded-xl p-4 mb-6 text-center">
+            <p class="text-gray-400 text-sm mb-1">Selected License</p>
+            <p class="text-2xl font-bold text-purple-400" id="license-name">Loading...</p>
+          </div>
+
+          <!-- Tabs -->
+          <div class="flex gap-2 mb-6 p-1 glass rounded-xl">
+            <button id="tab-standard" onclick="switchTab('standard')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-purple-600 text-white transition">Standard Details</button>
+            <button id="tab-custom" onclick="switchTab('custom')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">AI Custom Clause</button>
+          </div>
+
+          <div id="standard-form-container">
+            <div class="glass-card rounded-2xl p-6">
+              <h2 class="text-2xl font-bold mb-6 text-center">Project Details</h2>
+              <form id="generator-form" class="space-y-4">
+                <div>
+                  <label for="creatorName" class="block text-sm text-gray-400 mb-2">Creator Name</label>
+                  <input type="text" id="creatorName" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition" placeholder="Your full name" required>
+                  <p id="creatorName-error" class="text-red-400 text-xs mt-1 hidden">Please enter your name</p>
+                  <p id="profile-note" class="text-green-400 text-xs mt-1 hidden">Auto-filled from your profile ✓</p>
+                </div>
+                <div>
+                  <label for="projectName" class="block text-sm text-gray-400 mb-2">Project Name</label>
+                  <input type="text" id="projectName" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition" placeholder="Name of your creation" required>
+                  <p id="projectName-error" class="text-red-400 text-xs mt-1 hidden">Please enter a project name</p>
+                </div>
+                <div>
+                  <label for="projectYear" class="block text-sm text-gray-400 mb-2">Project Year</label>
+                  <input type="number" id="projectYear" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition" placeholder="2026" value="2026" required>
+                  <p id="projectYear-error" class="text-red-400 text-xs mt-1 hidden">Please enter a valid year</p>
+                </div>
+                <div>
+                  <label for="projectDescription" class="block text-sm text-gray-400 mb-2">Project Description</label>
+                  <textarea id="projectDescription" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 h-24 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition" placeholder="Brief description of your creation" maxlength="300" required></textarea>
+                  <div class="text-right text-xs text-gray-500 mt-1" id="char-counter">0/300</div>
+                  <p id="projectDescription-error" class="text-red-400 text-xs mt-1 hidden">Please enter a project description</p>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Custom AI Form -->
+          <div id="custom-form-container" class="hidden">
+            <div class="glass-card rounded-2xl p-6">
+              <h2 class="text-2xl font-bold mb-4 text-center">Custom AI Clause</h2>
+              <p class="text-sm text-gray-400 mb-6 text-center">Describe the specific conditions you want to add, and our AI will draft legally sound language to append to your license.</p>
+              
+              <textarea id="customClausePrompt" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 h-24 mb-4 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition" placeholder="E.g., I want to restrict this code from being used for military applications, or require a $50 fee for corporate usage."></textarea>
+              
+              <button id="btn-generate-clause" onclick="generateCustomClause()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 w-full rounded-xl px-6 py-3.5 text-white font-semibold text-md transition shadow-lg flex justify-center items-center gap-2" aria-label="Generate Custom Clause">
+                ✨ Generate Clause
+              </button>
+              
+              <div id="custom-clause-result" class="mt-6 hidden space-y-4">
+                <div>
+                  <label for="generatedClauseDraft" class="block text-xs text-purple-300 font-semibold mb-2">Review AI Drafted Clause:</label>
+                  <textarea id="generatedClauseDraft" readonly class="w-full bg-black/40 border border-purple-500/30 rounded-xl p-3 text-sm text-gray-300 focus:outline-none h-24 custom-scrollbar"></textarea>
+                </div>
+                <div class="flex gap-2">
+                  <button id="btn-add-clause" onclick="approveAndAddCustomClause()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-4 rounded-xl text-sm transition shadow-lg">
+                    ✓ Add to My License
+                  </button>
+                  <button onclick="clearCustomClause()" class="bg-white/10 hover:bg-white/20 text-gray-300 font-semibold py-2.5 px-4 rounded-xl text-sm transition">
+                    Clear Draft
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 space-y-3">
+            <button onclick="downloadLicenseTxt()" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download LICENSE.txt">
+              Download LICENSE.txt
+            </button>
+            <button onclick="downloadPrivacyPolicy()" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download Privacy Policy">
+              Download Privacy Policy.txt
+            </button>
+            <button id="pdf-btn" onclick="downloadCreationPDF()" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download Creation Record PDF">
+              Download Creation Record PDF
+            </button>
+            <button onclick="publishToGist()" class="bg-[#24292f] hover:bg-[#1b1f23] w-full rounded-xl px-6 py-4 text-white font-semibold text-lg flex items-center justify-center gap-2 transition" aria-label="Export to GitHub Gist">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.691.795.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              Export to GitHub Gist
+            </button>
+            <button onclick="window.print()" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Print Summary Card">
+              🖨️ Print Summary Card
+            </button>
+          </div>
+
+          <div class="mt-8 glass-card rounded-2xl p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+              </svg>
+              Developer Tools
+            </h3>
+            <p class="text-gray-400 text-sm mb-4">Add a license badge to your README or export project metadata.</p>
+            <div class="space-y-3">
+              <button onclick="copyHtmlBadge()" class="bg-gray-700 hover:bg-gray-600 w-full rounded-xl px-4 py-3 text-white font-semibold text-sm flex items-center justify-center gap-2" aria-label="Copy HTML Badge">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy HTML Badge
+              </button>
+              <button onclick="downloadMetadata()" class="bg-gray-700 hover:bg-gray-600 w-full rounded-xl px-4 py-3 text-white font-semibold text-sm flex items-center justify-center gap-2" aria-label="Download Metadata JSON">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Download Metadata (JSON)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Preview -->
+        <div class="lg:w-1/2">
+          <!-- License Health Dashboard -->
+          <div class="glass-card rounded-2xl p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              License Health Dashboard
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-sm mb-1 text-gray-300"><span>Openness</span><span id="health-openness">80%</span></div>
+                <div class="w-full bg-white/10 rounded-full h-2"><div id="bar-openness" class="bg-green-400 h-2 rounded-full transition-all duration-1000" style="width: 80%"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-1 text-gray-300"><span>Protection</span><span id="health-protection">60%</span></div>
+                <div class="w-full bg-white/10 rounded-full h-2"><div id="bar-protection" class="bg-purple-400 h-2 rounded-full transition-all duration-1000" style="width: 60%"></div></div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-1 text-gray-300"><span>Commercial Ready</span><span id="health-commercial">100%</span></div>
+                <div class="w-full bg-white/10 rounded-full h-2"><div id="bar-commercial" class="bg-blue-400 h-2 rounded-full transition-all duration-1000" style="width: 100%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 sticky top-28">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-semibold">Live Preview</h3>
+              <button onclick="copyPreview()" class="text-sm text-purple-400 hover:text-purple-300">Copy to Clipboard</button>
+            </div>
+            <div id="preview-box" class="preview-box rounded-xl p-4 text-sm">
+              <p class="text-gray-500 italic">Start typing to see preview...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast (single instance) -->
+  <div id="toast" class="toast" role="alert">
+    <span>✓</span>
+    <span id="toast-message">Downloaded successfully!</span>
+  </div>
+
+  <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity and open source knowledge.</p>
+          <p class="text-green-400 text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-green-400 transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-green-400 transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-green-400 transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-green-400 transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-green-400 transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo Mode</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/generator.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>
+
+
+

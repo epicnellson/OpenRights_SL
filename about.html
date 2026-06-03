@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — OpenRights SL</title>
+  <meta name="description" content="Learn about OpenRights SL - a legal-tech compliance tool for Sierra Leonean digital creators. Understand IPR, open source licensing, and SDG alignment.">
+  <meta property="og:title" content="About OpenRights SL">
+  <meta property="og:description" content="Legal-tech compliance tool for Sierra Leonean creators.">
+  <meta name="keywords" content="about, open source, Sierra Leone, DLAW207, IPR, digital rights">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+    .glass-card:hover { transform: translateY(-2px); }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #a78bfa;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .section-icon { font-size: 2.5rem; }
+    .slide-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .slide-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="text-white font-sans">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+        <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-lang="nav.home" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-lang="nav.license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-lang="nav.compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-lang="nav.tools" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-lang="nav.scanner" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-lang="nav.analyzer" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-lang="nav.registry" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-lang="nav.dashboard" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        
+        <a href="about.html" id="nav-about" data-lang="nav.about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-lang="nav.home" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-lang="nav.license" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-lang="nav.compare" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-lang="nav.about" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-lang="nav.chat" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" role="main" class="pt-28 pb-20 px-4">
+
+    <div id="lang-warning" class="hidden bg-yellow-500/20 border border-yellow-500/50 text-yellow-200 p-4 mb-8 rounded-xl text-center max-w-4xl mx-auto shadow-lg backdrop-blur-md">
+      <p class="text-sm font-semibold flex items-center justify-center gap-2" data-lang="legal.warning">
+        ⚠️ Note: The detailed legal texts below remain in English to maintain absolute legal accuracy under Sierra Leone law.
+      </p>
+    </div>
+
+    <div class="max-w-4xl mx-auto space-y-8">
+      
+      <!-- Section 1: What is OpenRights SL -->
+      <section class="glass-card slide-in rounded-2xl p-6 md:p-8">
+        <div class="flex items-center gap-4 mb-4">
+          <span class="section-icon" aria-hidden="true">🔧</span>
+          <h2 class="text-2xl font-bold">What is OpenRights SL?</h2>
+        </div>
+        <p class="text-gray-300 leading-relaxed">
+          OpenRights SL is a legal-tech compliance tool designed specifically for Sierra Leonean digital creators. It helps you understand Intellectual Property Rights (IPR) and choose the right open source license for your creative works—whether you're building software, writing content, or sharing digital creations.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          The tool guides you through a simple questionnaire to recommend the most appropriate license for your needs, then generates professional documents you can use to protect your work.
+        </p>
+      </section>
+
+      <!-- Section 2: Why it matters in Sierra Leone -->
+      <section class="glass-card slide-in rounded-2xl p-6 md:p-8">
+        <div class="flex items-center gap-4 mb-4">
+          <span class="section-icon" aria-hidden="true">🇸🇱</span>
+          <h2 class="text-2xl font-bold">Why It Matters in Sierra Leone</h2>
+        </div>
+        <p class="text-gray-300 leading-relaxed">
+          Sierra Leone's digital economy is growing rapidly, but many creators lack awareness of IP protection. Software developers, content creators, and digital artists often release work without proper licensing, leaving them vulnerable to exploitation or losing control over how their creations are used.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          OpenRights SL addresses this gap by making IP licensing accessible and understandable. Our tool empowers Sierra Leonean creators to protect their work while contributing to the global open source community.
+        </p>
+      </section>
+
+      <!-- Section 3: SDG Alignment -->
+      <section class="glass-card slide-in rounded-2xl p-6 md:p-8">
+        <div class="flex items-center gap-4 mb-4">
+          <span class="section-icon" aria-hidden="true">🌐</span>
+          <h2 class="text-2xl font-bold">SDG Alignment</h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6 mt-4">
+          <div class="glass rounded-xl p-4">
+            <h3 class="text-lg font-semibold text-purple-400 mb-2">SDG 9: Industry, Innovation & Infrastructure</h3>
+            <p class="text-gray-300 text-sm">
+              By promoting proper software licensing and encouraging innovation, OpenRights SL helps build a stronger digital infrastructure in Sierra Leone. Creators who understand IP can innovate with confidence, knowing their work is protected.
+            </p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <h3 class="text-lg font-semibold text-purple-400 mb-2">SDG 16: Peace, Justice & Strong Institutions</h3>
+            <p class="text-gray-300 text-sm">
+              OpenRights SL supports access to justice for creators by providing proper legal documentation. This aligns with Sierra Leone's commitment to strong institutions that protect citizens' rights in the digital space.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Community Impact -->
+      <section class="glass-card slide-in rounded-2xl p-6 md:p-8">
+        <div class="flex items-center gap-4 mb-4">
+          <span class="section-icon" aria-hidden="true">📊</span>
+          <h2 class="text-2xl font-bold">Community Impact</h2>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mt-4 text-center" id="impact-stats">
+          <div class="glass rounded-xl p-4">
+            <p class="text-3xl font-bold text-purple-400" id="stat-licenses">0</p>
+            <p class="text-xs text-gray-400 mt-1">Licenses Generated</p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <p class="text-3xl font-bold text-purple-400" id="stat-conflicts">0</p>
+            <p class="text-xs text-gray-400 mt-1">Conflicts Scanned</p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <p class="text-3xl font-bold text-purple-400" id="stat-downloads">0</p>
+            <p class="text-xs text-gray-400 mt-1">Documents Downloaded</p>
+          </div>
+        </div>
+        <p class="text-gray-300 text-sm mt-6 text-center">Share OpenRights SL with other Sierra Leonean creators 🇸🇱</p>
+        <div class="flex justify-center mt-3">
+          <button id="whatsapp-share-btn" class="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-full transition-all hover:-translate-y-0.5 text-sm font-medium flex items-center gap-2 shadow-lg">
+            📱 Share via WhatsApp
+          </button>
+        </div>
+      </section>
+
+      <!-- Section 4: The Licenses Explained -->
+      <section class="glass-card slide-in rounded-2xl p-6 md:p-8">
+        <div class="flex items-center gap-4 mb-4">
+          <span class="section-icon" aria-hidden="true">📜</span>
+          <h2 class="text-2xl font-bold">The Licenses Explained</h2>
+        </div>
+        <div class="space-y-4 mt-4">
+          <div class="glass rounded-xl p-4">
+            <h3 class="text-lg font-semibold text-blue-400">MIT License</h3>
+            <p class="text-gray-300 text-sm mt-2">
+              The most permissive license. Others can use, modify, and even sell your code as long as they include your copyright notice. Best for: anyone who wants maximum adoption.
+            </p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <h3 class="text-lg font-semibold text-orange-400">Apache 2.0</h3>
+            <p class="text-gray-300 text-sm mt-2">
+              Similar to MIT but adds patent protection. Contributors grant you a license to any patents they include. Best for: projects where patent coverage matters.
+            </p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <h3 class="text-lg font-semibold text-red-400">GPL v3</h3>
+            <p class="text-gray-300 text-sm mt-2">
+              Strong copyleft: if someone modifies your code and distributes it, they must share their changes under the same license. Best for: ensuring your work stays open source.
+            </p>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <h3 class="text-lg font-semibold text-green-400">Creative Commons (BY & BY-NC)</h3>
+            <p class="text-gray-300 text-sm mt-2">
+              For creative content (images, videos, writing). BY requires attribution. BY-NC adds non-commercial restriction. Best for: content creators who want to share but control usage.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Legal Framework -->
+      <section class="glass-card slide-in rounded-2xl p-6 md:p-8">
+        <div class="flex items-center gap-4 mb-4">
+          <span class="section-icon" aria-hidden="true">⚖️</span>
+          <h2 class="text-2xl font-bold">Legal Framework</h2>
+        </div>
+        <p class="text-gray-300 leading-relaxed">
+          OpenRights SL is designed within the context of Sierra Leone's evolving digital legal framework, particularly the <strong>Cyber Security and Crime Act 2021</strong>. This Act addresses cybercrimes, electronic fraud, and unauthorized access while also establishing frameworks for digital evidence and intellectual property in the digital space.
+        </p>
+        <p class="text-gray-300 leading-relaxed mt-4">
+          While Sierra Leone continues to develop specific IP legislation for digital works, using internationally recognized open source licenses provides robust protection that aligns with global standards and is recognized under international copyright treaties (Berne Convention, TRIPS Agreement).
+        </p>
+        <div class="mt-4 p-4 bg-purple-900/30 rounded-xl border border-purple-500/30">
+          <p class="text-sm text-purple-300">
+            <strong>Note:</strong> This tool provides guidance and generates documents for licensing purposes. For specific legal advice, consult a qualified legal professional in Sierra Leone.
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+    <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity and open source knowledge.</p>
+          <p class="text-green-400 text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-green-400 transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-green-400 transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-green-400 transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-green-400 transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-green-400 transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo Mode</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="back-to-top" class="fixed bottom-6 right-6 bg-purple-600 hover:bg-purple-500 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 z-40" aria-label="Back to top">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+<script src="js/utils.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+<script>
+// Community impact stats
+(function() {
+  const history = JSON.parse(localStorage.getItem('creationHistory') || '[]');
+  document.getElementById('stat-licenses').textContent = history.length;
+  document.getElementById('stat-conflicts').textContent = parseInt(localStorage.getItem('conflictCount') || '0');
+  document.getElementById('stat-downloads').textContent = parseInt(localStorage.getItem('downloadCount') || '0');
+})();
+
+// WhatsApp share
+document.getElementById('whatsapp-share-btn').addEventListener('click', function() {
+  const siteUrl = window.location.origin + '/openrights-sl';
+  const msg = encodeURIComponent(
+    'Di OpenRights SL tool na wan fri lɛgəl tul foh Salone krieta dem. A help yu laisens yu wok en pritekt yu digital raits. Tri am: ' + siteUrl + ' 🇸🇱'
+  );
+  window.open('https://wa.me/?text=' + msg, '_blank');
+});
+
+// Back to top
+const backBtn = document.getElementById('back-to-top');
+if (backBtn) {
+  window.addEventListener('scroll', () => {
+    backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  });
+  backBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Error boundary
+window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
+window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
+
+if (window.location.protocol === 'file:') {
+  showToast('\u26A0\uFE0F Please use a local server (live-server) for full functionality.', 'warning', 8000);
+}
+</script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal Assistant 💬 — OpenRights SL</title>
+  <meta name="description" content="Chat with OpenRights SL's AI legal assistant about open source licenses, digital rights, and IP law in Sierra Leone.">
+  <meta property="og:title" content="Legal Assistant">
+  <meta property="og:description" content="AI-powered chat about open source licensing and digital rights.">
+  <meta name="keywords" content="chatbot, AI, legal assistant, open source, Sierra Leone, licenses">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #a78bfa;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    
+    #chat-messages {
+      height: 55vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    #chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    #chat-messages::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+    }
+    #chat-messages::-webkit-scrollbar-thumb {
+      background: rgba(167, 139, 250, 0.3);
+      border-radius: 3px;
+    }
+    
+    .bot-bubble {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px 18px 18px 4px;
+      max-width: 80%;
+      margin-right: auto;
+    }
+    
+    .typing-dots span {
+      animation: typing 1.4s infinite;
+      display: inline-block;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-4px); }
+    }
+    
+    .chip {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.2s ease;
+    }
+    .chip:hover {
+      background: rgba(167, 139, 250, 0.3);
+      border-color: #a78bfa;
+    }
+    
+    .send-btn {
+      background: #9333ea;
+      transition: all 0.2s ease;
+    }
+    .send-btn:hover {
+      background: #7e22ce;
+      transform: translateY(-1px);
+    }
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal.hidden { display: none; }
+    
+    /* Live Indicator */
+    .live-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #a855f7;
+      border-radius: 50%;
+      animation: pulse-purple 2s ease-in-out infinite;
+    }
+    .live-indicator-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    @keyframes pulse-purple {
+      0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7);
+      }
+      50% {
+        opacity: 0.7;
+        box-shadow: 0 0 0 8px rgba(168, 85, 247, 0);
+      }
+    }
+    
+    /* Enhanced Chat Glass Effect */
+    #chat-messages {
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="text-white font-sans">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+        <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-lang="nav.home" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-lang="nav.license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-lang="nav.compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-lang="nav.tools" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-lang="nav.scanner" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-lang="nav.analyzer" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-lang="nav.registry" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-lang="nav.dashboard" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        
+        <a href="about.html" id="nav-about" data-lang="nav.about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-lang="nav.home" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-lang="nav.license" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-lang="nav.compare" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-lang="nav.about" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-lang="nav.chat" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+  <main id="main-content" role="main" class="pt-24 pb-8 px-4 flex justify-center items-center min-h-screen">
+    <div class="glass-card rounded-3xl w-full max-w-2xl flex flex-col h-[80vh] overflow-hidden border border-white/10 shadow-2xl">
+      <!-- Chat Header -->
+      <div class="p-4 border-b border-white/10 bg-purple-600/20 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+            <span class="text-white text-sm font-bold">AI</span>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-white tracking-tight">Legal Assistant</h1>
+            <div class="flex items-center gap-2">
+              <p class="text-xs text-purple-200/80" data-lang="chat.placeholder.sub">Ask about licenses, digital rights &amp; IP law</p>
+            </div>
+          </div>
+        </div>
+        <button onclick="clearChat()" class="text-xs text-white/50 hover:text-red-400 transition flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md border border-white/10">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+          Clear
+        </button>
+      </div>
+
+      <!-- Chat Messages -->
+      <div id="chat-messages" class="flex-1 overflow-y-auto p-4 flex flex-col">
+        <div id="messages-container"></div>
+        <div id="typing-indicator" class="hidden glass-card p-3 rounded-2xl max-w-[85%] mt-4">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+              <span class="text-white text-xs font-bold">AI</span>
+            </div>
+            <div class="flex space-x-1">
+              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
+              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Section -->
+      <div class="p-4 border-t border-white/10 bg-white/5">
+        <!-- Quick Chips -->
+        <div class="flex flex-wrap gap-2 mb-3">
+          <button onclick="sendQuickReply('What is the MIT License?')" class="chip px-3 py-1.5 rounded-full text-[11px]">What is the MIT License?</button>
+          <button onclick="sendQuickReply('GPL vs Apache?')" class="chip px-3 py-1.5 rounded-full text-[11px]">GPL vs Apache?</button>
+          <button onclick="sendQuickReply('Digital Public Good?')" class="chip px-3 py-1.5 rounded-full text-[11px]">Digital Public Good?</button>
+        </div>
+
+        <!-- Input Area -->
+        <div class="bg-black/20 rounded-xl p-2 flex gap-2 border border-white/10 focus-within:border-purple-500/50 transition-colors items-center">
+          <button id="voice-btn" onclick="toggleVoiceInput()" class="text-gray-400 hover:text-purple-400 p-2 rounded-lg hover:bg-white/10 transition" aria-label="Voice Input">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+          </button>
+          <input type="text" id="user-input" data-lang="chat.placeholder" class="flex-1 bg-transparent border-none text-white placeholder-white/40 outline-none px-2 text-sm" placeholder="Ask about licenses, copyright, digital rights...">
+          <button id="send-btn" onclick="sendMessage()" class="bg-purple-600 hover:bg-purple-500 rounded-lg px-3 py-2 text-white transition-all shadow-md active:scale-95" aria-label="Send message">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+          </button>
+        </div>
+        
+        <p class="text-center text-white/40 text-[10px] mt-2">
+          Powered by Groq. <a href="#" onclick="showApiKeyModal()" class="hover:text-purple-400 underline decoration-purple-500/30">Change API Key</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- API Key Modal -->
+  <div id="api-key-modal" class="modal hidden">
+    <div class="glass-card rounded-2xl p-6 max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4 text-center">Connect Your AI Assistant</h2>
+      <p class="text-gray-400 text-sm mb-4 text-center">
+        This chatbot is powered by Groq AI — fast, free, and privacy-friendly.
+      </p>
+      <div class="mb-4">
+        <label for="api-key-input" class="block text-sm text-gray-400 mb-2">Groq API Key</label>
+        <input type="password" id="api-key-input" class="form-input w-full rounded-xl px-4 py-3" placeholder="Enter your Groq API key...">
+        <p class="text-gray-500 text-xs mt-2">
+          <a href="https://console.groq.com" target="_blank" class="text-purple-400 hover:underline">Get your free API key at console.groq.com</a>
+          <br>No credit card required. Your key is stored only on this device and never sent to our servers.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="saveApiKey()" class="flex-1 bg-purple-600 hover:bg-purple-700 rounded-xl px-4 py-3 text-white font-semibold">Connect</button>
+        <button onclick="skipApiKey()" class="flex-1 border border-white/20 rounded-xl px-4 py-3 text-gray-400 hover:text-white transition">Skip for now</button>
+      </div>
+    </div>
+  </div>
+
+    <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity and open source knowledge.</p>
+          <p class="text-green-400 text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-green-400 transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-green-400 transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-green-400 transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-green-400 transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-green-400 transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo Mode</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/chat.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+<!-- Back to Top Button -->
+<button id="back-to-top" aria-label="Back to top" style="display:none; position:fixed; bottom:24px; right:24px; z-index:1000; background:#1EB53A; color:white; border:none; border-radius:50%; width:44px; height:44px; font-size:20px; cursor:pointer; box-shadow:0 4px 15px rgba(30,181,58,0.4); align-items:center; justify-content:center">
+  ↑
+</button>
+
+<script>
+// Back to top
+const backBtn = document.getElementById('back-to-top');
+if (backBtn) {
+  window.addEventListener('scroll', () => {
+    backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  });
+  backBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Error boundary
+window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
+window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
+
+if (window.location.protocol === 'file:') {
+  showToast('\u26A0\uFE0F Please use a local server (live-server) for full functionality.', 'warning', 8000);
+}
+</script>
+</body>
+</html>
+
+
+

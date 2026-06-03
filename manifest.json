@@ -1,0 +1,33 @@
+{
+  "name": "OpenRights SL",
+  "short_name": "OpenRights",
+  "description": "Legal-tech compliance tool for Sierra Leonean digital creators.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f0c29",
+  "theme_color": "#1EB53A",
+  "lang": "en-SL",
+  "categories": ["education", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Get License",
+      "url": "/recommender.html",
+      "description": "Find your perfect license"
+    },
+    {
+      "name": "AI Chat",
+      "url": "/chatbot.html",
+      "description": "Ask legal questions"
+    }
+  ]
+}

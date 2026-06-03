@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>License Scanner — OpenRights SL</title>
+  <meta name="description" content="Scan your project dependencies for license conflicts. Check MIT, GPL, Apache, and Creative Commons compatibility in one click.">
+  <meta property="og:title" content="License Scanner">
+  <meta property="og:description" content="Detect license conflicts in your project dependencies instantly.">
+  <meta name="keywords" content="license scanner, dependency check, open source, license conflict, Sierra Leone">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #a78bfa;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .badge-safe { background: #166534; color: #bbf7d0; }
+    .badge-warning { background: #854d0e; color: #fef08a; }
+    .badge-error { background: #991b1b; color: #fecaca; }
+    .tab-btn {
+      transition: all 0.3s ease;
+    }
+    .tab-btn.active {
+      background: rgba(167, 139, 250, 0.3);
+      border-color: #a78bfa;
+    }
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #22c55e;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { background: #ef4444; }
+  </style>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="text-white font-sans">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">⚖️ OpenRights SL</a>
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        <div class="relative group">
+          <button id="tools-btn" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">🛠️ Tools ▾</button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        <a href="about.html" id="nav-about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="navbar-profile" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+          <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+          <span>|</span>
+          <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+        </div>
+        <a href="profile.html" id="mobile-navbar-profile" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" class="pt-28 pb-20 px-4">
+    <div class="max-w-4xl mx-auto">
+
+      <div class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">🔍 License Dependency Scanner</h1>
+        <p class="text-gray-400">Paste your <code class="text-purple-300 bg-white/10 px-2 py-0.5 rounded text-sm">package.json</code> and instantly detect license conflicts in your dependencies.</p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 mb-6">
+        <div class="flex gap-2 mb-4 p-1 glass rounded-xl">
+          <button id="tab-paste" onclick="switchScannerTab('paste')" class="tab-btn active flex-1 py-2 text-sm font-semibold rounded-lg text-white transition">📋 Paste Dependencies</button>
+          <button id="tab-repo" onclick="switchScannerTab('repo')" class="tab-btn flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">🔗 GitHub Repo</button>
+        </div>
+
+        <div id="paste-tab">
+          <label class="block text-sm text-gray-300 mb-2">Paste your <code class="text-purple-300">package.json</code> content or dependency list:</label>
+          <textarea id="deps-input" rows="12" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition font-mono text-sm">{
+  "name": "my-sierra-leone-app",
+  "dependencies": {
+    "react": "^18.0.0",
+    "express": "^4.18.0",
+    "mysql": "^2.18.1",
+    "typescript": "^5.0.0",
+    "lodash": "^4.17.21"
+  }
+}</textarea>
+          <button onclick="scanDependencies()" id="btn-scan-deps" class="mt-4 bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 w-full md:w-auto">
+            🔍 Scan for Conflicts
+          </button>
+        </div>
+
+        <div id="repo-tab" class="hidden">
+          <label class="block text-sm text-gray-300 mb-2">Enter a GitHub repository URL or <code class="text-purple-300">owner/repo</code>:</label>
+          <div class="flex flex-col md:flex-row gap-2">
+            <input type="text" id="repo-url" class="flex-1 bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition" placeholder="e.g., facebook/react">
+            <button onclick="scanRepo()" id="btn-scan-repo" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg">🔍 Scan</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="scan-loading" class="hidden glass-card rounded-2xl p-8 mb-6">
+        <div class="flex flex-col items-center justify-center py-8">
+          <div class="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p class="text-purple-300 animate-pulse text-lg">Scanning dependencies for license conflicts...</p>
+          <p class="text-gray-500 text-sm mt-2">Checking known license databases</p>
+        </div>
+      </div>
+
+      <div id="scan-results" class="hidden"></div>
+    </div>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/i18n.js"></script>
+  <script>
+// Known package license database
+const PACKAGE_LICENSES = {
+  'react': 'MIT',
+  'express': 'MIT',
+  'mysql': 'GPL-2.0',
+  'typescript': 'Apache-2.0',
+  'lodash': 'MIT',
+  'axios': 'MIT',
+  'next': 'MIT',
+  'vue': 'MIT',
+  'angular': 'MIT',
+  'webpack': 'MIT',
+  'babel': 'MIT',
+  'jest': 'MIT',
+  'mocha': 'MIT',
+  'chai': 'MIT',
+  'mongoose': 'MIT',
+  'redis': 'MIT',
+  'passport': 'MIT',
+  'jsonwebtoken': 'MIT',
+  'socket.io': 'MIT',
+  'dotenv': 'BSD-2-Clause',
+  'cors': 'MIT',
+  'helmet': 'MIT',
+  'morgan': 'MIT',
+  'body-parser': 'MIT',
+  'ejs': 'Apache-2.0',
+  'pug': 'MIT',
+  'graphql': 'MIT',
+  'apollo-server': 'MIT',
+  'prisma': 'Apache-2.0',
+  'typeorm': 'MIT',
+  'sequelize': 'MIT'
+};
+
+// License conflict rules
+const CONFLICT_RULES = {
+  'GPL-2.0': { safe: ['MIT', 'BSD', 'ISC', 'Unlicense'], warning: ['Apache-2.0'], error: ['GPL-3.0', 'AGPL'] },
+  'GPL-3.0': { safe: ['MIT', 'BSD', 'ISC', 'Unlicense', 'Apache-2.0'], warning: ['GPL-2.0'], error: ['AGPL'] },
+  'Apache-2.0': { safe: ['MIT', 'BSD', 'ISC', 'Unlicense', 'Apache-2.0'], warning: ['GPL-2.0'], error: ['AGPL', 'GPL-3.0'] },
+  'MIT': { safe: ['MIT', 'BSD', 'ISC', 'Unlicense', 'Apache-2.0', 'GPL-2.0', 'GPL-3.0'], warning: [], error: [] },
+  'CC-BY-4.0': { safe: ['MIT', 'Apache-2.0'], warning: ['GPL-2.0', 'GPL-3.0'], error: ['CC-BY-NC-4.0'] }
+};
+
+const LICENSE_COLORS = {
+  'MIT': 'bg-green-500/20 text-green-300',
+  'Apache-2.0': 'bg-orange-500/20 text-orange-300',
+  'GPL-2.0': 'bg-red-500/20 text-red-300',
+  'GPL-3.0': 'bg-red-500/20 text-red-300',
+  'ISC': 'bg-blue-500/20 text-blue-300',
+  'BSD-2-Clause': 'bg-blue-500/20 text-blue-300',
+  'Unlicense': 'bg-gray-500/20 text-gray-300'
+};
+
+function switchScannerTab(tab) {
+  document.getElementById('paste-tab').classList.toggle('hidden', tab !== 'paste');
+  document.getElementById('repo-tab').classList.toggle('hidden', tab !== 'repo');
+  document.getElementById('tab-paste').classList.toggle('active', tab === 'paste');
+  document.getElementById('tab-repo').classList.toggle('active', tab === 'repo');
+  document.getElementById('tab-paste').className = tab === 'paste'
+    ? 'tab-btn active flex-1 py-2 text-sm font-semibold rounded-lg text-white'
+    : 'tab-btn flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white';
+  document.getElementById('tab-repo').className = tab === 'repo'
+    ? 'tab-btn active flex-1 py-2 text-sm font-semibold rounded-lg text-white'
+    : 'tab-btn flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white';
+}
+
+function scanDependencies() {
+  const input = document.getElementById('deps-input').value.trim();
+  if (!input) {
+    showToast('Please paste your package.json content first.', 'error');
+    return;
+  }
+
+  let deps = {};
+  try {
+    const parsed = JSON.parse(input);
+    deps = parsed.dependencies || parsed.devDependencies || parsed;
+  } catch (e) {
+    showToast('Could not parse JSON. Please check your input format.', 'error');
+    return;
+  }
+
+  showLoading();
+  setTimeout(() => {
+    const results = analyzeDependencies(deps);
+    renderResults(results);
+    hideLoading();
+  }, 800);
+}
+
+function analyzeDependencies(deps) {
+  const packages = Object.keys(deps);
+  const results = [];
+  let hasGpl = false;
+  let hasApache = false;
+
+  packages.forEach(pkg => {
+    const license = PACKAGE_LICENSES[pkg.toLowerCase()] || 'Unknown';
+    if (license === 'GPL-2.0' || license === 'GPL-3.0') hasGpl = true;
+    if (license === 'Apache-2.0') hasApache = true;
+    results.push({ package: pkg, license, status: 'pending' });
+  });
+
+  results.forEach(r => {
+    if (r.license === 'Unknown') {
+      r.status = 'warning';
+      r.statusText = 'Unknown License';
+    } else if (r.license === 'GPL-2.0' && hasApache) {
+      r.status = 'error';
+      r.statusText = 'GPL + Apache Conflict';
+    } else if (r.license === 'GPL-2.0' || r.license === 'GPL-3.0') {
+      r.status = 'warning';
+      r.statusText = 'Copyleft - May restrict';
+    } else {
+      r.status = 'safe';
+      r.statusText = 'Compatible';
+    }
+  });
+
+  return results;
+}
+
+function renderResults(results) {
+  const container = document.getElementById('scan-results');
+  container.classList.remove('hidden');
+
+  const safe = results.filter(r => r.status === 'safe').length;
+  const warnings = results.filter(r => r.status === 'warning').length;
+  const errors = results.filter(r => r.status === 'error').length;
+
+  let html = `
+    <div class="glass-card rounded-2xl p-6 mb-6">
+      <h3 class="text-xl font-bold text-white mb-4">📊 Scan Summary</h3>
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <div class="text-center p-4 rounded-xl bg-green-500/10 border border-green-500/30">
+          <div class="text-2xl font-bold text-green-400">${safe}</div>
+          <div class="text-xs text-green-300">Safe</div>
+        </div>
+        <div class="text-center p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30">
+          <div class="text-2xl font-bold text-yellow-400">${warnings}</div>
+          <div class="text-xs text-yellow-300">Warnings</div>
+        </div>
+        <div class="text-center p-4 rounded-xl bg-red-500/10 border border-red-500/30">
+          <div class="text-2xl font-bold text-red-400">${errors}</div>
+          <div class="text-xs text-red-300">Conflicts</div>
+        </div>
+      </div>
+    </div>
+    <div class="glass-card rounded-2xl p-6">
+      <h3 class="text-xl font-bold text-white mb-4">📦 Dependency Analysis</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left p-3 text-sm text-gray-400">Package</th>
+              <th class="text-left p-3 text-sm text-gray-400">License</th>
+              <th class="text-left p-3 text-sm text-gray-400">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${results.map(r => {
+              const colorClass = LICENSE_COLORS[r.license] || 'bg-gray-500/20 text-gray-300';
+              const badgeClass = r.status === 'safe' ? 'badge-safe' : r.status === 'warning' ? 'badge-warning' : 'badge-error';
+              return `
+                <tr class="border-b border-white/5">
+                  <td class="p-3 text-white font-medium">${r.package}</td>
+                  <td class="p-3"><span class="${colorClass} px-2 py-0.5 rounded-full text-xs font-semibold">${r.license}</span></td>
+                  <td class="p-3"><span class="${badgeClass} px-2 py-0.5 rounded-full text-xs font-semibold">${r.statusText}</span></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-3">
+      <button onclick="downloadScanReport()" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-md flex items-center gap-2">
+        📥 Download Report
+      </button>
+    </div>
+  `;
+
+  if (errors > 0) {
+    html += `
+      <div class="mt-4 glass-card rounded-2xl p-6 border border-red-500/40 bg-red-950/20">
+        <h4 class="text-lg font-bold text-red-400 mb-2">⚠️ Conflict Detected!</h4>
+        <p class="text-gray-300 text-sm">GPL and Apache licenses detected together. GPL v2 is incompatible with Apache 2.0 — consider switching to GPL v3 or removing the GPL-licensed dependency.</p>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+}
+
+function downloadScanReport() {
+  const results = document.querySelectorAll('#scan-results table tbody tr');
+  let text = 'OpenRights SL - License Scan Report\n';
+  text += 'Generated: ' + new Date().toISOString() + '\n';
+  text += '='.repeat(50) + '\n\n';
+  text += 'Package | License | Status\n';
+  text += '-'.repeat(50) + '\n';
+
+  results.forEach(tr => {
+    const cells = tr.querySelectorAll('td');
+    if (cells.length === 3) {
+      text += cells[0].textContent.trim() + ' | ' + cells[1].textContent.trim() + ' | ' + cells[2].textContent.trim() + '\n';
+    }
+  });
+
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'license-scan-report.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Report downloaded!');
+}
+
+function scanRepo() {
+  const input = document.getElementById('repo-url').value.trim();
+  if (!input) {
+    showToast('Please enter a GitHub repository URL or user/repo format.', 'error');
+    return;
+  }
+
+  let repoPath = input;
+  if (input.includes('github.com/')) repoPath = input.split('github.com/')[1];
+  repoPath = repoPath.replace(/\/$/, '').replace(/\.git$/, '');
+  const parts = repoPath.split('/');
+  if (parts.length < 2) {
+    showToast('Invalid repository format. Use user/repo.', 'error');
+    return;
+  }
+
+  showLoading();
+  const owner = parts[0], repo = parts[1];
+
+  fetch(`https://api.github.com/repos/${owner}/${repo}/license`)
+    .then(r => {
+      if (!r.ok) throw new Error('Not found');
+      return r.json();
+    })
+    .then(data => {
+      hideLoading();
+      const spdx = data.license.spdx_id || 'Unknown';
+      document.getElementById('scan-results').classList.remove('hidden');
+      document.getElementById('scan-results').innerHTML = `
+        <div class="glass-card rounded-2xl p-8 text-center">
+          <span class="text-5xl mb-4 block">✅</span>
+          <h3 class="text-2xl font-bold text-white mb-2">License Detected</h3>
+          <p class="text-gray-400 mb-4">${owner}/${repo}</p>
+          <span class="bg-purple-500/20 border border-purple-500/50 text-purple-300 px-6 py-3 rounded-xl font-bold text-lg inline-block">${spdx}</span>
+          <p class="text-gray-400 text-sm mt-6 max-w-md mx-auto">This repository uses the ${data.license.name}. Check the Comparison page for full details.</p>
+          <a href="comparison.html" class="mt-6 inline-block text-purple-400 hover:text-purple-300 underline">Compare this license →</a>
+        </div>
+      `;
+    })
+    .catch(() => {
+      hideLoading();
+      document.getElementById('scan-results').classList.remove('hidden');
+      document.getElementById('scan-results').innerHTML = `
+        <div class="glass-card rounded-2xl p-8 text-center">
+          <span class="text-5xl mb-4 block">⚠️</span>
+          <h3 class="text-2xl font-bold text-yellow-400 mb-2">Could Not Scan</h3>
+          <p class="text-gray-400">Repository not found or has no license file.</p>
+          <p class="text-gray-500 text-sm mt-2">Try using the Paste Dependencies tab instead.</p>
+        </div>
+      `;
+    });
+}
+
+function showLoading() {
+  document.getElementById('scan-loading').classList.remove('hidden');
+  document.getElementById('scan-loading').classList.add('flex');
+  document.getElementById('scan-results').classList.add('hidden');
+}
+
+function hideLoading() {
+  document.getElementById('scan-loading').classList.add('hidden');
+  document.getElementById('scan-loading').classList.remove('flex');
+}
+
+function showToast(message, type) {
+  const toast = document.getElementById('toast');
+  const msgEl = document.getElementById('toast-message');
+  if (toast && msgEl) {
+    toast.className = 'toast' + (type === 'error' ? ' error' : '');
+    msgEl.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+}
+
+window.switchScannerTab = switchScannerTab;
+window.scanDependencies = scanDependencies;
+window.scanRepo = scanRepo;
+window.downloadScanReport = downloadScanReport;
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+<!-- Back to Top Button -->
+<button id="back-to-top" aria-label="Back to top" style="display:none; position:fixed; bottom:24px; right:24px; z-index:1000; background:#1EB53A; color:white; border:none; border-radius:50%; width:44px; height:44px; font-size:20px; cursor:pointer; box-shadow:0 4px 15px rgba(30,181,58,0.4); align-items:center; justify-content:center">
+  ↑
+</button>
+
+<script>
+// Back to top
+const backBtn = document.getElementById('back-to-top');
+if (backBtn) {
+  window.addEventListener('scroll', () => {
+    backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  });
+  backBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// Error boundary
+window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
+window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
+
+if (window.location.protocol === 'file:') {
+  showToast('\u26A0\uFE0F Please use a local server (live-server) for full functionality.', 'warning', 8000);
+}
+</script>
+</body>
+</html>

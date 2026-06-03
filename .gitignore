@@ -1,0 +1,37 @@
+# Dependencies (loaded via CDN)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment / secrets
+.env
+.env.local
+secrets.json
+
+# Local server artifacts
+*.log
+
+
+
+# Config file with API key (not committed)
+js/config.js
+
+# Windows junk
+nul
+
+# Agent instructions (not part of the source code)
+prompt.txt
+
+# Dev utility
+sync_nav.js

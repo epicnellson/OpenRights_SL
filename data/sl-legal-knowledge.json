@@ -1,0 +1,132 @@
+{
+  "lastUpdated": "2026",
+  "jurisdiction": "Sierra Leone",
+  "sources": [
+    {
+      "name": "Cyber Security and Crime Act 2021",
+      "shortName": "CSCA 2021",
+      "year": 2021,
+      "url": "https://www.parliament.gov.sl",
+      "keyProvisions": [
+        {
+          "section": "Section 4",
+          "title": "Unauthorised Access",
+          "summary": "Accessing a computer system without authorisation is a criminal offence punishable by up to 3 years imprisonment or Le 50 million fine",
+          "relevantTo": ["hacking", "data breach", "account access"]
+        },
+        {
+          "section": "Section 36",
+          "title": "Data Protection Principles",
+          "summary": "Personal data must be collected for specified purposes, be adequate and relevant, accurate, and not kept longer than necessary",
+          "relevantTo": ["privacy", "data collection", "GDPR", "user data"]
+        },
+        {
+          "section": "Section 41",
+          "title": "Electronic Contracts",
+          "summary": "Contracts formed electronically are valid and legally enforceable in Sierra Leone",
+          "relevantTo": ["contracts", "TOS", "agreements", "digital signatures"]
+        }
+      ]
+    },
+    {
+      "name": "Copyright Act 2011",
+      "shortName": "CA 2011",
+      "year": 2011,
+      "url": "https://www.parliament.gov.sl",
+      "keyProvisions": [
+        {
+          "section": "Section 4",
+          "title": "Protected Works",
+          "summary": "Computer programs are protected as literary works. Protection is automatic — no registration needed.",
+          "relevantTo": ["software", "code", "apps", "copyright", "protection"]
+        },
+        {
+          "section": "Section 6",
+          "title": "Duration",
+          "summary": "Copyright lasts for the life of the author plus 50 years for software and literary works",
+          "relevantTo": ["copyright duration", "how long", "expiry"]
+        },
+        {
+          "section": "Section 10",
+          "title": "Employment Works",
+          "summary": "Software created by an employee belongs to the employer unless the employment contract says otherwise. This surprises many SL developers.",
+          "relevantTo": ["employment", "job", "employer", "who owns"]
+        },
+        {
+          "section": "Section 11",
+          "title": "Commissioned Works",
+          "summary": "Software created as a freelance commission belongs to the DEVELOPER (creator) unless the contract explicitly transfers ownership to the client.",
+          "relevantTo": ["freelance", "commission", "client", "contract", "ownership"]
+        },
+        {
+          "section": "Section 15",
+          "title": "Moral Rights",
+          "summary": "The right to be named as author (attribution) and the right to object to distortion of your work. These cannot be transferred or sold.",
+          "relevantTo": ["attribution", "moral rights", "credit", "name"]
+        },
+        {
+          "section": "Section 35",
+          "title": "Infringement Penalties",
+          "summary": "Commercial copyright infringement can result in up to Le 50 million fine or 5 years imprisonment in Sierra Leone",
+          "relevantTo": ["infringement", "penalty", "punishment", "illegal"]
+        }
+      ]
+    }
+  ],
+  "commonQuestions": [
+    {
+      "question": "Do I need to register my copyright in Sierra Leone?",
+      "answer": "No. Under Section 4 of the Copyright Act 2011, copyright protection in Sierra Leone is automatic. As soon as you create original work and express it in material form (write code, record music, paint a picture), you own the copyright. No registration is needed.",
+      "lawReference": "Copyright Act 2011, Section 4"
+    },
+    {
+      "question": "Who owns software I built for a client?",
+      "answer": "Under Section 11 of the Copyright Act 2011, if you are a freelance developer, YOU own the copyright to commissioned work unless your contract explicitly transfers it to the client. Always get this in writing. Many clients assume they own it — they do not unless the contract says so.",
+      "lawReference": "Copyright Act 2011, Section 11"
+    },
+    {
+      "question": "Who owns software I built at my job?",
+      "answer": "Under Section 10 of the Copyright Act 2011, software created by an employee as part of their job belongs to the EMPLOYER, not the employee. This is the opposite of freelance work. If you want to keep rights to something you build at work, negotiate this in your employment contract.",
+      "lawReference": "Copyright Act 2011, Section 10"
+    },
+    {
+      "question": "Is an online contract legally valid in Sierra Leone?",
+      "answer": "Yes. Section 41 of the Cyber Security and Crime Act 2021 explicitly recognises electronic contracts as valid and enforceable. Clicking 'I agree' on Terms of Service creates a legally binding contract in Sierra Leone.",
+      "lawReference": "CSCA 2021, Section 41"
+    },
+    {
+      "question": "Can I use GPL code in my commercial app?",
+      "answer": "It depends on distribution. If you use GPL code and distribute your app to others, the GPL requires you to also release your source code under GPL. This is enforceable under Sierra Leone copyright law. If you only use it internally and never distribute, the GPL disclosure requirement does not apply.",
+      "lawReference": "GPL v3 + Copyright Act 2011"
+    },
+    {
+      "question": "What happens if someone steals my code?",
+      "answer": "Under Section 35 of the Copyright Act 2011, copyright infringement in Sierra Leone is both a civil and criminal matter. Civil remedies include injunctions and damages. Criminal penalties for commercial infringement can reach Le 50 million or 5 years imprisonment. Contact the Sierra Leone Legal Aid Board for free assistance.",
+      "lawReference": "Copyright Act 2011, Section 35"
+    },
+    {
+      "question": "Does GDPR apply in Sierra Leone?",
+      "answer": "GDPR is a European regulation and does not directly apply in Sierra Leone. However, the Cyber Security and Crime Act 2021 Part V contains data protection provisions with similar principles. If your app serves European users, GDPR still applies to that EU data regardless of where you are based.",
+      "lawReference": "CSCA 2021, Part V"
+    }
+  ],
+  "legalResources": [
+    {
+      "name": "Sierra Leone Legal Aid Board",
+      "address": "9 Bathurst Street, Freetown",
+      "phone": "+232 22 224 716",
+      "services": "Free civil legal assistance including IP and contract matters",
+      "free": true
+    },
+    {
+      "name": "Sierra Leone Law School",
+      "address": "Freetown",
+      "services": "Legal education and referrals"
+    },
+    {
+      "name": "Sierra Leone Bar Association",
+      "address": "Freetown",
+      "services": "Find qualified IP lawyers"
+    }
+  ]
+}

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  OpenRights SL
+  License: MIT
+  Course: DLAW207
+  Institution: Limkokwing University SL
+  Semester: 06, March-July 2026
+  Examiner: Ing. Sheku Dinneh Kamara
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#1EB53A">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glossary — OpenRights SL</title>
+  <meta name="description" content="Glossary of open source licensing terms: copyleft, permissive license, patent grant, attribution, and more - explained in plain English for Sierra Leonean creators.">
+  <meta property="og:title" content="Open Source License Glossary">
+  <meta property="og:description" content="Learn key open source licensing terms with Sierra Leonean examples.">
+  <meta name="keywords" content="glossary, copyleft, permissive, patent grant, attribution, derivative work, open source, Sierra Leone">
+  <meta name="author" content="Limkokwing DLAW207">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass-card:hover { transform: translateY(-2px); }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #a78bfa;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .search-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    .search-input:focus { outline: none; border-color: #a78bfa; }
+    .search-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+  </style>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="text-white font-sans">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
+        ⚖️ OpenRights SL
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="index.html" id="nav-index" data-lang="nav.home" class="nav-link text-white hover:text-[#1EB53A]">Home</a>
+        <a href="recommender.html" id="nav-license" data-lang="nav.license" class="nav-link text-white hover:text-[#1EB53A]">License</a>
+        <a href="comparison.html" id="nav-compare" data-lang="nav.compare" class="nav-link text-white hover:text-[#1EB53A]">Compare</a>
+        
+        <!-- Tools Dropdown -->
+        <div class="relative group">
+          <button id="tools-btn" data-lang="nav.tools" class="nav-link text-white hover:text-[#1EB53A] flex items-center gap-1">
+            🛠️ Tools ▾
+          </button>
+          <div id="tools-menu" class="absolute hidden top-full left-0 mt-2 w-48 glass rounded-xl overflow-hidden shadow-xl border border-white/10">
+            <a href="scanner.html" data-lang="nav.scanner" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🔍 License Scanner</a>
+            <a href="analyzer.html" data-lang="nav.analyzer" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🛡️ Contract Analyzer</a>
+            <a href="registry.html" data-lang="nav.registry" class="block px-4 py-3 text-sm text-white hover:bg-white/10">🗂️ Creator Registry</a>
+            <a href="dashboard.html" data-lang="nav.dashboard" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📊 Impact Dashboard</a>
+            <a href="batch.html" data-lang="nav.batch" class="block px-4 py-3 text-sm text-white hover:bg-white/10">📋 Batch Generator</a>
+          </div>
+        </div>
+        
+        <a href="about.html" id="nav-about" data-lang="nav.about" class="nav-link text-white hover:text-[#1EB53A]">About</a>
+        <a href="chatbot.html" id="nav-chat" data-lang="nav.chat" class="nav-link text-white hover:text-[#1EB53A]">💬 Chat</a>
+        
+        <div class="lang-toggle">
+  <button id="lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+  <span>|</span>
+  <button id="lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+</div>
+        <a href="profile.html" id="navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white">Set Up Profile</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden text-white p-2" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 glass z-40 border-b border-white/10">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="index.html" data-lang="nav.home" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Home</a>
+      <a href="recommender.html" data-lang="nav.license" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">License</a>
+      <a href="comparison.html" data-lang="nav.compare" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">Compare</a>
+      <a href="about.html" data-lang="nav.about" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">About</a>
+      <a href="chatbot.html" data-lang="nav.chat" class="text-white hover:text-[#1EB53A] py-2 border-b border-white/5">💬 Chat</a>
+      
+      <div class="py-2">
+        <p class="text-xs text-gray-400 mb-2 uppercase tracking-wider" data-lang="nav.tools">Tools</p>
+        <div class="flex flex-col gap-2 pl-2">
+          <a href="scanner.html" data-lang="nav.scanner" class="text-sm text-white hover:text-[#1EB53A]">🔍 License Scanner</a>
+          <a href="analyzer.html" data-lang="nav.analyzer" class="text-sm text-white hover:text-[#1EB53A]">🛡️ Contract Analyzer</a>
+          <a href="registry.html" data-lang="nav.registry" class="text-sm text-white hover:text-[#1EB53A]">🗂️ Creator Registry</a>
+          <a href="dashboard.html" data-lang="nav.dashboard" class="text-sm text-white hover:text-[#1EB53A]">📊 Impact Dashboard</a>
+          <a href="batch.html" data-lang="nav.batch" class="text-sm text-white hover:text-[#1EB53A]">📋 Batch Generator</a>
+        </div>
+      </div>
+      
+      <div class="flex justify-between items-center py-2 mt-2 border-t border-white/10">
+        <div class="lang-toggle">
+  <button id="mobile-lang-en" class="lang-btn lang-active" aria-label="Switch to English">EN</button>
+  <span>|</span>
+  <button id="mobile-lang-kr" class="lang-btn" aria-label="Switch to Krio">KR</button>
+</div>
+        <a href="profile.html" id="mobile-navbar-profile" data-lang="nav.profile.default" class="text-sm bg-white/10 px-3 py-1.5 rounded-full text-white">Set Up Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content" role="main" class="pt-28 pb-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4 text-center">License Glossary</h1>
+      <p class="text-gray-400 text-center mb-8">Learn key open source licensing terms in plain English.</p>
+
+      <div class="mb-8">
+        <input type="text" id="search-input" class="search-input w-full rounded-xl px-4 py-3" placeholder="Search terms..." aria-label="Search glossary terms">
+      </div>
+
+      <div id="glossary-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass-card rounded-xl p-5" data-term="copyleft">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Copyleft</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            A licensing requirement that any derivative work (modified version) must be distributed under the same license as the original. Think of it as "share-alike."
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> GPL ensures Freetown app developers must share their code if they distribute modified versions.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5" data-term="permissive">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Permissive License</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            A license with minimal restrictions. Users can use, modify, and even sell your code as long as they include attribution.
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> MIT license lets Bo developers build commercial products without sharing source code.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5" data-term="patent">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Patent Grant</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            An explicit license from contributors giving you rights to any patents they include in their code.
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> Apache 2.0 protects you if a contributor's code uses a patented method.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5" data-term="attribution">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Attribution</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            Requirement to credit the original creator when using or distributing their work.
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> Always mention "Made by [Name] under MIT License" in your project README.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5" data-term="derivative">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Derivative Work</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            A new work based on or adapted from an existing copyrighted work.
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> Adding new features to someone's MIT-licensed library creates a derivative work.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5" data-term="opensource">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Open Source</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            Software with source code that is publicly available for anyone to view, modify, and distribute.
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> Linux, Python, and Node.js are open source projects.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5" data-term="dpg">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Digital Public Good (DPG)</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            Open source technologies, data, and standards that are freely available and can improve people's lives globally.
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> MIT-licensed libraries used in government digital services qualify as DPGs.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5" data-term="ip">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Intellectual Property (IP)</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            Creations of the mind — inventions, literary works, designs, symbols, names — that can be legally protected.
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> Your app code, website designs, and written tutorials are all intellectual property.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5" data-term="copyright">
+          <h3 class="text-lg font-bold text-purple-400 mb-2">Copyright vs Trademark vs Patent</h3>
+          <p class="text-gray-300 text-sm mb-3">
+            <strong>Copyright</strong> protects original works (code, writing). <strong>Trademark</strong> protects brand names/logos. <strong>Patent</strong> protects inventions.
+          </p>
+          <p class="text-gray-500 text-xs">
+            <strong>Sierra Leone example:</strong> Your code has copyright automatically. "OpenRights SL" would need trademark registration.
+          </p>
+        </div>
+      </div>
+
+      <p id="no-results" class="text-center text-gray-500 hidden mt-8">No terms found matching your search.</p>
+    </div>
+  </main>
+
+    <footer class="glass mt-16 pt-12 pb-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="text-xl font-bold text-white mb-3">⚖️ OpenRights SL</h3>
+          <p class="text-gray-300 text-sm mb-4 leading-relaxed">Empowering Sierra Leonean creators with legal clarity and open source knowledge.</p>
+          <p class="text-green-400 text-sm font-medium">🇸🇱 Made in Sierra Leone</p>
+        </div>
+        
+        <!-- Column 2 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Navigate</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="recommender.html" class="hover:text-green-400 transition">Get License</a></li>
+            <li><a href="comparison.html" class="hover:text-green-400 transition">Compare Licenses</a></li>
+            <li><a href="about.html" class="hover:text-green-400 transition">About</a></li>
+            <li><a href="chatbot.html" class="hover:text-green-400 transition">Chat Assistant</a></li>
+            <li><a href="profile.html" class="hover:text-green-400 transition">Creator Profile</a></li>
+            <li><a href="privacy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+            <li><a href="presentation.html" class="text-[10px] text-gray-500 hover:text-gray-300 transition">🎯 Demo Mode</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3 -->
+        <div>
+          <h4 class="font-semibold text-white mb-4">Academic Info</h4>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li>Module: DLAW207 — IT Law & IPR</li>
+            <li>University: Limkokwing University</li>
+            <li>Campus: Sierra Leone 🇸🇱</li>
+            <li>Semester: 06 | March–July 2026</li>
+            <li>Examiner: Ing. Sheku Dinneh Kamara</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-6 text-center text-xs text-gray-400 flex flex-col gap-2">
+        <p>© 2026 OpenRights SL · MIT Licensed · Built as a Digital Public Good · DLAW207</p>
+        <p>License data: CC-BY 4.0 | Code: MIT | openrights-sl.github.io</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById('search-input');
+    const cards = document.querySelectorAll('#glossary-grid > div');
+    const noResults = document.getElementById('no-results');
+
+    function filterGlossary() {
+      const query = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+      
+      cards.forEach(card => {
+        const term = card.dataset.term;
+        const text = card.textContent.toLowerCase();
+        
+        if (query === '' || text.includes(query)) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (visibleCount === 0 && query !== '') {
+        noResults.classList.remove('hidden');
+      } else {
+        noResults.classList.add('hidden');
+      }
+    }
+
+    searchInput.addEventListener('input', filterGlossary);
+
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+      });
+      mobileMenu.querySelectorAll('a, button').forEach(link => link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      }));
+    }
+
+    window.startOver = function() {
+      if (confirm('Start a new license search? This will clear your current selection.')) {
+        localStorage.removeItem('selectedLicense');
+        window.location.href = 'index.html';
+      }
+    };
+
+    window.toggleChat = function() {
+      window.location.href = 'chatbot.html';
+    };
+  </script>
+
+<script src="js/utils.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
+window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.warn('Service worker registration failed:', err);
+    });
+  });
+}
+</script>
+</body>
+</html>
+
+
+
