@@ -85,21 +85,51 @@ const initNavbar = () => {
     });
   }
 
-  // Hamburger toggle
+  // Hamburger toggle — side drawer
   const burger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
   if (burger && mobileMenu) {
+    // Add close button to mobile menu
+    if (!mobileMenu.querySelector('#mobile-close-btn')) {
+      const closeBtn = document.createElement('div');
+      closeBtn.className = 'flex justify-end p-3 border-b border-white/10';
+      closeBtn.innerHTML = '<button id="mobile-close-btn" class="text-white hover:text-gray-300 p-1 text-2xl leading-none" aria-label="Close menu">&times;</button>';
+      mobileMenu.insertBefore(closeBtn, mobileMenu.firstChild);
+    }
+    // Create overlay
+    let overlay = document.getElementById('mobile-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'mobile-overlay';
+      document.body.appendChild(overlay);
+    }
+
+    const closeDrawer = () => {
+      mobileMenu.classList.remove('menu-open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      burger.setAttribute('aria-expanded', 'false');
+    };
+
     burger.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isOpen = mobileMenu.classList.toggle('menu-open');
-      mobileMenu.classList.toggle('hidden');
-      burger.setAttribute('aria-expanded', String(isOpen));
+      const opening = !mobileMenu.classList.contains('menu-open');
+      mobileMenu.classList.toggle('menu-open');
+      overlay.classList.toggle('open');
+      document.body.style.overflow = opening ? 'hidden' : '';
+      burger.setAttribute('aria-expanded', String(opening));
     });
-    document.addEventListener('click', (e) => {
-      if (navbar && !navbar.contains(e.target) && !mobileMenu.contains(e.target)) {
-        mobileMenu.classList.remove('menu-open');
-        mobileMenu.classList.add('hidden');
-        burger.setAttribute('aria-expanded', 'false');
+
+    overlay.addEventListener('click', closeDrawer);
+
+    // Close button inside drawer
+    const closeBtn = document.getElementById('mobile-close-btn');
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('menu-open')) {
+        closeDrawer();
       }
     });
   }
