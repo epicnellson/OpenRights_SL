@@ -229,11 +229,15 @@ button, a {
   -webkit-backdrop-filter: blur(20px);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   transform: translateX(100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, visibility 0.3s ease;
   overflow-y: auto;
+  visibility: hidden;
+  pointer-events: none;
 }
 #mobile-menu.menu-open {
   transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
 }
 
 /* ========== Toast ========== */
