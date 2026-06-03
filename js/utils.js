@@ -77,7 +77,13 @@ const setStorage = (key, value) => {
 /**
  * Initializes navbar behavior on all pages
  */
+let navbarInitialized = false;
+
 const initNavbar = () => {
+  if (navbarInitialized) return;
+  navbarInitialized = true;
+
+  console.log('[navbar] initNavbar called');
   const navbar = document.getElementById('navbar');
   if (navbar) {
     window.addEventListener('scroll', () => {
@@ -89,6 +95,8 @@ const initNavbar = () => {
   const burger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
   if (burger && mobileMenu) {
+    console.log('[navbar] Hamburger found, attaching event listener');
+
     // Add close button to mobile menu
     if (!mobileMenu.querySelector('#mobile-close-btn')) {
       const closeBtn = document.createElement('div');
@@ -113,7 +121,9 @@ const initNavbar = () => {
 
     burger.addEventListener('click', (e) => {
       e.stopPropagation();
+      e.preventDefault();
       const opening = !mobileMenu.classList.contains('menu-open');
+      console.log('[navbar] Hamburger clicked, opening:', opening);
       mobileMenu.classList.toggle('menu-open');
       overlay.classList.toggle('open');
       document.body.style.overflow = opening ? 'hidden' : '';
@@ -132,6 +142,9 @@ const initNavbar = () => {
         closeDrawer();
       }
     });
+  } else {
+    if (!burger) console.error('[navbar] Hamburger not found');
+    if (!mobileMenu) console.error('[navbar] Mobile menu not found');
   }
 
   // Tools dropdown
