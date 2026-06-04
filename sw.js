@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.0.2';
+const CACHE_VERSION = 'v1.0.3';
 const CACHE_NAME = `openrights-sl-${CACHE_VERSION}`;
 
 const ASSETS_TO_CACHE = [
@@ -16,16 +16,12 @@ const ASSETS_TO_CACHE = [
   './batch.html',
   './profile.html',
   './privacy.html',
-  './history.html',
-  './glossary.html',
-  './salone-law.html',
   './presentation.html',
   './404.html',
   './offline.html',
   './css/style.css',
   './js/utils.js',
   './js/i18n.js',
-  './js/lang.js',
   './js/recommender.js',
   './js/generator.js',
   './js/chat.js',

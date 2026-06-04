@@ -20,9 +20,6 @@ OpenRights SL is a comprehensive legal-tech compliance platform designed specifi
 - **Batch Generator** — Generate multiple licenses at once for multi-component projects.
 - **Voice-Enabled AI Chatbot** — Krio-language legal assistant with voice input, text-to-speech, and Groq-powered AI responses.
 - **License Comparison Table** — Side-by-side comparison of all 5 supported licenses with feature indicators.
-- **Sierra Leone Legal Context** — Dedicated page explaining the Cyber Security and Crime Act 2021 and how open source licensing works under Sierra Leone law.
-- **Legal Glossary** — Plain-English explanations of key open source terms (copyleft, attribution, derivative works, etc.).
-- **Creation History** — View and re-download past PDF certificates and license documents.
 - **Presentation Mode** — 8-slide demo walkthrough with interactive checklist for examiners.
 - **PWA Ready** — Installable as a Progressive Web App with offline support via Service Worker.
 
@@ -71,9 +68,6 @@ openrights-sl/
 ├── profile.html          # Local Creator Profile form
 ├── about.html            # About project, SDG alignment & academic context
 ├── presentation.html     # 8-slide academic demo presentation
-├── salone-law.html       # Sierra Leone legal framework explainer
-├── glossary.html         # Open source licensing glossary
-├── history.html          # Creation record history & re-download
 ├── privacy.html          # Privacy policy page
 ├── 404.html              # Custom 404 error page
 ├── offline.html          # Offline fallback page (PWA)
@@ -85,7 +79,6 @@ openrights-sl/
 ├── js/                   # JavaScript modules
 │   ├── utils.js          # Shared utilities (sanitize, toast, navbar, scroll-reveal)
 │   ├── i18n.js           # Internationalization (EN/Krio)
-│   ├── lang.js           # Translation strings (EN/Krio)
 │   ├── recommender.js    # License recommendation engine
 │   ├── generator.js      # Document generation with PDF/QR
 │   ├── chat.js           # Groq API chatbot
