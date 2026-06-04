@@ -246,7 +246,7 @@ button, a {
 #mobile-menu {
   position: fixed;
   top: 0;
-  right: 0;
+  right: -100%;
   height: 100vh;
   width: 280px;
   z-index: 50;
@@ -254,21 +254,16 @@ button, a {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
-  transform: translateX(100%);
-  transition: transform 0.3s ease, visibility 0.3s ease;
+  transition: right 0.3s ease;
   overflow-y: auto;
-  visibility: hidden;
-  pointer-events: none;
 }
 #mobile-menu.menu-open {
-  transform: translateX(0);
-  visibility: visible;
-  pointer-events: auto;
+  right: 0;
 }
 
 @media (min-width: 768px) {
   #mobile-menu {
-    display: none;
+    display: none !important;
   }
 }
 
