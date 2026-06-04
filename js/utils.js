@@ -136,6 +136,11 @@ const initNavbar = () => {
     const closeBtn = document.getElementById('mobile-close-btn');
     if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
 
+    // Close drawer when any link inside is clicked
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && mobileMenu.classList.contains('menu-open')) {
