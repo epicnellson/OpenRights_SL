@@ -30,7 +30,6 @@
 
 ### 5. SDG Alignment
 - SDG 16: Peace, Justice & Strong Institutions (Legal Accessibility).
-- SDG 9: Industry, Innovation & Infrastructure (Tech Infrastructure).
 
 ### 6. Conclusion
 - Impact of the platform on local creators.

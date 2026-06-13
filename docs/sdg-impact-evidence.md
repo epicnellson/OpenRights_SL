@@ -1,4 +1,4 @@
-# SDG Impact Evidence
+# SDG 16 Impact Evidence
 # OpenRights SL
 
 ## Addressing SDG 16 Depth
@@ -57,18 +57,5 @@ For post-submission validation:
 3. Partner with Limkokwing ICT student community for user testing
 4. Submit to DPG Registry for official assessment
 5. Reach out to Sierra Leone Legal Aid Board for legal content review
-
-## SDG 9 Evidence
-
-**Innovation contribution:**
-- First bilingual (English/Krio) legal tech tool built in Sierra Leone
-- First open source license compliance tool targeting West African creators
-- Demonstrates that AI-powered tools can be built locally for local contexts
-
-**Infrastructure contribution:**
-- MIT licensed — any SL developer can fork and improve it
-- Open data (licenses.json CC-BY) — reusable by other tools and projects
-- PWA — works on basic Android phones common in Sierra Leone
-- No cost — removes financial barrier to legal compliance
 
 ---

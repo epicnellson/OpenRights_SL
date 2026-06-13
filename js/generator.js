@@ -75,7 +75,7 @@ const checkDependencies = () => {
   if (missing.length > 0) {
     showToast(
       `⚠️ Some features may not work offline. Missing: ${missing.join(', ')}. Please check your internet connection or refresh the page.`,
-      true
+      'info'
     );
 
     const pdfBtn = document.getElementById('pdf-btn');
@@ -644,7 +644,7 @@ async function generatePDFSafe(data, referenceNumber) {
 
     if (error.message.includes('timed out')) {
       showToast('⚠️ PDF generation timed out. Please refresh and try again.');
-    } else if (error.message.includes('jsPDF is not defined') || error.message.includes('Cannot read properties of undefined (reading \\'jsPDF\\')')) {
+    } else if (error.message.includes('jsPDF is not defined') || error.message.includes('is not defined')) {
       showToast('❌ PDF library failed to load. Check your internet connection.');
     } else {
       showToast('❌ PDF generation failed: ' + error.message);

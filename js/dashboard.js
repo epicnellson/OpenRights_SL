@@ -1,6 +1,6 @@
 function refreshDashboard() {
-  document.getElementById('stat-licenses').textContent = Math.floor(Math.random() * 500) + 100;
-  document.getElementById('stat-creators').textContent = Math.floor(Math.random() * 200) + 50;
+  document.getElementById('stat-licenses').textContent = 347;
+  document.getElementById('stat-creators').textContent = 128;
 
   const licenses = [
     { name: 'MIT', percent: 45, color: 'bg-blue-500' },

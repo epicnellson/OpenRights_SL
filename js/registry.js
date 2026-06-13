@@ -50,7 +50,7 @@ function loadFallbackData() {
       email: localProfile.email,
       project: localProfile.projectName || 'My Open Source Project',
       role: 'Local Creator',
-      license: localStorage.getItem('selectedLicense') ? JSON.parse(localStorage.getItem('selectedLicense')).name : 'Not Specified'
+      license: (() => { const s = localStorage.getItem('selectedLicense'); return s ? JSON.parse(s).name : 'Not Specified'; })()
     });
   }
   

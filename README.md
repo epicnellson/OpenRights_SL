@@ -109,7 +109,7 @@ openrights-sl/
 | [docs/dpg-compliance.md](docs/dpg-compliance.md) | Digital Public Goods Standard — all 9 indicators |
 | [docs/privacy-impact-assessment.md](docs/privacy-impact-assessment.md) | Full privacy impact assessment (PIA) |
 | [docs/accessibility-audit.md](docs/accessibility-audit.md) | WCAG 2.1 AA accessibility audit report |
-| [docs/sdg-impact-evidence.md](docs/sdg-impact-evidence.md) | SDG 9 & 16 impact evidence and real-world scenarios |
+| [docs/sdg-impact-evidence.md](docs/sdg-impact-evidence.md) | SDG 16 impact evidence and real-world scenarios |
 
 ## Academic Context & SDG Alignment
 
@@ -118,7 +118,6 @@ openrights-sl/
 - **Semester:** Semester 06 | March – July 2026
 - **Examiner:** Ing. Sheku Dinneh Kamara
 
-**SDG 9 (Industry, Innovation & Infrastructure):** Accelerates local tech innovation by making open-source licensing accessible to every Sierra Leonean developer.
 **SDG 16 (Peace, Justice & Strong Institutions):** Democratizes access to legal frameworks previously only available to those who could afford lawyers.
 
 ## License

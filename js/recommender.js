@@ -166,10 +166,6 @@ function checkConflict(answers, selectedOption) {
     };
   }
   
-  // Conflict 3: Private code but selecting GPL (which requires open distribution)
-  if (commercialAnswer && commercialAnswer.label === 'No' && selectedOption.result === 'GPL-v3') {
-    // This is actually valid - GPL doesn't allow commercial, so it's OK
-  }
   
   return null;
 }
@@ -278,13 +274,6 @@ function showLoading() {
       <p class="text-gray-300">Processing your choices...</p>
     </div>
   `;
-}
-
-/**
- * Hides the loading indicator (noop as it's replaced).
- */
-function hideLoading() {
-  return;
 }
 
 /**
@@ -406,16 +395,7 @@ function shareResult() {
   const shareText = `I just found out my project should use ${licenseName} — Try OpenRights SL at openrights-sl.github.io`;
   
   navigator.clipboard.writeText(shareText).then(() => {
-    if (typeof showToast === 'function') {
-      showToast('Copied to clipboard!');
-    } else {
-      const toast = document.getElementById('toast');
-      if (toast) {
-        toast.textContent = 'Copied to clipboard!';
-        toast.classList.remove('hidden');
-        setTimeout(() => toast.classList.add('hidden'), 3000);
-      }
-    }
+    showToast('Copied to clipboard!');
   }).catch(() => {
     const textArea = document.createElement('textarea');
     textArea.value = shareText;
@@ -467,7 +447,6 @@ window.startOver = startOver;
 window.jumpTo = jumpTo;
 window.shareResult = shareResult;
 window.showLoading = showLoading;
-window.hideLoading = hideLoading;
 window.dismissConflictModal = dismissConflictModal;
 window.goBack = goBack;
 

@@ -23,11 +23,6 @@ OpenRights SL directly contributes to:
 - Target 16.6: Develop effective and transparent institutions
 - Evidence: Tool provides free access to legal frameworks previously only available to those who could afford lawyers
 
-**SDG 9 — Industry, Innovation and Infrastructure**
-- Target 9.5: Enhance scientific research and upgrade technological capabilities
-- Target 9.b: Support domestic technology development in developing countries
-- Evidence: Enables Sierra Leonean developers to legally license and share their work, accelerating local innovation
-
 ---
 
 ### Indicator 2: Open License ✅

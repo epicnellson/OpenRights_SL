@@ -76,7 +76,8 @@ async function scanRepo() {
         'vscode': { key: 'mit', spdx_id: 'MIT', name: 'MIT License' },
         'openrights': { key: 'mit', spdx_id: 'MIT', name: 'MIT License' }
       };
-      const foundMock = KNOWN_LICENSES[repo.toLowerCase()] || { key: 'mit', spdx_id: 'MIT', name: 'MIT License' };
+      const repoLower = repo.toLowerCase();
+      const foundMock = Object.entries(KNOWN_LICENSES).find(([key]) => repoLower.includes(key))?.[1] || { key: 'mit', spdx_id: 'MIT', name: 'MIT License' };
       const sspWarning = foundMock.warning;
       setTimeout(() => {
         renderScanResult(owner, repo, foundMock, null);
