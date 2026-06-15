@@ -6,7 +6,7 @@
   <meta name="description" content="Sign in to OpenRights SL — legal tools for Sierra Leonean creators.">
   <title>Sign In — OpenRights SL</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="text-white font-sans min-h-screen" style="background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%)">
@@ -84,7 +84,7 @@
       const email = emailInput.value.trim();
       const password = passwordInput.value;
 
-      if (!supabase) {
+      if (!window._supabase) {
         showError('Supabase client not loaded. Check your internet connection.');
         submitBtn.disabled = false;
         submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
@@ -94,7 +94,7 @@
       try {
         let result;
         if (isSignUp) {
-          result = await supabase.auth.signUp({ email, password });
+          result = await window._supabase.auth.signUp({ email, password });
           if (result.error) throw result.error;
           showError('✅ Check your email for a confirmation link before signing in.');
           isSignUp = false;
@@ -103,7 +103,7 @@
           toggleText.textContent = "Don't have an account?";
           toggleBtn.textContent = 'Sign Up';
         } else {
-          result = await supabase.auth.signInWithPassword({ email, password });
+          result = await window._supabase.auth.signInWithPassword({ email, password });
           if (result.error) throw result.error;
           const redirectTo = localStorage.getItem('redirectAfterLogin') || '/index.html';
           localStorage.removeItem('redirectAfterLogin');
@@ -117,8 +117,8 @@
       submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
     });
 
-    supabase?.auth.getSession().then(({ data: { session } }) => {
-      if (session) window.location.href = 'index.html';
+    window._supabase?.auth.getSession().then(({ data: { session } }) => {
+      if (session) window.location.href = '/index.html';
     });
   </script>
 </body>

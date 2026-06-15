@@ -1,4 +1,5 @@
 let currentUser = null;
+const supabase = () => window._supabase;
 
 const updateNavbarAuth = (user) => {
   currentUser = user;
@@ -7,24 +8,24 @@ const updateNavbarAuth = (user) => {
   if (user) {
     profileLink.textContent = user.email;
     profileLink.href = 'profile.html';
-    profileLink.classList.add('bg-purple-600/30', 'border', 'border-purple-500/30');
-    const logoutBtn = document.getElementById('navbar-logout') || document.createElement('a');
-    if (!logoutBtn.id) {
+    profileLink.className = 'text-sm bg-purple-600/30 border border-purple-500/30 px-3 py-1.5 rounded-full transition text-white';
+    let logoutBtn = document.getElementById('navbar-logout');
+    if (!logoutBtn) {
+      logoutBtn = document.createElement('a');
       logoutBtn.id = 'navbar-logout';
       logoutBtn.textContent = 'Logout';
       logoutBtn.href = '#';
       logoutBtn.className = 'text-sm bg-red-600/20 hover:bg-red-600/40 px-3 py-1.5 rounded-full transition text-red-300 border border-red-500/20';
       logoutBtn.addEventListener('click', async (e) => {
         e.preventDefault();
-        await supabase?.auth.signOut();
-        localStorage.removeItem('supabaseSession');
-        window.location.href = 'login.html';
+        await supabase()?.auth.signOut();
+        window.location.href = '/login.html';
       });
       profileLink.parentNode.insertBefore(logoutBtn, profileLink.nextSibling);
     }
   } else {
     profileLink.textContent = 'Sign In';
-    profileLink.href = 'login.html';
+    profileLink.href = '/login.html';
     profileLink.className = 'text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white';
     const logoutBtn = document.getElementById('navbar-logout');
     if (logoutBtn) logoutBtn.remove();
@@ -35,23 +36,23 @@ const updateNavbarAuth = (user) => {
     if (user) {
       mobileProfileLink.textContent = user.email;
       mobileProfileLink.href = 'profile.html';
-      const mobileLogout = document.getElementById('mobile-navbar-logout') || document.createElement('a');
-      if (!mobileLogout.id) {
+      let mobileLogout = document.getElementById('mobile-navbar-logout');
+      if (!mobileLogout) {
+        mobileLogout = document.createElement('a');
         mobileLogout.id = 'mobile-navbar-logout';
         mobileLogout.textContent = 'Logout';
         mobileLogout.href = '#';
         mobileLogout.className = 'text-sm bg-red-600/20 text-red-300 px-3 py-1.5 rounded-full text-center border border-red-500/20';
         mobileLogout.addEventListener('click', async (e) => {
           e.preventDefault();
-          await supabase?.auth.signOut();
-          localStorage.removeItem('supabaseSession');
-          window.location.href = 'login.html';
+          await supabase()?.auth.signOut();
+          window.location.href = '/login.html';
         });
         mobileProfileLink.parentNode.appendChild(mobileLogout);
       }
     } else {
       mobileProfileLink.textContent = 'Sign In';
-      mobileProfileLink.href = 'login.html';
+      mobileProfileLink.href = '/login.html';
       const mobileLogout = document.getElementById('mobile-navbar-logout');
       if (mobileLogout) mobileLogout.remove();
     }
@@ -66,9 +67,10 @@ const isPublicPage = () => {
 };
 
 const initAuth = async () => {
-  if (!supabase) return;
+  const sb = supabase();
+  if (!sb) return;
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await sb.auth.getSession();
     updateNavbarAuth(session?.user || null);
 
     if (!session && !isPublicPage()) {
@@ -81,7 +83,7 @@ const initAuth = async () => {
     updateNavbarAuth(null);
   }
 
-  supabase.auth.onAuthStateChange((event, session) => {
+  sb.auth.onAuthStateChange((event, session) => {
     updateNavbarAuth(session?.user || null);
     if (event === 'SIGNED_OUT') {
       window.location.href = '/login.html';
@@ -90,11 +92,12 @@ const initAuth = async () => {
 };
 
 const requireAuth = async () => {
-  if (!supabase) return;
-  const { data: { session } } = await supabase.auth.getSession();
+  const sb = supabase();
+  if (!sb) return;
+  const { data: { session } } = await sb.auth.getSession();
   if (!session) {
     localStorage.setItem('redirectAfterLogin', window.location.pathname);
-    window.location.href = 'login.html';
+    window.location.href = '/login.html';
   }
 };
 
