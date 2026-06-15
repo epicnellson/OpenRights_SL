@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-SL">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to OpenRights SL — legal tools for Sierra Leonean creators.">
+  <title>Sign In — OpenRights SL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="text-white font-sans min-h-screen" style="background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%)">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0f0c29]/80 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">⚖️ OpenRights SL</a>
+    </div>
+  </nav>
+
+  <main id="main-content" class="pt-24 pb-8 px-4 flex items-center justify-center min-h-screen">
+    <div class="glass-card rounded-3xl p-8 w-full max-w-md border border-white/10">
+      <div class="text-center mb-6">
+        <div class="text-5xl mb-3">🔐</div>
+        <h1 class="text-2xl font-bold" id="form-title">Sign In</h1>
+        <p class="text-gray-400 text-sm mt-1" id="form-subtitle">Access your OpenRights SL account</p>
+      </div>
+
+      <div id="error-box" class="hidden bg-red-900/30 border border-red-500/50 rounded-xl px-4 py-3 text-sm text-red-300 mb-4"></div>
+
+      <form id="auth-form" class="space-y-4">
+        <div>
+          <label for="email" class="block text-sm text-gray-400 mb-1">Email</label>
+          <input type="email" id="email" required class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition">
+        </div>
+        <div>
+          <label for="password" class="block text-sm text-gray-400 mb-1">Password</label>
+          <input type="password" id="password" required minlength="6" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition">
+        </div>
+        <button type="submit" id="auth-submit-btn" class="w-full bg-purple-600 hover:bg-purple-500 font-bold py-3 rounded-xl transition shadow-lg">Sign In</button>
+      </form>
+
+      <p class="text-center text-sm text-gray-400 mt-4">
+        <span id="toggle-text">Don't have an account?</span>
+        <button id="toggle-mode" class="text-purple-400 hover:underline ml-1">Sign Up</button>
+      </p>
+
+      <p class="text-center text-xs text-gray-500 mt-6">
+        <a href="index.html" class="hover:text-purple-400">← Back to Home</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    let isSignUp = false;
+    const form = document.getElementById('auth-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const submitBtn = document.getElementById('auth-submit-btn');
+    const title = document.getElementById('form-title');
+    const subtitle = document.getElementById('form-subtitle');
+    const toggleText = document.getElementById('toggle-text');
+    const toggleBtn = document.getElementById('toggle-mode');
+    const errorBox = document.getElementById('error-box');
+
+    toggleBtn.addEventListener('click', () => {
+      isSignUp = !isSignUp;
+      title.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+      subtitle.textContent = isSignUp ? 'Create your OpenRights SL account' : 'Access your OpenRights SL account';
+      submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+      toggleText.textContent = isSignUp ? 'Already have an account?' : "Don't have an account?";
+      toggleBtn.textContent = isSignUp ? 'Sign In' : 'Sign Up';
+      errorBox.classList.add('hidden');
+    });
+
+    const showError = (msg) => {
+      errorBox.textContent = msg;
+      errorBox.classList.remove('hidden');
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Please wait...';
+      errorBox.classList.add('hidden');
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!supabase) {
+        showError('Supabase client not loaded. Check your internet connection.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+        return;
+      }
+
+      try {
+        let result;
+        if (isSignUp) {
+          result = await supabase.auth.signUp({ email, password });
+          if (result.error) throw result.error;
+          showError('✅ Check your email for a confirmation link before signing in.');
+          isSignUp = false;
+          title.textContent = 'Sign In';
+          submitBtn.textContent = 'Sign In';
+          toggleText.textContent = "Don't have an account?";
+          toggleBtn.textContent = 'Sign Up';
+        } else {
+          result = await supabase.auth.signInWithPassword({ email, password });
+          if (result.error) throw result.error;
+          window.location.href = 'index.html';
+        }
+      } catch (err) {
+        showError(err.message);
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+    });
+
+    supabase?.auth.getSession().then(({ data: { session } }) => {
+      if (session) window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
