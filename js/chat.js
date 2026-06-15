@@ -543,6 +543,16 @@ document.addEventListener('DOMContentLoaded', () => {
   loadLegalKnowledge();
   initChatbot();
 
+  const inputField = document.getElementById('user-input');
+  if (inputField) {
+    inputField.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  }
+
   const container = document.getElementById('messages-container');
   if (container) {
     container.addEventListener('click', (e) => {
