@@ -58,11 +58,24 @@ const updateNavbarAuth = (user) => {
   }
 };
 
+const PUBLIC_PATHS = ['/', '/index.html', '/about.html', '/login.html', '/404.html', '/offline.html'];
+
+const isPublicPage = () => {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  return PUBLIC_PATHS.some(p => path === p || path.endsWith(p));
+};
+
 const initAuth = async () => {
   if (!supabase) return;
   try {
     const { data: { session } } = await supabase.auth.getSession();
     updateNavbarAuth(session?.user || null);
+
+    if (!session && !isPublicPage()) {
+      localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
+      window.location.href = '/login.html';
+      return;
+    }
   } catch (e) {
     console.error('Auth init error:', e);
     updateNavbarAuth(null);
@@ -70,7 +83,9 @@ const initAuth = async () => {
 
   supabase.auth.onAuthStateChange((event, session) => {
     updateNavbarAuth(session?.user || null);
-    if (event === 'SIGNED_OUT') window.location.href = 'login.html';
+    if (event === 'SIGNED_OUT') {
+      window.location.href = '/login.html';
+    }
   });
 };
 

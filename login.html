@@ -45,9 +45,6 @@
         <button id="toggle-mode" class="text-purple-400 hover:underline ml-1">Sign Up</button>
       </p>
 
-      <p class="text-center text-xs text-gray-500 mt-6">
-        <a href="index.html" class="hover:text-purple-400">← Back to Home</a>
-      </p>
     </div>
   </main>
 
@@ -108,7 +105,9 @@
         } else {
           result = await supabase.auth.signInWithPassword({ email, password });
           if (result.error) throw result.error;
-          window.location.href = 'index.html';
+          const redirectTo = localStorage.getItem('redirectAfterLogin') || '/index.html';
+          localStorage.removeItem('redirectAfterLogin');
+          window.location.href = redirectTo;
         }
       } catch (err) {
         showError(err.message);
