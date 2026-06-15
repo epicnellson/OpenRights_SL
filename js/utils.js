@@ -237,6 +237,8 @@ const sanitize = (str) => {
   return div.innerHTML;
 };
 
+window.sanitize = sanitize;
+
 /**
  * Cleans up stale service workers when port/host changes
  */

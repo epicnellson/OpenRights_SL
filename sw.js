@@ -25,7 +25,6 @@ const ASSETS_TO_CACHE = [
   './js/recommender.js',
   './js/generator.js',
   './js/chat.js',
-  './js/scanner.js',
   './js/analyzer.js',
   './js/registry.js',
   './js/dashboard.js',
@@ -87,25 +86,20 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache first for JS, CSS, JSON assets
+  // Network first for JS, CSS, JSON (ensures fresh files on navigation)
   if (event.request.destination === 'script' ||
     event.request.destination === 'style' ||
     url.pathname.endsWith('.json')) {
     event.respondWith(
-      caches.match(event.request)
-        .then(cached => {
-          if (cached) return cached;
-          return fetch(event.request)
-            .then(response => {
-              const clone = response.clone();
-              caches.open(CACHE_NAME)
-                .then(cache => {
-                  cache.put(event.request, clone);
-                });
-              return response;
-            });
+      fetch(event.request)
+        .then(response => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          return response;
         })
-        .catch(() => caches.match('./offline.html'))
+        .catch(() => caches.match(event.request)
+          .then(cached => cached || caches.match('./offline.html'))
+        )
     );
     return;
   }

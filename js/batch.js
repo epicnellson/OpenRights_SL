@@ -93,6 +93,8 @@ function generateBatchCSV() {
   showToast('CSV downloaded!');
 }
 
+document.addEventListener('DOMContentLoaded', initBatch);
+
 window.addProjectRow = addProjectRow;
 window.removeRow = removeRow;
 window.clearAll = clearAll;

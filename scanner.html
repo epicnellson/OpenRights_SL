@@ -282,12 +282,8 @@ function scanDependencies() {
     return;
   }
 
-  showLoading();
-  setTimeout(() => {
-    const results = analyzeDependencies(deps);
-    renderResults(results);
-    hideLoading();
-  }, 800);
+  const results = analyzeDependencies(deps);
+  renderResults(results);
 }
 
 function analyzeDependencies(deps) {
@@ -428,7 +424,7 @@ function scanRepo() {
 
   let repoPath = input;
   if (input.includes('github.com/')) repoPath = input.split('github.com/')[1];
-  repoPath = repoPath.replace(/\/$/, '').replace(/\.git$/, '');
+  repoPath = repoPath.replace(/^\//, '').replace(/\/$/, '').replace(/\.git$/, '');
   const parts = repoPath.split('/');
   if (parts.length < 2) {
     showToast('Invalid repository format. Use user/repo.', 'error');
@@ -438,13 +434,18 @@ function scanRepo() {
   showLoading();
   const owner = parts[0], repo = parts[1];
 
-  fetch(`https://api.github.com/repos/${owner}/${repo}/license`)
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 4000);
+
+  fetch(`https://api.github.com/repos/${owner}/${repo}/license`, { signal: controller.signal })
     .then(r => {
       if (!r.ok) throw new Error('Not found');
       return r.json();
     })
     .then(data => {
+      clearTimeout(timeout);
       hideLoading();
+      if (data.license && data.license.spdx_id === 'NOASSERTION') throw new Error('NOASSERTION');
       const spdx = data.license.spdx_id || 'Unknown';
       document.getElementById('scan-results').classList.remove('hidden');
       document.getElementById('scan-results').innerHTML = `
@@ -458,15 +459,17 @@ function scanRepo() {
         </div>
       `;
     })
-    .catch(() => {
+    .catch(err => {
+      clearTimeout(timeout);
       hideLoading();
+      const isNoAssert = err && err.message === 'NOASSERTION';
       document.getElementById('scan-results').classList.remove('hidden');
       document.getElementById('scan-results').innerHTML = `
         <div class="glass-card rounded-2xl p-8 text-center">
           <span class="text-5xl mb-4 block">⚠️</span>
-          <h3 class="text-2xl font-bold text-yellow-400 mb-2">Could Not Scan</h3>
-          <p class="text-gray-400">Repository not found or has no license file.</p>
-          <p class="text-gray-500 text-sm mt-2">Try using the Paste Dependencies tab instead.</p>
+          <h3 class="text-2xl font-bold text-yellow-400 mb-2">${isNoAssert ? 'Unrecognised License' : 'Could Not Scan'}</h3>
+          <p class="text-gray-400">${isNoAssert ? 'This repo has a license file but GitHub could not identify it. Make sure the file is named <strong>LICENSE</strong> (not LICENSE.txt) with standard text.' : 'GitHub API unreachable, timed out, or no license file found.'}</p>
+          <p class="text-gray-500 text-sm mt-2">Try the Paste Dependencies tab instead — it works offline and is instant.</p>
         </div>
       `;
     });
@@ -481,17 +484,6 @@ function showLoading() {
 function hideLoading() {
   document.getElementById('scan-loading').classList.add('hidden');
   document.getElementById('scan-loading').classList.remove('flex');
-}
-
-function showToast(message, type) {
-  const toast = document.getElementById('toast');
-  const msgEl = document.getElementById('toast-message');
-  if (toast && msgEl) {
-    toast.className = 'toast' + (type === 'error' ? ' error' : '');
-    msgEl.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
 }
 
 window.switchScannerTab = switchScannerTab;

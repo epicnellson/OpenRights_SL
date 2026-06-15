@@ -20,12 +20,16 @@ async function analyzeContract() {
   const text = document.getElementById('contract-text').value.trim();
   if (!text) {
     showToast('Please paste a contract to analyze.');
+    document.getElementById('btn-analyze').classList.add('animate-pulse');
+    setTimeout(() => document.getElementById('btn-analyze')?.classList.remove('animate-pulse'), 1000);
     return;
   }
 
   const apiKey = localStorage.getItem('groqApiKey');
   if (!apiKey) {
     showToast('AI features require a Groq API Key. Please set it in the Chat Assistant first.');
+    document.getElementById('btn-analyze').classList.add('animate-pulse');
+    setTimeout(() => document.getElementById('btn-analyze')?.classList.remove('animate-pulse'), 1000);
     return;
   }
 
@@ -156,5 +160,57 @@ function renderReport(data) {
   document.getElementById('results-state').classList.add('flex');
 }
 
+const SAMPLE_CONTRACTS = {
+  nda: `NON-DISCLOSURE AGREEMENT
+
+This NDA is entered into between the Disclosing Party and the Receiving Party.
+
+1. CONFIDENTIAL INFORMATION: All information disclosed by Disclosing Party shall be deemed confidential unless expressly stated otherwise.
+
+2. OBLIGATIONS: Receiving Party agrees to hold all Confidential Information in strict confidence and not to disclose it to any third party.
+
+3. TERM: This agreement shall remain in effect for 5 years from the date of signing.
+
+4. JURISDICTION: This agreement shall be governed by the laws of Sierra Leone.
+
+5. REMEDIES: Breach of this agreement may result in injunctive relief and damages.`,
+
+  tos: `TERMS OF SERVICE
+
+1. ACCEPTANCE: By using this service, you agree to these terms.
+
+2. USER DATA: We may collect, store, and share your personal data with third-party partners for marketing purposes.
+
+3. INTELLECTUAL PROPERTY: All content uploaded to this platform becomes the property of the company.
+
+4. LIMITATION OF LIABILITY: The company shall not be liable for any damages arising from use of this service.
+
+5. TERMINATION: We may terminate your account at any time without notice or explanation.
+
+6. GOVERNING LAW: These terms are governed by the laws of a foreign jurisdiction.`,
+
+  eula: `END USER LICENSE AGREEMENT
+
+1. GRANT OF LICENSE: This software is licensed, not sold. You are granted a non-exclusive, non-transferable license to use this software.
+
+2. RESTRICTIONS: You may not reverse engineer, modify, or distribute this software without prior written consent.
+
+3. DATA COLLECTION: This software may collect usage analytics and transmit them to our servers.
+
+4. WARRANTY: This software is provided "as is" without warranty of any kind.
+
+5. LIABILITY: In no event shall the licensor be liable for any damages arising from use of this software.
+
+6. ARBITRATION: Any disputes shall be resolved through binding arbitration in a foreign country.`
+};
+
+function loadSample(type) {
+  const textarea = document.getElementById('contract-text');
+  if (!textarea) return;
+  textarea.value = SAMPLE_CONTRACTS[type] || '';
+  showToast(`Sample ${type.toUpperCase()} loaded!`);
+}
+
 // Make globally available
 window.analyzeContract = analyzeContract;
+window.loadSample = loadSample;

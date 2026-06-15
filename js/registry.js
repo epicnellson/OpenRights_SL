@@ -10,22 +10,19 @@ async function fetchRegistry() {
   document.getElementById('registry-loading').classList.add('flex');
 
   if (!binId) {
-    // Load from mock data or local profile if no bin
     setTimeout(() => {
-      loadFallbackData();
-    }, 500);
+      loadLocalData();
+    }, 300);
     return;
   }
 
   try {
     const headers = {};
-    if (binKey) {
-      headers['X-Master-Key'] = binKey;
-    }
+    if (binKey) headers['X-Master-Key'] = binKey;
 
     const response = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
       method: 'GET',
-      headers: headers
+      headers
     });
 
     if (!response.ok) throw new Error('Failed to fetch from JSONBin');
@@ -33,16 +30,17 @@ async function fetchRegistry() {
     const data = await response.json();
     registryData = data.record.creators || [];
     renderRegistry(registryData);
+    showToast('Registry synced from JSONBin!');
   } catch (error) {
     console.error(error);
-    showToast('Failed to load registry from JSONBin. Falling back to local data.');
-    loadFallbackData();
+    showToast('Could not reach JSONBin. Showing local data.');
+    loadLocalData();
   }
 }
 
-function loadFallbackData() {
+function loadLocalData() {
   registryData = [];
-  const localProfile = JSON.parse(localStorage.getItem('creatorProfile'));
+  const localProfile = JSON.parse(localStorage.getItem('creatorProfile') || 'null');
   if (localProfile) {
     registryData.push({
       id: 'local-user',
@@ -53,11 +51,21 @@ function loadFallbackData() {
       license: (() => { const s = localStorage.getItem('selectedLicense'); return s ? JSON.parse(s).name : 'Not Specified'; })()
     });
   }
-  
-  // Add some mock SL creators
-  registryData.push({ id: '1', name: 'Alusine Kamara', role: 'Developer', project: 'Freetown Transit API', license: 'MIT License' });
-  registryData.push({ id: '2', name: 'Binta Jalloh', role: 'Designer', project: 'Salone UI Kit', license: 'CC-BY 4.0' });
-  
+
+  const saved = JSON.parse(localStorage.getItem('registryEntries') || '[]');
+  saved.forEach(entry => {
+    if (!registryData.find(c => c.id === entry.id)) {
+      registryData.push(entry);
+    }
+  });
+
+  if (registryData.length === 0) {
+    registryData.push(
+      { id: '1', name: 'Alusine Kamara', role: 'Developer', project: 'Freetown Transit API', license: 'MIT License' },
+      { id: '2', name: 'Binta Jalloh', role: 'Designer', project: 'Salone UI Kit', license: 'CC-BY 4.0' }
+    );
+  }
+
   renderRegistry(registryData);
 }
 
@@ -77,10 +85,8 @@ function renderRegistry(creators) {
   creators.forEach(creator => {
     const card = document.createElement('div');
     card.className = 'glass-card p-6 rounded-2xl hover:translate-y-[-2px] transition border border-white/10 relative group';
-    
-    // Avatar generic
     const initial = creator.name ? creator.name.charAt(0).toUpperCase() : '?';
-    
+
     card.innerHTML = `
       <div class="absolute top-4 right-4 bg-white/5 border border-white/10 px-2 py-1 rounded text-[10px] text-gray-400 group-hover:border-yellow-500/50 group-hover:text-yellow-300 transition">
         ${sanitize(creator.license || 'Unknown License')}
@@ -105,8 +111,8 @@ function renderRegistry(creators) {
 
 function filterRegistry() {
   const query = document.getElementById('search-registry').value.toLowerCase();
-  const filtered = registryData.filter(c => 
-    (c.name && c.name.toLowerCase().includes(query)) || 
+  const filtered = registryData.filter(c =>
+    (c.name && c.name.toLowerCase().includes(query)) ||
     (c.project && c.project.toLowerCase().includes(query))
   );
   renderRegistry(filtered);
@@ -125,23 +131,90 @@ function closeConfigModal() {
 function saveConfig() {
   const binId = document.getElementById('bin-id').value.trim();
   const binKey = document.getElementById('bin-key').value.trim();
-  
+
   if (binId) localStorage.setItem('jsonBinId', binId);
   else localStorage.removeItem('jsonBinId');
-  
+
   if (binKey) localStorage.setItem('jsonBinKey', binKey);
   else localStorage.removeItem('jsonBinKey');
-  
+
   closeConfigModal();
   fetchRegistry();
   showToast('Configuration saved!');
 }
 
+function showRegisterModal() {
+  const profile = JSON.parse(localStorage.getItem('creatorProfile') || 'null');
+  if (profile) {
+    document.getElementById('reg-name').value = profile.fullName || '';
+    document.getElementById('reg-email').value = profile.email || '';
+    document.getElementById('reg-project').value = profile.projectName || '';
+  }
+  document.getElementById('reg-license').value = localStorage.getItem('selectedLicense')
+    ? JSON.parse(localStorage.getItem('selectedLicense')).key : 'MIT';
+  document.getElementById('register-modal').classList.remove('hidden');
+}
+
+function closeRegisterModal() {
+  document.getElementById('register-modal').classList.add('hidden');
+}
+
+async function submitRegistration() {
+  const name = document.getElementById('reg-name').value.trim();
+  const project = document.getElementById('reg-project').value.trim();
+  const license = document.getElementById('reg-license').value;
+  const role = document.getElementById('reg-role').value.trim() || 'Creator';
+  const email = document.getElementById('reg-email').value.trim();
+
+  if (!name || !project) {
+    showToast('Please enter your name and project name.');
+    return;
+  }
+
+  const entry = {
+    id: 'creator-' + Date.now(),
+    name,
+    email,
+    project,
+    role,
+    license
+  };
+
+  registryData.push(entry);
+
+  const saved = JSON.parse(localStorage.getItem('registryEntries') || '[]');
+  saved.push(entry);
+  localStorage.setItem('registryEntries', JSON.stringify(saved));
+
+  renderRegistry(registryData);
+  closeRegisterModal();
+  showToast(`${name} registered successfully! 🇸🇱`);
+
+  const binId = localStorage.getItem('jsonBinId');
+  const binKey = localStorage.getItem('jsonBinKey');
+  if (binId) {
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (binKey) headers['X-Master-Key'] = binKey;
+      await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({ creators: registryData })
+      });
+      showToast('Synced to JSONBin!');
+    } catch (e) {
+      console.warn('JSONBin sync failed (offline or invalid config).');
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', fetchRegistry);
 
-// Make globals
 window.fetchRegistry = fetchRegistry;
 window.filterRegistry = filterRegistry;
 window.showConfigModal = showConfigModal;
 window.closeConfigModal = closeConfigModal;
 window.saveConfig = saveConfig;
+window.showRegisterModal = showRegisterModal;
+window.closeRegisterModal = closeRegisterModal;
+window.submitRegistration = submitRegistration;

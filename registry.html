@@ -114,7 +114,10 @@
     <div class="relative z-10">
       <div class="flex justify-between items-center mb-6">
         <input type="text" id="search-registry" onkeyup="filterRegistry()" class="w-full max-w-md bg-black/30 border border-white/20 rounded-xl px-4 py-2 text-white placeholder-gray-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition" placeholder="Search creators or projects...">
-        <button onclick="fetchRegistry()" class="ml-4 bg-yellow-600 hover:bg-yellow-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-lg">
+          <button onclick="showRegisterModal()" class="bg-green-600 hover:bg-green-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-lg flex items-center gap-2">
+          ➕ Register
+        </button>
+        <button onclick="fetchRegistry()" class="bg-yellow-600 hover:bg-yellow-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-lg">
           🔄 Refresh
         </button>
       </div>
@@ -199,6 +202,40 @@
       </div>
     </div>
   </footer>
+
+<!-- Register Modal -->
+<div id="register-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+  <div class="glass-card rounded-2xl w-full max-w-md p-6 border border-white/10">
+    <h2 class="text-xl font-bold text-white mb-4">Register Your Project</h2>
+    <p class="text-gray-400 text-sm mb-4">Join the Sierra Leone open source creator directory.</p>
+
+    <label class="block text-sm text-gray-300 mb-1">Full Name *</label>
+    <input type="text" id="reg-name" class="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white mb-4" placeholder="Your name">
+
+    <label class="block text-sm text-gray-300 mb-1">Email (optional)</label>
+    <input type="email" id="reg-email" class="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white mb-4" placeholder="creator@example.com">
+
+    <label class="block text-sm text-gray-300 mb-1">Project Name *</label>
+    <input type="text" id="reg-project" class="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white mb-4" placeholder="My Awesome Project">
+
+    <label class="block text-sm text-gray-300 mb-1">Your Role</label>
+    <input type="text" id="reg-role" class="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white mb-4" placeholder="Developer / Designer / Musician">
+
+    <label class="block text-sm text-gray-300 mb-1">License</label>
+    <select id="reg-license" class="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white mb-6">
+      <option value="MIT">MIT License</option>
+      <option value="Apache-2.0">Apache License 2.0</option>
+      <option value="GPL-v3">GNU GPL v3</option>
+      <option value="CC-BY-4.0">Creative Commons BY 4.0</option>
+      <option value="CC-BY-NC-4.0">Creative Commons BY-NC 4.0</option>
+    </select>
+
+    <div class="flex gap-3">
+      <button onclick="submitRegistration()" class="flex-1 bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg font-bold transition">✓ Register</button>
+      <button onclick="closeRegisterModal()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <script src="js/utils.js"></script>
 <script src="js/i18n.js"></script>

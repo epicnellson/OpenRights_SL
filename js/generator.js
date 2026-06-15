@@ -842,11 +842,29 @@ window.updatePreview = updatePreview;
 window.showGithubModal = showGithubModal;
 window.saveGithubToken = saveGithubToken;
 window.skipGithubToken = skipGithubToken;
-window.publishToGist = publishToGist;
+window.downloadLicenseTxt = downloadLicenseTxt;
+window.downloadPrivacyPolicy = downloadPrivacyPolicy;
+window.downloadCreationPDF = downloadCreationPDF;
 window.copyHtmlBadge = copyHtmlBadge;
 window.downloadMetadata = downloadMetadata;
 
 window.generatedCustomClause = '';
+
+window.copyPreview = function () {
+  const previewBox = document.getElementById('preview-box');
+  if (!previewBox) return;
+  navigator.clipboard.writeText(previewBox.textContent).then(() => {
+    showToast('Preview copied to clipboard!');
+  }).catch(() => {
+    const textArea = document.createElement('textarea');
+    textArea.value = previewBox.textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    showToast('Preview copied!');
+  });
+};
 
 window.switchTab = function (tab) {
   const standardBtn = document.getElementById('tab-standard');

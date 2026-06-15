@@ -273,6 +273,50 @@
 <script src="js/utils.js"></script>
 <script src="js/i18n.js"></script>
 <script>
+  function saveProfile(e) {
+    e.preventDefault();
+    const profile = {
+      fullName: document.getElementById('fullName').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      organisation: document.getElementById('organisation').value.trim(),
+      country: document.getElementById('country').value.trim()
+    };
+    if (!profile.fullName || !profile.email) {
+      showToast('Please fill in your name and email.', 'warning');
+      return;
+    }
+    localStorage.setItem('creatorProfile', JSON.stringify(profile));
+    showToast('Profile saved!');
+  }
+
+  function loadProfile() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('creatorProfile'));
+      if (saved) {
+        document.getElementById('fullName').value = saved.fullName || '';
+        document.getElementById('email').value = saved.email || '';
+        document.getElementById('organisation').value = saved.organisation || '';
+        document.getElementById('country').value = saved.country || 'Sierra Leone';
+      }
+    } catch (e) {
+      // ignore corrupted data
+    }
+  }
+
+  function clearProfile() {
+    if (!confirm('Clear your saved profile?')) return;
+    localStorage.removeItem('creatorProfile');
+    document.getElementById('fullName').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('organisation').value = '';
+    document.getElementById('country').value = 'Sierra Leone';
+    showToast('Profile cleared.');
+  }
+
+  document.getElementById('profile-form').addEventListener('submit', saveProfile);
+
+  document.addEventListener('DOMContentLoaded', loadProfile);
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js').catch(err => {
