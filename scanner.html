@@ -168,7 +168,7 @@
     "express": "^4.18.0"
   }
 }'></textarea>
-          <button onclick="scanDependencies()" id="btn-scan-deps" class="mt-4 bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 w-full md:w-auto">
+          <button id="btn-scan-deps" class="mt-4 bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 w-full md:w-auto">
             🔍 Scan for Conflicts
           </button>
         </div>
@@ -177,7 +177,7 @@
           <label class="block text-sm text-gray-300 mb-2">Enter a GitHub repository URL or <code class="text-purple-300">owner/repo</code>:</label>
           <div class="flex flex-col md:flex-row gap-2">
             <input type="text" id="repo-url" class="flex-1 bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition" placeholder="e.g., facebook/react">
-            <button onclick="scanRepo()" id="btn-scan-repo" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg">🔍 Scan</button>
+            <button id="btn-scan-repo" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg">🔍 Scan</button>
           </div>
         </div>
       </div>
@@ -488,6 +488,23 @@ window.switchScannerTab = switchScannerTab;
 window.scanDependencies = scanDependencies;
 window.scanRepo = scanRepo;
 window.downloadScanReport = downloadScanReport;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const depsBtn = document.getElementById('btn-scan-deps');
+  if (depsBtn) {
+    depsBtn.addEventListener('click', () => {
+      try { scanDependencies(); } catch (e) { console.error('scanDeps error:', e); alert('Error: ' + e.message); }
+    });
+    depsBtn.removeAttribute('onclick');
+  }
+  const repoBtn = document.getElementById('btn-scan-repo');
+  if (repoBtn) {
+    repoBtn.addEventListener('click', () => {
+      try { scanRepo(); } catch (e) { console.error('scanRepo error:', e); alert('Error: ' + e.message); }
+    });
+    repoBtn.removeAttribute('onclick');
+  }
+});
 </script>
 <script>
   if ('serviceWorker' in navigator) {
