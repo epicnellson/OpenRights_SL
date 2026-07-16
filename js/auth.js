@@ -101,4 +101,21 @@ const requireAuth = async () => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', initAuth);
+const highlightActiveNav = () => {
+  const path = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === path || (path === 'index.html' && (href === '/' || href === 'index.html'))) {
+      link.classList.add('active-nav-link');
+    }
+  });
+  const toolsBtn = document.getElementById('tools-btn');
+  if (toolsBtn && (path === 'scanner.html' || path === 'analyzer.html' || path === 'registry.html' || path === 'dashboard.html' || path === 'batch.html')) {
+    toolsBtn.classList.add('active-nav-link');
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAuth();
+  highlightActiveNav();
+});
