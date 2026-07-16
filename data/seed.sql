@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   email TEXT,
   full_name TEXT,
+  organisation TEXT,
   role TEXT DEFAULT 'creator',
   avatar_url TEXT,
   bio TEXT,
@@ -15,6 +16,13 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
 );
+
+-- Add organisation column if missing (migration for existing DB)
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'profiles' AND column_name = 'organisation') THEN
+    ALTER TABLE public.profiles ADD COLUMN organisation TEXT;
+  END IF;
+END $$;
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 

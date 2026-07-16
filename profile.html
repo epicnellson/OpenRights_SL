@@ -271,10 +271,13 @@
     </div>
   </footer>
 
-<script src="js/utils.js"></script>
+  <script src="js/utils.js"></script>
 <script src="js/i18n.js"></script>
+<script src="js/profile.js"></script>
 <script>
-  function saveProfile(e) {
+  let profileLoaded = false;
+
+  async function saveProfile(e) {
     e.preventDefault();
     const profile = {
       fullName: document.getElementById('fullName').value.trim(),
@@ -286,11 +289,43 @@
       showToast('Please fill in your name and email.', 'warning');
       return;
     }
-    localStorage.setItem('creatorProfile', JSON.stringify(profile));
-    showToast('Profile saved!');
+    try {
+      const saved = await ProfileManager.save(profile);
+      if (saved) {
+        localStorage.setItem('creatorProfile', JSON.stringify(profile));
+        showToast('Profile saved to cloud!');
+        document.getElementById('profile-status').classList.remove('hidden');
+        document.getElementById('last-saved').textContent = new Date().toLocaleString();
+        window.dispatchEvent(new CustomEvent('profile-updated', { detail: saved }));
+      }
+    } catch (err) {
+      showToast('Error saving profile: ' + err.message, 'warning');
+    }
   }
 
-  function loadProfile() {
+  async function loadProfile() {
+    try {
+      const fromDB = await ProfileManager.fetch();
+      if (fromDB) {
+        document.getElementById('fullName').value = fromDB.full_name || '';
+        document.getElementById('email').value = fromDB.email || '';
+        document.getElementById('organisation').value = fromDB.organisation || '';
+        document.getElementById('country').value = fromDB.location || 'Sierra Leone';
+        profileLoaded = true;
+        document.getElementById('profile-status').classList.remove('hidden');
+        document.getElementById('last-saved').textContent = fromDB.updated_at
+          ? new Date(fromDB.updated_at).toLocaleString()
+          : 'just now';
+        localStorage.setItem('creatorProfile', JSON.stringify({
+          fullName: fromDB.full_name,
+          email: fromDB.email,
+          organisation: fromDB.organisation,
+          country: fromDB.location
+        }));
+        return;
+      }
+    } catch (e) { /* fall through to localStorage */ }
+
     try {
       const saved = JSON.parse(localStorage.getItem('creatorProfile'));
       if (saved) {
@@ -299,23 +334,24 @@
         document.getElementById('organisation').value = saved.organisation || '';
         document.getElementById('country').value = saved.country || 'Sierra Leone';
       }
-    } catch (e) {
-      // ignore corrupted data
-    }
+    } catch (e) { /* ignore */ }
   }
 
-  function clearProfile() {
+  async function clearProfile() {
     if (!confirm('Clear your saved profile?')) return;
+    try {
+      await ProfileManager.clear();
+    } catch (e) { /* ignore */ }
     localStorage.removeItem('creatorProfile');
     document.getElementById('fullName').value = '';
     document.getElementById('email').value = '';
     document.getElementById('organisation').value = '';
     document.getElementById('country').value = 'Sierra Leone';
+    document.getElementById('profile-status').classList.add('hidden');
     showToast('Profile cleared.');
   }
 
   document.getElementById('profile-form').addEventListener('submit', saveProfile);
-
   document.addEventListener('DOMContentLoaded', loadProfile);
 
   if ('serviceWorker' in navigator) {

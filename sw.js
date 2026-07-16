@@ -32,6 +32,7 @@ const ASSETS_TO_CACHE = [
   './js/batch.js',
   './js/supabase-config.js',
   './js/auth.js',
+  './js/profile.js',
   './data/licenses.json',
   './data/sl-legal-context.js',
   './manifest.json'

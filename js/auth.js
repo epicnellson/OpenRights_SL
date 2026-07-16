@@ -1,9 +1,16 @@
 let currentUser = null;
+let currentProfile = null;
 let authReady = false;
 const getClient = () => window._supabase;
 
+const getDisplayName = () => {
+  if (currentProfile?.full_name) return currentProfile.full_name;
+  return currentUser?.email || '?';
+};
+
 const buildProfileDropdown = (email, isMobile) => {
-  const initial = email && email.length > 0 ? email[0].toUpperCase() : '?';
+  const displayName = getDisplayName();
+  const initial = displayName[0].toUpperCase();
   const container = document.createElement('div');
   container.className = 'relative';
 
@@ -19,7 +26,8 @@ const buildProfileDropdown = (email, isMobile) => {
   dropdown.className = `${isMobile ? 'w-full' : 'hidden absolute right-0 mt-2 w-56'} glass rounded-xl overflow-hidden shadow-xl z-50`;
   if (isMobile) dropdown.classList.add('hidden');
   dropdown.innerHTML = `
-    <div class="px-4 py-3 text-sm text-gray-400 border-b border-white/10 truncate">${email}</div>
+    <div class="px-4 py-2 text-sm text-white font-medium truncate border-b border-white/10">${displayName}</div>
+    <div class="px-4 py-1 text-xs text-gray-400 truncate border-b border-white/10">${email}</div>
     <a href="profile.html" class="flex items-center gap-2 px-4 py-3 text-sm text-white hover:bg-white/10 transition">✏️ Edit Profile</a>
     <button id="${isMobile ? 'mobile-profile-logout' : 'profile-logout'}" class="flex items-center gap-2 w-full text-left px-4 py-3 text-sm text-red-300 hover:bg-white/10 transition">🚪 Logout</button>
   `;
@@ -44,8 +52,9 @@ const buildProfileDropdown = (email, isMobile) => {
   return container;
 };
 
-const updateNavbarAuth = (user) => {
+const updateNavbarAuth = (user, profile) => {
   currentUser = user;
+  currentProfile = profile || null;
   const profileLink = document.getElementById('navbar-profile');
   if (!profileLink) {
     console.warn('[Auth] #navbar-profile not found on this page');
@@ -98,7 +107,12 @@ const initAuth = async () => {
   if (!sb) { authReady = true; return; }
   try {
     const { data: { session } } = await sb.auth.getSession();
-    updateNavbarAuth(session?.user || null);
+    let profile = null;
+    if (session?.user) {
+      const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single().catch(() => ({ data: null }));
+      profile = data;
+    }
+    updateNavbarAuth(session?.user || null, profile);
     authReady = true;
 
     if (!session && !isPublicPage()) {
@@ -177,4 +191,28 @@ document.addEventListener('DOMContentLoaded', () => {
   initAuth();
   highlightActiveNav();
   requireAuthInterceptor();
+
+  window.addEventListener('profile-updated', (e) => {
+    currentProfile = e.detail;
+    const user = currentUser;
+    if (!user) return;
+    const existing = document.getElementById('profile-container');
+    if (existing) existing.remove();
+    const existingMobile = document.getElementById('mobile-profile-container');
+    if (existingMobile) existingMobile.remove();
+    const profileLink = document.getElementById('navbar-profile');
+    if (profileLink) {
+      profileLink.style.display = 'none';
+      const dropdown = buildProfileDropdown(user.email);
+      dropdown.id = 'profile-container';
+      profileLink.parentNode.insertBefore(dropdown, profileLink.nextSibling);
+    }
+    const mobileProfileLink = document.getElementById('mobile-navbar-profile');
+    if (mobileProfileLink) {
+      mobileProfileLink.style.display = 'none';
+      const mobileDropdown = buildProfileDropdown(user.email, true);
+      mobileDropdown.id = 'mobile-profile-container';
+      mobileProfileLink.parentNode.insertBefore(mobileDropdown, mobileProfileLink.nextSibling);
+    }
+  });
 });
