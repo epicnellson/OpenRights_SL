@@ -2,60 +2,81 @@ let currentUser = null;
 let authReady = false;
 const supabase = () => window._supabase;
 
+const buildProfileDropdown = (email, isMobile) => {
+  const container = document.createElement('div');
+  container.className = 'relative';
+
+  const trigger = document.createElement('button');
+  trigger.id = isMobile ? 'mobile-profile-trigger' : 'profile-trigger';
+  trigger.className = 'flex items-center gap-2 bg-purple-600/30 border border-purple-500/30 px-3 py-1.5 rounded-full transition text-white hover:bg-purple-600/40 text-sm';
+  trigger.innerHTML = `<span class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-xs font-bold">${email[0].toUpperCase()}</span>`;
+  trigger.setAttribute('aria-label', 'User menu');
+  container.appendChild(trigger);
+
+  const dropdown = document.createElement('div');
+  dropdown.id = isMobile ? 'mobile-profile-dropdown' : 'profile-dropdown';
+  dropdown.className = `${isMobile ? 'w-full' : 'hidden absolute right-0 mt-2 w-56'} glass rounded-xl overflow-hidden shadow-xl z-50`;
+  if (isMobile) dropdown.classList.add('hidden');
+  dropdown.innerHTML = `
+    <div class="px-4 py-3 text-sm text-gray-400 border-b border-white/10 truncate">${email}</div>
+    <a href="profile.html" class="flex items-center gap-2 px-4 py-3 text-sm text-white hover:bg-white/10 transition">✏️ Edit Profile</a>
+    <button id="${isMobile ? 'mobile-profile-logout' : 'profile-logout'}" class="flex items-center gap-2 w-full text-left px-4 py-3 text-sm text-red-300 hover:bg-white/10 transition">🚪 Logout</button>
+  `;
+  container.appendChild(dropdown);
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('hidden');
+  });
+
+  dropdown.querySelector(`#${isMobile ? 'mobile-profile-logout' : 'profile-logout'}`).addEventListener('click', async () => {
+    await supabase()?.auth.signOut();
+    window.location.href = '/login.html';
+  });
+
+  if (!isMobile) {
+    document.addEventListener('click', (e) => {
+      if (!container.contains(e.target)) dropdown.classList.add('hidden');
+    }, { once: false });
+  }
+
+  return container;
+};
+
 const updateNavbarAuth = (user) => {
   currentUser = user;
   const profileLink = document.getElementById('navbar-profile');
   if (!profileLink) return;
+
+  const existingContainer = document.getElementById('profile-container');
+  if (existingContainer) existingContainer.remove();
+
   if (user) {
-    profileLink.textContent = user.email;
-    profileLink.href = 'profile.html';
-    profileLink.className = 'text-sm bg-purple-600/30 border border-purple-500/30 px-3 py-1.5 rounded-full transition text-white';
-    let logoutBtn = document.getElementById('navbar-logout');
-    if (!logoutBtn) {
-      logoutBtn = document.createElement('a');
-      logoutBtn.id = 'navbar-logout';
-      logoutBtn.textContent = 'Logout';
-      logoutBtn.href = '#';
-      logoutBtn.className = 'text-sm bg-red-600/20 hover:bg-red-600/40 px-3 py-1.5 rounded-full transition text-red-300 border border-red-500/20';
-      logoutBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        await supabase()?.auth.signOut();
-        window.location.href = '/login.html';
-      });
-      profileLink.parentNode.insertBefore(logoutBtn, profileLink.nextSibling);
-    }
+    profileLink.style.display = 'none';
+    const dropdown = buildProfileDropdown(user.email);
+    dropdown.id = 'profile-container';
+    profileLink.parentNode.insertBefore(dropdown, profileLink.nextSibling);
   } else {
+    profileLink.style.display = '';
     profileLink.textContent = 'Sign In';
     profileLink.href = '/login.html';
     profileLink.className = 'text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition text-white';
-    const logoutBtn = document.getElementById('navbar-logout');
-    if (logoutBtn) logoutBtn.remove();
   }
 
   const mobileProfileLink = document.getElementById('mobile-navbar-profile');
   if (mobileProfileLink) {
+    const existingMobile = document.getElementById('mobile-profile-container');
+    if (existingMobile) existingMobile.remove();
+
     if (user) {
-      mobileProfileLink.textContent = user.email;
-      mobileProfileLink.href = 'profile.html';
-      let mobileLogout = document.getElementById('mobile-navbar-logout');
-      if (!mobileLogout) {
-        mobileLogout = document.createElement('a');
-        mobileLogout.id = 'mobile-navbar-logout';
-        mobileLogout.textContent = 'Logout';
-        mobileLogout.href = '#';
-        mobileLogout.className = 'text-sm bg-red-600/20 text-red-300 px-3 py-1.5 rounded-full text-center border border-red-500/20';
-        mobileLogout.addEventListener('click', async (e) => {
-          e.preventDefault();
-          await supabase()?.auth.signOut();
-          window.location.href = '/login.html';
-        });
-        mobileProfileLink.parentNode.appendChild(mobileLogout);
-      }
+      mobileProfileLink.style.display = 'none';
+      const mobileDropdown = buildProfileDropdown(user.email, true);
+      mobileDropdown.id = 'mobile-profile-container';
+      mobileProfileLink.parentNode.insertBefore(mobileDropdown, mobileProfileLink.nextSibling);
     } else {
+      mobileProfileLink.style.display = '';
       mobileProfileLink.textContent = 'Sign In';
       mobileProfileLink.href = '/login.html';
-      const mobileLogout = document.getElementById('mobile-navbar-logout');
-      if (mobileLogout) mobileLogout.remove();
     }
   }
 };
