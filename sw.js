@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.0.4';
+const CACHE_VERSION = 'v1.0.5';
 const CACHE_NAME = `openrights-sl-${CACHE_VERSION}`;
 
 const ASSETS_TO_CACHE = [
@@ -17,6 +17,7 @@ const ASSETS_TO_CACHE = [
   './profile.html',
   './privacy.html',
   './presentation.html',
+  './login.html',
   './404.html',
   './offline.html',
   './css/style.css',
@@ -29,7 +30,10 @@ const ASSETS_TO_CACHE = [
   './js/registry.js',
   './js/dashboard.js',
   './js/batch.js',
+  './js/supabase-config.js',
+  './js/auth.js',
   './data/licenses.json',
+  './data/sl-legal-context.js',
   './manifest.json'
 ];
 
