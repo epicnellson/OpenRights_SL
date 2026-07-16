@@ -1,4 +1,5 @@
 let currentUser = null;
+let authReady = false;
 const supabase = () => window._supabase;
 
 const updateNavbarAuth = (user) => {
@@ -68,10 +69,11 @@ const isPublicPage = () => {
 
 const initAuth = async () => {
   const sb = supabase();
-  if (!sb) return;
+  if (!sb) { authReady = true; return; }
   try {
     const { data: { session } } = await sb.auth.getSession();
     updateNavbarAuth(session?.user || null);
+    authReady = true;
 
     if (!session && !isPublicPage()) {
       localStorage.setItem('redirectAfterLogin', window.location.pathname + window.location.search);
@@ -81,6 +83,7 @@ const initAuth = async () => {
   } catch (e) {
     console.error('Auth init error:', e);
     updateNavbarAuth(null);
+    authReady = true;
   }
 
   sb.auth.onAuthStateChange((event, session) => {
@@ -115,7 +118,37 @@ const highlightActiveNav = () => {
   }
 };
 
+const PROTECTED_ROUTES = ['/recommender.html', '/generator.html', '/comparison.html', '/scanner.html', '/analyzer.html', '/chatbot.html', '/registry.html', '/dashboard.html', '/batch.html', '/profile.html'];
+
+const requireAuthInterceptor = () => {
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    const page = href.split('/').pop();
+    const isProtected = PROTECTED_ROUTES.some(route => route.endsWith(page));
+    const hasAttr = link.hasAttribute('data-require-auth');
+
+    if (!isProtected && !hasAttr) return;
+
+    if (!authReady) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    if (currentUser) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    localStorage.setItem('redirectAfterLogin', href);
+    window.location.href = '/login.html';
+  });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   initAuth();
   highlightActiveNav();
+  requireAuthInterceptor();
 });
