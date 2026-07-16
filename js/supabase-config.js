@@ -16,6 +16,6 @@ const SUPABASE_ANON_KEY = 'sb_publishable_z97YOxMEsQp3ITP1lCUQkA_4QVM52f6';
       : null;
     if (!window._supabase) console.error('[Supabase] Fallback CDN loaded but createClient not found');
   };
-  s.onerror = () => console.error('[Supabase] Both jsDelivr and unpkg CDN failed to load');
+  s.onerror = () => console.error('[Supabase] Fallback CDN (unpkg) failed to load Supabase client');
   document.head.appendChild(s);
 })();

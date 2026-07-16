@@ -411,8 +411,9 @@ window.resetChecklist = resetChecklist;
   ↑
 </button>
 
+<script src="js/utils.js"></script>
+<script src="js/i18n.js"></script>
 <script>
-// Back to top
 const backBtn = document.getElementById('back-to-top');
 if (backBtn) {
   window.addEventListener('scroll', () => {
@@ -423,9 +424,6 @@ if (backBtn) {
   });
 }
 
-
-
-// Error boundary
 window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
 window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
 
@@ -433,8 +431,6 @@ if (window.location.protocol === 'file:') {
   showToast('\u26A0\uFE0F Please use a local server (live-server) for full functionality.', 'warning', 8000);
 }
 </script>
-<script src="js/utils.js"></script>
-<script src="js/i18n.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

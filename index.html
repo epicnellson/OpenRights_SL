@@ -533,19 +533,15 @@
 
 
 
-  <!-- Error Boundary -->
+  <script src="js/utils.js"></script>
+  <script src="js/i18n.js"></script>
   <script>
     window.addEventListener('error', (e) => { console.error('Error:', e.message, 'in', e.filename, 'line', e.lineno); });
     window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled promise:', e.reason); });
-
-    // File protocol detection
     if (window.location.protocol === 'file:') {
       showToast('⚠️ Please use a local server (live-server) for full functionality. Some features may not work when opening files directly.', 'warning', 8000);
     }
   </script>
-
-  <script src="js/utils.js"></script>
-  <script src="js/i18n.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

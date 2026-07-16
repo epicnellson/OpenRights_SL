@@ -40,7 +40,11 @@ const buildProfileDropdown = (email, isMobile) => {
   });
 
   dropdown.querySelector(`#${isMobile ? 'mobile-profile-logout' : 'profile-logout'}`).addEventListener('click', async () => {
-    await getClient()?.auth.signOut();
+    try {
+      await getClient()?.auth.signOut();
+    } catch (e) {
+      console.error('[Auth] Logout error:', e);
+    }
     window.location.href = '/login.html';
   });
 
@@ -66,7 +70,7 @@ const updateNavbarAuth = (user, profile) => {
   if (existingContainer) existingContainer.remove();
 
   if (user) {
-    console.log('[Auth] User logged in:', user.email);
+    console.log('[Auth] User authenticated');
     profileLink.style.display = 'none';
     const dropdown = buildProfileDropdown(user.email);
     dropdown.id = 'profile-container';
@@ -136,10 +140,15 @@ const initAuth = async () => {
   }
 
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (session?.user) {
-      const { data, error } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
-      updateNavbarAuth(session.user, (!error ? data : null) || null);
-    } else {
+    try {
+      if (session?.user) {
+        const { data, error } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+        updateNavbarAuth(session.user, (!error ? data : null) || null);
+      } else {
+        updateNavbarAuth(null);
+      }
+    } catch (e) {
+      console.error('[Auth] State change error:', e);
       updateNavbarAuth(null);
     }
     if (event === 'SIGNED_OUT') {

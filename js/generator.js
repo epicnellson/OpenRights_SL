@@ -445,7 +445,6 @@ function getPDF() {
 }
 
 async function generatePDF(data, referenceNumber) {
-  console.log("ORSL-LOG: Generating Creation Record PDF for project:", data.projectName, "Creator:", data.creatorName, "Ref:", referenceNumber);
   const pdf = getPDF();
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();

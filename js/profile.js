@@ -2,11 +2,11 @@ const ProfileManager = {
   _client: () => window._supabase,
 
   async fetch() {
-    const supabase = this._client();
-    if (!supabase) return null;
-    const { data: { user } } = await supabase.auth.getUser();
+    const sb = this._client();
+    if (!sb) return null;
+    const { data: { user } } = await sb.auth.getUser();
     if (!user) return null;
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from('profiles')
       .select('*')
       .eq('id', user.id)
@@ -16,9 +16,9 @@ const ProfileManager = {
   },
 
   async save(profile) {
-    const supabase = this._client();
-    if (!supabase) throw new Error('Supabase not connected');
-    const { data: { user } } = await supabase.auth.getUser();
+    const sb = this._client();
+    if (!sb) throw new Error('Supabase not connected');
+    const { data: { user } } = await sb.auth.getUser();
     if (!user) throw new Error('Not authenticated');
     const payload = {
       id: user.id,
@@ -28,7 +28,7 @@ const ProfileManager = {
       location: profile.country || profile.location || 'Sierra Leone',
       updated_at: new Date().toISOString()
     };
-    const { data, error } = await supabase
+    const { data, error } = await sb
       .from('profiles')
       .upsert(payload, { onConflict: 'id' })
       .select()
@@ -38,11 +38,11 @@ const ProfileManager = {
   },
 
   async clear() {
-    const supabase = this._client();
-    if (!supabase) return;
-    const { data: { user } } = await supabase.auth.getUser();
+    const sb = this._client();
+    if (!sb) return;
+    const { data: { user } } = await sb.auth.getUser();
     if (!user) return;
-    const { error } = await supabase
+    const { error } = await sb
       .from('profiles')
       .update({
         full_name: null,
