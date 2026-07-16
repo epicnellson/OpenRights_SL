@@ -35,6 +35,10 @@
       <div id="error-box" class="hidden bg-red-900/30 border border-red-500/50 rounded-xl px-4 py-3 text-sm text-red-300 mb-4"></div>
 
       <form id="auth-form" class="space-y-4">
+        <div id="name-field" class="hidden">
+          <label for="fullName" class="block text-sm text-gray-400 mb-1">Full Name</label>
+          <input type="text" id="fullName" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition" placeholder="Your full name">
+        </div>
         <div>
           <label for="email" class="block text-sm text-gray-400 mb-1">Email</label>
           <input type="email" id="email" required class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition">
@@ -57,6 +61,8 @@
   <script>
     let isSignUp = false;
     const form = document.getElementById('auth-form');
+    const nameField = document.getElementById('name-field');
+    const fullNameInput = document.getElementById('fullName');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const submitBtn = document.getElementById('auth-submit-btn');
@@ -68,6 +74,7 @@
 
     toggleBtn.addEventListener('click', () => {
       isSignUp = !isSignUp;
+      nameField.classList.toggle('hidden', !isSignUp);
       title.textContent = isSignUp ? 'Sign Up' : 'Sign In';
       subtitle.textContent = isSignUp ? 'Create your OpenRights SL account' : 'Access your OpenRights SL account';
       submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
@@ -100,10 +107,22 @@
       try {
         let result;
         if (isSignUp) {
-          result = await window._supabase.auth.signUp({ email, password });
+          const fullName = fullNameInput.value.trim();
+          if (!fullName) {
+            showError('Please enter your full name.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign Up';
+            return;
+          }
+          result = await window._supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { full_name: fullName } }
+          });
           if (result.error) throw result.error;
-          showError('✅ Check your email for a confirmation link before signing in.');
+          showError('✅ Account created! Check your email for a confirmation link before signing in.');
           isSignUp = false;
+          nameField.classList.add('hidden');
           title.textContent = 'Sign In';
           submitBtn.textContent = 'Sign In';
           toggleText.textContent = "Don't have an account?";
