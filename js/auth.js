@@ -110,15 +110,15 @@ const initAuth = async () => {
     const { data: { session } } = await sb.auth.getSession();
     let profile = null;
     if (session?.user) {
-      const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single().catch(() => ({ data: null }));
-      profile = data;
+      const { data, error } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+      if (!error) profile = data;
       if (!profile && session.user.user_metadata?.full_name) {
-        const { data: newProfile } = await sb.from('profiles').upsert({
+        const { data: newProfile, error: upsertError } = await sb.from('profiles').upsert({
           id: session.user.id,
           email: session.user.email,
           full_name: session.user.user_metadata.full_name
-        }).select().single().catch(() => ({ data: null }));
-        profile = newProfile;
+        }).select().single();
+        if (!upsertError) profile = newProfile;
       }
     }
     updateNavbarAuth(session?.user || null, profile);
@@ -137,8 +137,8 @@ const initAuth = async () => {
 
   sb.auth.onAuthStateChange(async (event, session) => {
     if (session?.user) {
-      const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single().catch(() => ({ data: null }));
-      updateNavbarAuth(session.user, data || null);
+      const { data, error } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+      updateNavbarAuth(session.user, (!error ? data : null) || null);
     } else {
       updateNavbarAuth(null);
     }
