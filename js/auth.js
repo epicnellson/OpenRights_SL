@@ -1,6 +1,6 @@
 let currentUser = null;
 let authReady = false;
-const supabase = () => window._supabase;
+const getClient = () => window._supabase;
 
 const buildProfileDropdown = (email, isMobile) => {
   const initial = email && email.length > 0 ? email[0].toUpperCase() : '?';
@@ -31,7 +31,7 @@ const buildProfileDropdown = (email, isMobile) => {
   });
 
   dropdown.querySelector(`#${isMobile ? 'mobile-profile-logout' : 'profile-logout'}`).addEventListener('click', async () => {
-    await supabase()?.auth.signOut();
+    await getClient()?.auth.signOut();
     window.location.href = '/login.html';
   });
 
@@ -94,7 +94,7 @@ const isPublicPage = () => {
 };
 
 const initAuth = async () => {
-  const sb = supabase();
+  const sb = getClient();
   if (!sb) { authReady = true; return; }
   try {
     const { data: { session } } = await sb.auth.getSession();
@@ -121,7 +121,7 @@ const initAuth = async () => {
 };
 
 const requireAuth = async () => {
-  const sb = supabase();
+  const sb = getClient();
   if (!sb) return;
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
