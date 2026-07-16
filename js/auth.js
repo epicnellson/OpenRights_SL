@@ -3,13 +3,14 @@ let authReady = false;
 const supabase = () => window._supabase;
 
 const buildProfileDropdown = (email, isMobile) => {
+  const initial = email && email.length > 0 ? email[0].toUpperCase() : '?';
   const container = document.createElement('div');
   container.className = 'relative';
 
   const trigger = document.createElement('button');
   trigger.id = isMobile ? 'mobile-profile-trigger' : 'profile-trigger';
   trigger.className = 'flex items-center gap-2 bg-purple-600/30 border border-purple-500/30 px-3 py-1.5 rounded-full transition text-white hover:bg-purple-600/40 text-sm';
-  trigger.innerHTML = `<span class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-xs font-bold">${email[0].toUpperCase()}</span>`;
+  trigger.innerHTML = `<span class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-xs font-bold">${initial}</span>`;
   trigger.setAttribute('aria-label', 'User menu');
   container.appendChild(trigger);
 
