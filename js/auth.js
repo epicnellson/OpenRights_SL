@@ -5,6 +5,7 @@ const getClient = () => window._supabase;
 
 const getDisplayName = () => {
   if (currentProfile?.full_name) return currentProfile.full_name;
+  if (currentUser?.user_metadata?.full_name) return currentUser.user_metadata.full_name;
   return currentUser?.email || '?';
 };
 
@@ -111,6 +112,14 @@ const initAuth = async () => {
     if (session?.user) {
       const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single().catch(() => ({ data: null }));
       profile = data;
+      if (!profile && session.user.user_metadata?.full_name) {
+        const { data: newProfile } = await sb.from('profiles').upsert({
+          id: session.user.id,
+          email: session.user.email,
+          full_name: session.user.user_metadata.full_name
+        }).select().single().catch(() => ({ data: null }));
+        profile = newProfile;
+      }
     }
     updateNavbarAuth(session?.user || null, profile);
     authReady = true;
@@ -126,8 +135,13 @@ const initAuth = async () => {
     authReady = true;
   }
 
-  sb.auth.onAuthStateChange((event, session) => {
-    updateNavbarAuth(session?.user || null);
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user) {
+      const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single().catch(() => ({ data: null }));
+      updateNavbarAuth(session.user, data || null);
+    } else {
+      updateNavbarAuth(null);
+    }
     if (event === 'SIGNED_OUT') {
       window.location.href = '/login.html';
     }
