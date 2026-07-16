@@ -47,12 +47,16 @@ const buildProfileDropdown = (email, isMobile) => {
 const updateNavbarAuth = (user) => {
   currentUser = user;
   const profileLink = document.getElementById('navbar-profile');
-  if (!profileLink) return;
+  if (!profileLink) {
+    console.warn('[Auth] #navbar-profile not found on this page');
+    return;
+  }
 
   const existingContainer = document.getElementById('profile-container');
   if (existingContainer) existingContainer.remove();
 
   if (user) {
+    console.log('[Auth] User logged in:', user.email);
     profileLink.style.display = 'none';
     const dropdown = buildProfileDropdown(user.email);
     dropdown.id = 'profile-container';
