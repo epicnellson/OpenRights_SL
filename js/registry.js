@@ -208,7 +208,18 @@ async function submitRegistration() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', fetchRegistry);
+document.addEventListener('DOMContentLoaded', () => {
+  fetchRegistry();
+  document.getElementById('btn-config')?.addEventListener('click', showConfigModal);
+  document.getElementById('btn-config-empty')?.addEventListener('click', showConfigModal);
+  document.getElementById('btn-register')?.addEventListener('click', showRegisterModal);
+  document.getElementById('btn-refresh')?.addEventListener('click', fetchRegistry);
+  document.getElementById('search-registry')?.addEventListener('keyup', filterRegistry);
+  document.getElementById('btn-save-config')?.addEventListener('click', saveConfig);
+  document.getElementById('btn-close-config')?.addEventListener('click', closeConfigModal);
+  document.getElementById('btn-submit-registration')?.addEventListener('click', submitRegistration);
+  document.getElementById('btn-close-register')?.addEventListener('click', closeRegisterModal);
+});
 
 window.fetchRegistry = fetchRegistry;
 window.filterRegistry = filterRegistry;

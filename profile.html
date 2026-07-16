@@ -207,7 +207,7 @@
             <button type="submit" class="save-btn flex-1 rounded-xl px-6 py-3 text-white font-semibold">
               Save Profile
             </button>
-            <button type="button" onclick="clearProfile()" class="clear-btn flex-1 rounded-xl px-6 py-3 font-semibold">
+            <button type="button" id="clear-profile-btn" class="clear-btn flex-1 rounded-xl px-6 py-3 font-semibold">
               Clear Profile
             </button>
           </div>
@@ -352,6 +352,7 @@
   }
 
   document.getElementById('profile-form').addEventListener('submit', saveProfile);
+  document.getElementById('clear-profile-btn').addEventListener('click', clearProfile);
   document.addEventListener('DOMContentLoaded', loadProfile);
 
   if ('serviceWorker' in navigator) {

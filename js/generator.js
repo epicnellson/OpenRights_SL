@@ -163,6 +163,18 @@ function initGenerator() {
     
     // Initialize preview immediately
     updatePreview();
+
+    document.getElementById('tab-standard')?.addEventListener('click', () => switchTab('standard'));
+    document.getElementById('tab-custom')?.addEventListener('click', () => switchTab('custom'));
+    document.getElementById('btn-generate-clause')?.addEventListener('click', generateCustomClause);
+    document.getElementById('btn-add-clause')?.addEventListener('click', approveAndAddCustomClause);
+    document.getElementById('btn-clear-clause')?.addEventListener('click', clearCustomClause);
+    document.getElementById('btn-download-txt')?.addEventListener('click', downloadLicenseTxt);
+    document.getElementById('btn-download-privacy')?.addEventListener('click', downloadPrivacyPolicy);
+    document.getElementById('pdf-btn')?.addEventListener('click', downloadCreationPDF);
+    document.getElementById('btn-copy-badge')?.addEventListener('click', copyHtmlBadge);
+    document.getElementById('btn-download-meta')?.addEventListener('click', downloadMetadata);
+    document.getElementById('btn-copy-preview')?.addEventListener('click', copyPreview);
   } catch (error) {
     console.error('Error initializing generator:', error);
     window.location.href = 'recommender.html';
@@ -387,7 +399,7 @@ function saveToHistory(data, referenceNumber) {
  * Handles generating and downloading the LICENSE.txt file.
  */
 function downloadLicenseTxt() {
-  const btn = document.querySelector('[onclick="downloadLicenseTxt()"]');
+  const btn = document.getElementById('btn-download-txt');
   const originalText = 'Download LICENSE.txt';
 
   const data = validateForm();

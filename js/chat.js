@@ -553,6 +553,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  document.getElementById('btn-clear-chat')?.addEventListener('click', clearChat);
+  document.getElementById('chip-mit')?.addEventListener('click', () => sendQuickReply('What is the MIT License?'));
+  document.getElementById('chip-gpl')?.addEventListener('click', () => sendQuickReply('GPL vs Apache?'));
+  document.getElementById('chip-dpg')?.addEventListener('click', () => sendQuickReply('Digital Public Good?'));
+  document.getElementById('voice-btn')?.addEventListener('click', toggleVoiceInput);
+  document.getElementById('send-btn')?.addEventListener('click', sendMessage);
+  document.getElementById('change-api-key-link')?.addEventListener('click', (e) => { e.preventDefault(); showApiKeyModal(); });
+  document.getElementById('btn-save-api')?.addEventListener('click', saveApiKey);
+  document.getElementById('btn-skip-api')?.addEventListener('click', skipApiKey);
+
   const container = document.getElementById('messages-container');
   if (container) {
     container.addEventListener('click', (e) => {

@@ -109,16 +109,16 @@
         <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Creator Registry</h1>
         <p class="text-gray-400">Discover Sierra Leonean creators and their open source projects.</p>
       </div>
-      <button onclick="showConfigModal()" class="text-xs text-gray-500 hover:text-white transition flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md border border-white/10">⚙️ Configure</button>
+      <button id="btn-config" class="text-xs text-gray-500 hover:text-white transition flex items-center gap-1 bg-white/5 px-2 py-1 rounded-md border border-white/10">⚙️ Configure</button>
     </div>
 
     <div class="relative z-10">
       <div class="flex justify-between items-center mb-6">
-        <input type="text" id="search-registry" onkeyup="filterRegistry()" class="w-full max-w-md bg-black/30 border border-white/20 rounded-xl px-4 py-2 text-white placeholder-gray-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition" placeholder="Search creators or projects...">
-          <button onclick="showRegisterModal()" class="bg-green-600 hover:bg-green-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-lg flex items-center gap-2">
+        <input type="text" id="search-registry" class="w-full max-w-md bg-black/30 border border-white/20 rounded-xl px-4 py-2 text-white placeholder-gray-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition" placeholder="Search creators or projects...">
+          <button id="btn-register" class="bg-green-600 hover:bg-green-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-lg flex items-center gap-2">
           ➕ Register
         </button>
-        <button onclick="fetchRegistry()" class="bg-yellow-600 hover:bg-yellow-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-lg">
+        <button id="btn-refresh" class="bg-yellow-600 hover:bg-yellow-500 text-white font-bold px-4 py-2 rounded-xl transition shadow-lg">
           🔄 Refresh
         </button>
       </div>
@@ -131,7 +131,7 @@
       <div id="registry-empty" class="hidden flex-col items-center justify-center py-12 text-gray-500">
         <span class="text-5xl mb-4">📭</span>
         <p>No creators found or registry not configured.</p>
-        <button onclick="showConfigModal()" class="mt-4 text-yellow-400 hover:underline">Setup JSONBin</button>
+        <button id="btn-config-empty" class="mt-4 text-yellow-400 hover:underline">Setup JSONBin</button>
       </div>
 
       <div id="registry-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -154,8 +154,8 @@
     <input type="password" id="bin-key" class="w-full bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-white mb-6" placeholder="Secret Key">
     
     <div class="flex gap-3">
-      <button onclick="saveConfig()" class="flex-1 bg-yellow-600 hover:bg-yellow-500 text-white py-2 rounded-lg font-bold transition">Save & Sync</button>
-      <button onclick="closeConfigModal()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition">Cancel</button>
+      <button id="btn-save-config" class="flex-1 bg-yellow-600 hover:bg-yellow-500 text-white py-2 rounded-lg font-bold transition">Save & Sync</button>
+      <button id="btn-close-config" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition">Cancel</button>
     </div>
   </div>
 </div>
@@ -232,8 +232,8 @@
     </select>
 
     <div class="flex gap-3">
-      <button onclick="submitRegistration()" class="flex-1 bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg font-bold transition">✓ Register</button>
-      <button onclick="closeRegisterModal()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition">Cancel</button>
+      <button id="btn-submit-registration" class="flex-1 bg-green-600 hover:bg-green-500 text-white py-2 rounded-lg font-bold transition">✓ Register</button>
+      <button id="btn-close-register" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg transition">Cancel</button>
     </div>
   </div>
 </div>

@@ -208,8 +208,8 @@
 
           <!-- Tabs -->
           <div class="flex gap-2 mb-6 p-1 glass rounded-xl">
-            <button id="tab-standard" onclick="switchTab('standard')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-purple-600 text-white transition">Standard Details</button>
-            <button id="tab-custom" onclick="switchTab('custom')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">AI Custom Clause</button>
+            <button id="tab-standard" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-purple-600 text-white transition">Standard Details</button>
+            <button id="tab-custom" class="flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">AI Custom Clause</button>
           </div>
 
           <div id="standard-form-container">
@@ -250,7 +250,7 @@
               
               <textarea id="customClausePrompt" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 h-24 mb-4 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition" placeholder="E.g., I want to restrict this code from being used for military applications, or require a $50 fee for corporate usage."></textarea>
               
-              <button id="btn-generate-clause" onclick="generateCustomClause()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 w-full rounded-xl px-6 py-3.5 text-white font-semibold text-md transition shadow-lg flex justify-center items-center gap-2" aria-label="Generate Custom Clause">
+              <button id="btn-generate-clause" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 w-full rounded-xl px-6 py-3.5 text-white font-semibold text-md transition shadow-lg flex justify-center items-center gap-2" aria-label="Generate Custom Clause">
                 ✨ Generate Clause
               </button>
               
@@ -260,10 +260,10 @@
                   <textarea id="generatedClauseDraft" readonly class="w-full bg-black/40 border border-purple-500/30 rounded-xl p-3 text-sm text-gray-300 focus:outline-none h-24 custom-scrollbar"></textarea>
                 </div>
                 <div class="flex gap-2">
-                  <button id="btn-add-clause" onclick="approveAndAddCustomClause()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-4 rounded-xl text-sm transition shadow-lg">
+                  <button id="btn-add-clause" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 px-4 rounded-xl text-sm transition shadow-lg">
                     ✓ Add to My License
                   </button>
-                  <button onclick="clearCustomClause()" class="bg-white/10 hover:bg-white/20 text-gray-300 font-semibold py-2.5 px-4 rounded-xl text-sm transition">
+                  <button id="btn-clear-clause" class="bg-white/10 hover:bg-white/20 text-gray-300 font-semibold py-2.5 px-4 rounded-xl text-sm transition">
                     Clear Draft
                   </button>
                 </div>
@@ -272,13 +272,13 @@
           </div>
 
           <div class="mt-6 space-y-3">
-            <button onclick="downloadLicenseTxt()" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download LICENSE.txt">
+            <button id="btn-download-txt" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download LICENSE.txt">
               Download LICENSE.txt
             </button>
-            <button onclick="downloadPrivacyPolicy()" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download Privacy Policy">
+            <button id="btn-download-privacy" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download Privacy Policy">
               Download Privacy Policy.txt
             </button>
-            <button id="pdf-btn" onclick="downloadCreationPDF()" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download Creation Record PDF">
+            <button id="pdf-btn" class="download-btn w-full rounded-xl px-6 py-4 text-white font-semibold text-lg bg-purple-600 hover:bg-purple-500 transition shadow-md" aria-label="Download Creation Record PDF">
               Download Creation Record PDF
             </button>
 
@@ -293,13 +293,13 @@
             </h3>
             <p class="text-gray-400 text-sm mb-4">Add a license badge to your README or export project metadata.</p>
             <div class="space-y-3">
-              <button onclick="copyHtmlBadge()" class="bg-gray-700 hover:bg-gray-600 w-full rounded-xl px-4 py-3 text-white font-semibold text-sm flex items-center justify-center gap-2" aria-label="Copy HTML Badge">
+              <button id="btn-copy-badge" class="bg-gray-700 hover:bg-gray-600 w-full rounded-xl px-4 py-3 text-white font-semibold text-sm flex items-center justify-center gap-2" aria-label="Copy HTML Badge">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                 </svg>
                 Copy HTML Badge
               </button>
-              <button onclick="downloadMetadata()" class="bg-gray-700 hover:bg-gray-600 w-full rounded-xl px-4 py-3 text-white font-semibold text-sm flex items-center justify-center gap-2" aria-label="Download Metadata JSON">
+              <button id="btn-download-meta" class="bg-gray-700 hover:bg-gray-600 w-full rounded-xl px-4 py-3 text-white font-semibold text-sm flex items-center justify-center gap-2" aria-label="Download Metadata JSON">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                 </svg>
@@ -336,7 +336,7 @@
           <div class="glass-card rounded-2xl p-6 sticky top-28">
             <div class="flex justify-between items-center mb-4">
               <h3 class="text-lg font-semibold">Live Preview</h3>
-              <button onclick="copyPreview()" class="text-sm text-purple-400 hover:text-purple-300">Copy to Clipboard</button>
+              <button id="btn-copy-preview" class="text-sm text-purple-400 hover:text-purple-300">Copy to Clipboard</button>
             </div>
             <div id="preview-box" class="preview-box rounded-xl p-4 text-sm">
               <p class="text-gray-500 italic">Start typing to see preview...</p>

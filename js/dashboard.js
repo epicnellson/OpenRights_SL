@@ -53,5 +53,8 @@ function refreshDashboard() {
   `;
 }
 
-document.addEventListener('DOMContentLoaded', refreshDashboard);
+document.addEventListener('DOMContentLoaded', () => {
+  refreshDashboard();
+  document.getElementById('btn-refresh-dashboard')?.addEventListener('click', refreshDashboard);
+});
 window.refreshDashboard = refreshDashboard;

@@ -64,6 +64,28 @@ async function initRecommender() {
     if (!response.ok) throw new Error('Failed to load license data');
     licenseData = await response.json();
     loadQuestion('q1');
+
+    document.getElementById('question-container')?.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-opt]');
+      if (btn) {
+        handleAnswer(JSON.parse(decodeURIComponent(btn.dataset.opt)));
+        return;
+      }
+      const action = e.target.closest('[data-action]');
+      if (!action) return;
+      if (action.dataset.action === 'generate') {
+        generateDocuments(decodeURIComponent(action.dataset.key));
+      } else if (action.dataset.action === 'restart') {
+        startOver();
+      } else if (action.dataset.action === 'share') {
+        shareResult();
+      }
+    });
+
+    document.getElementById('answer-trail')?.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-jump]');
+      if (btn) jumpTo(parseInt(btn.dataset.jump));
+    });
   } catch (error) {
     console.error('Error loading licenses:', error);
     document.getElementById('question-container').innerHTML = `
@@ -93,8 +115,8 @@ function loadQuestion(id) {
     <div class="flex flex-col gap-4">
       ${question.options.map((opt, idx) => `
         <button 
+          data-opt='${encodeURIComponent(JSON.stringify(opt))}'
           class="option-btn rounded-xl px-6 py-4 text-white text-lg"
-          onclick="handleAnswer(${JSON.stringify(opt).replace(/"/g, '&quot;')})"
         >
           ${sanitize(opt.label)}
         </button>
@@ -186,12 +208,13 @@ function showConflictModal(conflict) {
         <p class="text-sm text-gray-400">Suggestion:</p>
         <p class="text-white">${conflict.suggestion}</p>
       </div>
-      <button onclick="dismissConflictModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold px-6 py-3 rounded-xl">
+      <button id="conflict-dismiss-btn" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold px-6 py-3 rounded-xl">
         Understood
       </button>
     </div>
   `;
   document.body.appendChild(modal);
+  document.getElementById('conflict-dismiss-btn')?.addEventListener('click', dismissConflictModal);
 }
 
 function dismissConflictModal() {
@@ -219,7 +242,7 @@ function updateTrail() {
   if (!trail || !backBtn) return;
 
   trail.innerHTML = answerHistory.map((a, i) => `
-    <button class="answer-badge px-2 py-1 rounded-full text-xs cursor-pointer" onclick="jumpTo(${i})">
+    <button data-jump="${i}" class="answer-badge px-2 py-1 rounded-full text-xs cursor-pointer">
       ${a.label}
     </button>
   `).join('');
@@ -319,13 +342,13 @@ function showResult(licenseKey) {
     </div>
     <div class="flex flex-col gap-3">
       <button 
-        onclick="generateDocuments('${licenseKey}')"
+        data-action="generate" data-key="${encodeURIComponent(licenseKey)}"
         class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl px-6 py-4 text-white font-semibold text-lg transition"
       >
         Generate My Documents
       </button>
       <button 
-        onclick="startOver()"
+        data-action="restart"
         class="option-btn rounded-xl px-6 py-3 text-white transition"
       >
         Start Over
@@ -338,7 +361,7 @@ function showResult(licenseKey) {
         Learn More ↗
       </a>
       <button 
-        onclick="shareResult()"
+        data-action="share"
         class="option-btn rounded-xl px-6 py-3 text-white transition"
       >
         Share Result

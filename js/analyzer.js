@@ -214,3 +214,10 @@ function loadSample(type) {
 // Make globally available
 window.analyzeContract = analyzeContract;
 window.loadSample = loadSample;
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('sample-nda')?.addEventListener('click', () => loadSample('nda'));
+  document.getElementById('sample-tos')?.addEventListener('click', () => loadSample('tos'));
+  document.getElementById('sample-eula')?.addEventListener('click', () => loadSample('eula'));
+  document.getElementById('btn-analyze')?.addEventListener('click', analyzeContract);
+});

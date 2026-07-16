@@ -35,7 +35,7 @@ function addProjectRow() {
       <input type="text" id="version-${projectCount}" class="w-full rounded-lg px-3 py-2 bg-white/10 border border-white/20 text-white" placeholder="1.0.0">
     </div>
     <div class="md:col-span-1">
-      <button onclick="removeRow(${projectCount})" class="row-remove w-full rounded-lg py-2 text-red-400 hover:text-red-300 text-center" aria-label="Remove project">
+      <button data-remove="${projectCount}" class="row-remove w-full rounded-lg py-2 text-red-400 hover:text-red-300 text-center" aria-label="Remove project">
         ✕
       </button>
     </div>
@@ -93,7 +93,16 @@ function generateBatchCSV() {
   showToast('CSV downloaded!');
 }
 
-document.addEventListener('DOMContentLoaded', initBatch);
+document.addEventListener('DOMContentLoaded', () => {
+  initBatch();
+  document.getElementById('btn-add-row')?.addEventListener('click', addProjectRow);
+  document.getElementById('btn-generate-csv')?.addEventListener('click', generateBatchCSV);
+  document.getElementById('btn-clear-all')?.addEventListener('click', clearAll);
+  document.getElementById('project-list')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-remove]');
+    if (btn) removeRow(parseInt(btn.dataset.remove));
+  });
+});
 
 window.addProjectRow = addProjectRow;
 window.removeRow = removeRow;

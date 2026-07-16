@@ -312,11 +312,11 @@
         <div class="flex-1 w-full max-w-sm border border-white/10 rounded-xl p-4 bg-black/20">
           <h3 class="text-center font-semibold mb-4 text-gray-300">Available Licenses (Drag)</h3>
           <div class="flex flex-wrap gap-3 justify-center">
-            <div draggable="true" ondragstart="dragStart(event, 'MIT')" class="cursor-move bg-blue-600/30 border border-blue-500/50 text-blue-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-600/50 transition shadow-lg">MIT</div>
-            <div draggable="true" ondragstart="dragStart(event, 'Apache-2.0')" class="cursor-move bg-orange-600/30 border border-orange-500/50 text-orange-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-orange-600/50 transition shadow-lg">Apache 2.0</div>
-            <div draggable="true" ondragstart="dragStart(event, 'GPL-v3')" class="cursor-move bg-red-600/30 border border-red-500/50 text-red-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600/50 transition shadow-lg">GPL v3</div>
-            <div draggable="true" ondragstart="dragStart(event, 'CC-BY-4.0')" class="cursor-move bg-green-600/30 border border-green-500/50 text-green-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-600/50 transition shadow-lg">CC-BY</div>
-            <div draggable="true" ondragstart="dragStart(event, 'CC-BY-NC-4.0')" class="cursor-move bg-purple-600/30 border border-purple-500/50 text-purple-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-purple-600/50 transition shadow-lg">CC-BY-NC</div>
+            <div draggable="true" id="drag-mit" class="cursor-move bg-blue-600/30 border border-blue-500/50 text-blue-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-600/50 transition shadow-lg">MIT</div>
+            <div draggable="true" id="drag-apache" class="cursor-move bg-orange-600/30 border border-orange-500/50 text-orange-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-orange-600/50 transition shadow-lg">Apache 2.0</div>
+            <div draggable="true" id="drag-gpl" class="cursor-move bg-red-600/30 border border-red-500/50 text-red-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600/50 transition shadow-lg">GPL v3</div>
+            <div draggable="true" id="drag-ccby" class="cursor-move bg-green-600/30 border border-green-500/50 text-green-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-600/50 transition shadow-lg">CC-BY</div>
+            <div draggable="true" id="drag-ccbync" class="cursor-move bg-purple-600/30 border border-purple-500/50 text-purple-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-purple-600/50 transition shadow-lg">CC-BY-NC</div>
           </div>
         </div>
 
@@ -327,7 +327,7 @@
         <div class="flex-1 w-full max-w-sm">
           <h3 class="text-center font-semibold mb-2 text-gray-300">Your Project (Drop Here)</h3>
           <div class="flex justify-center mb-3">
-            <select id="project-license-select" onchange="updateProjectLicense()" class="bg-black/30 border border-white/20 rounded-lg px-3 py-1.5 text-sm text-gray-300 outline-none hover:border-purple-400 transition cursor-pointer">
+            <select id="project-license-select" class="bg-black/30 border border-white/20 rounded-lg px-3 py-1.5 text-sm text-gray-300 outline-none hover:border-purple-400 transition cursor-pointer">
               <option value="MIT">MIT Project</option>
               <option value="Apache-2.0">Apache 2.0 Project</option>
               <option value="GPL-v3">GPL v3 Project</option>
@@ -335,7 +335,7 @@
               <option value="CC-BY-NC-4.0">CC-BY-NC Project</option>
             </select>
           </div>
-          <div id="drop-zone" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event)" class="border-2 border-dashed border-gray-500 rounded-2xl h-32 flex flex-col items-center justify-center transition bg-black/10">
+          <div id="drop-zone" class="border-2 border-dashed border-gray-500 rounded-2xl h-32 flex flex-col items-center justify-center transition bg-black/10">
             <span class="text-3xl mb-1">📥</span>
             <span class="text-gray-400 text-sm">Drop license here</span>
           </div>
@@ -349,27 +349,27 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-8">
-        <button onclick="chooseLicense('MIT')" class="glass-card license-mit rounded-xl p-4 hover:translate-y-[-2px] transition">
+        <button id="choose-mit" class="glass-card license-mit rounded-xl p-4 hover:translate-y-[-2px] transition">
           <h3 class="font-bold text-blue-400 mb-2">MIT License</h3>
           <p class="text-gray-400 text-sm mb-4">Simple and permissive</p>
           <span class="bg-blue-600/30 text-blue-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
         </button>
-        <button onclick="chooseLicense('Apache-2.0')" class="glass-card license-apache rounded-xl p-4 hover:translate-y-[-2px] transition">
+        <button id="choose-apache" class="glass-card license-apache rounded-xl p-4 hover:translate-y-[-2px] transition">
           <h3 class="font-bold text-orange-400 mb-2">Apache 2.0</h3>
           <p class="text-gray-400 text-sm mb-4">With patent grants</p>
           <span class="bg-orange-600/30 text-orange-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
         </button>
-        <button onclick="chooseLicense('GPL-v3')" class="glass-card license-gpl rounded-xl p-4 hover:translate-y-[-2px] transition">
+        <button id="choose-gpl" class="glass-card license-gpl rounded-xl p-4 hover:translate-y-[-2px] transition">
           <h3 class="font-bold text-red-400 mb-2">GPL v3</h3>
           <p class="text-gray-400 text-sm mb-4">Strong copyleft</p>
           <span class="bg-red-600/30 text-red-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
         </button>
-        <button onclick="chooseLicense('CC-BY-4.0')" class="glass-card license-ccby rounded-xl p-4 hover:translate-y-[-2px] transition">
+        <button id="choose-ccby" class="glass-card license-ccby rounded-xl p-4 hover:translate-y-[-2px] transition">
           <h3 class="font-bold text-green-400 mb-2">CC-BY 4.0</h3>
           <p class="text-gray-400 text-sm mb-4">Creative content</p>
           <span class="bg-green-600/30 text-green-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
         </button>
-        <button onclick="chooseLicense('CC-BY-NC-4.0')" class="glass-card license-ccbync rounded-xl p-4 hover:translate-y-[-2px] transition">
+        <button id="choose-ccbync" class="glass-card license-ccbync rounded-xl p-4 hover:translate-y-[-2px] transition">
           <h3 class="font-bold text-purple-400 mb-2">CC-BY-NC</h3>
           <p class="text-gray-400 text-sm mb-4">Non-commercial</p>
           <span class="bg-purple-600/30 text-purple-300 px-3 py-2 rounded-lg text-sm block text-center">Choose This License</span>
@@ -481,16 +481,29 @@ function dragStart(e, licenseKey) {
 // Mobile compatibility tap-handler
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[draggable="true"]').forEach(el => {
+    el.addEventListener('dragstart', (e) => {
+      const key = el.textContent.trim();
+      const map = { 'MIT': 'MIT', 'Apache 2.0': 'Apache-2.0', 'GPL v3': 'GPL-v3', 'CC-BY': 'CC-BY-4.0', 'CC-BY-NC': 'CC-BY-NC-4.0' };
+      dragStart(e, map[key] || key);
+    });
     el.addEventListener('click', () => {
-      const startAttr = el.getAttribute('ondragstart');
-      if (startAttr) {
-        const matches = startAttr.match(/'([^']+)'/);
-        if (matches && matches[1]) {
-          handleMixCompatibility(matches[1]);
-        }
-      }
+      const key = el.textContent.trim();
+      const map = { 'MIT': 'MIT', 'Apache 2.0': 'Apache-2.0', 'GPL v3': 'GPL-v3', 'CC-BY': 'CC-BY-4.0', 'CC-BY-NC': 'CC-BY-NC-4.0' };
+      handleMixCompatibility(map[key] || key);
     });
   });
+  const dropZone = document.getElementById('drop-zone');
+  if (dropZone) {
+    dropZone.addEventListener('dragover', allowDrop);
+    dropZone.addEventListener('dragleave', dragLeave);
+    dropZone.addEventListener('drop', handleDrop);
+  }
+  document.getElementById('project-license-select')?.addEventListener('change', updateProjectLicense);
+  document.getElementById('choose-mit')?.addEventListener('click', () => chooseLicense('MIT'));
+  document.getElementById('choose-apache')?.addEventListener('click', () => chooseLicense('Apache-2.0'));
+  document.getElementById('choose-gpl')?.addEventListener('click', () => chooseLicense('GPL-v3'));
+  document.getElementById('choose-ccby')?.addEventListener('click', () => chooseLicense('CC-BY-4.0'));
+  document.getElementById('choose-ccbync')?.addEventListener('click', () => chooseLicense('CC-BY-NC-4.0'));
 });
 
 function allowDrop(e) {

@@ -132,7 +132,7 @@
           <!-- Dynamic rows will appear here -->
         </div>
         
-        <button onclick="addProjectRow()" class="mt-4 text-purple-400 hover:text-purple-300 flex items-center gap-2">
+        <button id="btn-add-row" class="mt-4 text-purple-400 hover:text-purple-300 flex items-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
           </svg>
@@ -141,10 +141,10 @@
       </div>
 
       <div class="flex gap-4 justify-center">
-        <button onclick="generateBatchCSV()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl px-8 py-4 text-white font-semibold text-lg">
+        <button id="btn-generate-csv" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl px-8 py-4 text-white font-semibold text-lg">
           Download CSV
         </button>
-        <button onclick="clearAll()" class="glass rounded-xl px-8 py-4 text-white font-semibold">
+        <button id="btn-clear-all" class="glass rounded-xl px-8 py-4 text-white font-semibold">
           Clear All
         </button>
       </div>

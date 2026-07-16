@@ -155,8 +155,8 @@
 
       <div class="glass-card rounded-2xl p-6 mb-6">
         <div class="flex gap-2 mb-4 p-1 glass rounded-xl">
-          <button id="tab-paste" onclick="switchScannerTab('paste')" class="tab-btn active flex-1 py-2 text-sm font-semibold rounded-lg text-white transition">📋 Paste Dependencies</button>
-          <button id="tab-repo" onclick="switchScannerTab('repo')" class="tab-btn flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">🔗 GitHub Repo</button>
+          <button id="tab-paste" class="tab-btn active flex-1 py-2 text-sm font-semibold rounded-lg text-white transition">📋 Paste Dependencies</button>
+          <button id="tab-repo" class="tab-btn flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">🔗 GitHub Repo</button>
         </div>
 
         <div id="paste-tab">
@@ -371,7 +371,7 @@ function renderResults(results) {
       </div>
     </div>
     <div class="mt-4 flex flex-wrap gap-3">
-      <button onclick="downloadScanReport()" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-md flex items-center gap-2">
+      <button id="btn-download-report" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-md flex items-center gap-2">
         📥 Download Report
       </button>
     </div>
@@ -387,6 +387,7 @@ function renderResults(results) {
   }
 
   container.innerHTML = html;
+  document.getElementById('btn-download-report')?.addEventListener('click', downloadScanReport);
 }
 
 function downloadScanReport() {
@@ -508,6 +509,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     repoBtn.removeAttribute('onclick');
   }
+  document.getElementById('tab-paste')?.addEventListener('click', () => switchScannerTab('paste'));
+  document.getElementById('tab-repo')?.addEventListener('click', () => switchScannerTab('repo'));
 });
 </script>
 <script>

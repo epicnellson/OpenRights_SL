@@ -48,8 +48,8 @@
       <div id="sw-update-banner" style="display:none"
         class="fixed top-0 left-0 right-0 z-[9999] bg-green-600 text-white text-center py-3 text-sm font-medium">
         🔄 OpenRights SL has been updated!
-        <button onclick="window.location.reload()" class="ml-4 underline font-bold">Refresh Now</button>
-        <button onclick="this.parentElement.style.display='none'" class="ml-4 opacity-70">Later</button>
+        <button id="sw-refresh-btn" class="ml-4 underline font-bold">Refresh Now</button>
+        <button id="sw-dismiss-btn" class="ml-4 opacity-70">Later</button>
       </div>
 
       <a href="index.html" class="text-2xl font-bold flex items-center gap-2 text-white">
@@ -541,6 +541,8 @@
     if (window.location.protocol === 'file:') {
       showToast('⚠️ Please use a local server (live-server) for full functionality. Some features may not work when opening files directly.', 'warning', 8000);
     }
+    document.getElementById('sw-refresh-btn')?.addEventListener('click', () => window.location.reload());
+    document.getElementById('sw-dismiss-btn')?.addEventListener('click', function() { this.parentElement.style.display = 'none'; });
   </script>
   <script>
     if ('serviceWorker' in navigator) {
