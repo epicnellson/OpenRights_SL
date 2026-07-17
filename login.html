@@ -185,7 +185,7 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify(body),
       });
@@ -304,7 +304,11 @@
             options: { data: { full_name: fullName } }
           });
           if (error) throw error;
-          try { await invokeFunction('send-verification', { email }); } catch (_) { /* ok */ }
+          try { await invokeFunction('send-verification', { email }); } catch (e) {
+            showMessage('Account created but could not send verification code. Try resend.', 'error');
+            setLoading(submitBtn, false);
+            return;
+          }
           pendingEmail = email;
           document.getElementById('verify-email').textContent = email;
           switchView('verify');
