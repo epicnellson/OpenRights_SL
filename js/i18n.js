@@ -507,6 +507,23 @@ document.addEventListener('DOMContentLoaded', () => {
       retranslateChatMessages();
     });
   }
+
+  const mobileEnBtn = document.getElementById('mobile-lang-en');
+  const mobileKrBtn = document.getElementById('mobile-lang-kr');
+
+  if (mobileEnBtn) {
+    mobileEnBtn.addEventListener('click', () => {
+      switchLanguage('en');
+      retranslateChatMessages();
+    });
+  }
+
+  if (mobileKrBtn) {
+    mobileKrBtn.addEventListener('click', () => {
+      switchLanguage('krio');
+      retranslateChatMessages();
+    });
+  }
 });
 
 // Expose globally

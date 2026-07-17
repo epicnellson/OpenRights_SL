@@ -682,21 +682,24 @@ async function downloadCreationPDF() {
  * Shows the GitHub token modal.
  */
 function showGithubModal() {
-  document.getElementById('github-modal').classList.remove('hidden');
+  const modal = document.getElementById('github-modal');
+  if (modal) modal.classList.remove('hidden');
 }
 
 /**
  * Hides the GitHub token modal.
  */
 function hideGithubModal() {
-  document.getElementById('github-modal').classList.add('hidden');
+  const modal = document.getElementById('github-modal');
+  if (modal) modal.classList.add('hidden');
 }
 
 /**
  * Saves the GitHub token and proceeds to publish.
  */
 function saveGithubToken() {
-  const token = document.getElementById('github-token').value.trim();
+  const input = document.getElementById('github-token');
+  const token = input ? input.value.trim() : '';
   if (token) {
     localStorage.setItem('githubToken', token);
     hideGithubModal();

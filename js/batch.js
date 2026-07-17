@@ -88,7 +88,9 @@ function generateBatchCSV() {
   const a = document.createElement('a');
   a.href = url;
   a.download = `licenses-${new Date().toISOString().split('T')[0]}.csv`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
   showToast('CSV downloaded!');
 }

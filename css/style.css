@@ -296,6 +296,10 @@ button, a {
   background: #f59e0b;
 }
 
+.toast.info {
+  background: #3b82f6;
+}
+
 /* ========== Typing Indicator ========== */
 .typing-indicator {
   display: flex;
@@ -399,10 +403,10 @@ button, a {
 
 /* ========== Profile Dropdown ========== */
 #profile-dropdown {
-  animation: fadeIn 0.15s ease-out;
+  animation: fadeInDropdown 0.15s ease-out;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInDropdown {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }

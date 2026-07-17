@@ -47,7 +47,7 @@ serve(async (req) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'OpenRights SL <noreply@openrightssl.org>',
+      from: 'OpenRights SL <onboarding@resend.dev>',
       to: email,
       subject: 'Your verification code for OpenRights SL',
       html: `
