@@ -5,20 +5,40 @@ const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+}
+
 serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders })
+  }
+
   const { email } = await req.json()
   if (!email) {
-    return new Response(JSON.stringify({ error: 'Email is required' }), { status: 400 })
+    return new Response(JSON.stringify({ error: 'Email is required' }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
   }
 
   const code = String(Math.floor(100000 + Math.random() * 900000))
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
-  await supabase.from('verification_codes').upsert(
+  const { error: dbError } = await supabase.from('verification_codes').upsert(
     { email, code, expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() },
     { onConflict: 'email' }
   )
+  if (dbError) {
+    console.error('DB upsert error:', dbError)
+    return new Response(JSON.stringify({ error: 'Failed to store code' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
+  }
 
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -45,10 +65,13 @@ serve(async (req) => {
   if (!res.ok) {
     const errText = await res.text()
     console.error('Resend error:', errText)
-    return new Response(JSON.stringify({ error: 'Failed to send email' }), { status: 500 })
+    return new Response(JSON.stringify({ error: 'Failed to send email' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
   }
 
   return new Response(JSON.stringify({ success: true }), {
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   })
 })

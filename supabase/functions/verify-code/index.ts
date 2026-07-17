@@ -4,10 +4,23 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+}
+
 serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders })
+  }
+
   const { email, code } = await req.json()
   if (!email || !code) {
-    return new Response(JSON.stringify({ error: 'Email and code are required' }), { status: 400 })
+    return new Response(JSON.stringify({ error: 'Email and code are required' }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
   }
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
@@ -21,7 +34,10 @@ serve(async (req) => {
     .single()
 
   if (error || !data) {
-    return new Response(JSON.stringify({ error: 'Invalid or expired code' }), { status: 400 })
+    return new Response(JSON.stringify({ error: 'Invalid or expired code' }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    })
   }
 
   await supabase.from('verification_codes').delete().eq('email', email)
@@ -33,6 +49,6 @@ serve(async (req) => {
   }
 
   return new Response(JSON.stringify({ success: true }), {
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   })
 })
