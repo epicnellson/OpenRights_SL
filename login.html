@@ -4,14 +4,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Sign in to OpenRights SL — legal tools for Sierra Leonean creators.">
+  <meta name="theme-color" content="#0f0c29">
   <title>Sign In — OpenRights SL</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/auth.js"></script>
   <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .input-glow:focus {
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25), 0 0 20px rgba(167, 139, 250, 0.1);
+    }
+    .input-glow-error:focus {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25), 0 0 20px rgba(239, 68, 68, 0.1);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner-icon { animation: spin 0.8s linear infinite; }
+    .code-digit {
+      width: 3rem;
+      height: 3.5rem;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      caret-color: #a78bfa;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    .code-digit.filled {
+      border-color: #a78bfa;
+      background: rgba(167, 139, 250, 0.1);
+    }
+    .code-digit:focus {
+      transform: scale(1.05);
+    }
+    .view-transition {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .view-hidden {
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+    }
+    .view-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .pw-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .pw-toggle:hover { color: rgba(255,255,255,0.8); }
+    .strength-bar {
+      height: 3px;
+      border-radius: 2px;
+      transition: width 0.3s, background 0.3s;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up { animation: fadeInUp 0.4s ease forwards; }
+  </style>
 </head>
-<body class="text-white font-sans min-h-screen" style="background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%)">
+<body class="text-white font-sans min-h-screen">
   <a href="#main-content" class="skip-link">Skip to content</a>
 
   <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0f0c29]/80 backdrop-blur-md border-b border-white/10">
@@ -25,122 +88,369 @@
   </nav>
 
   <main id="main-content" class="pt-24 pb-8 px-4 flex items-center justify-center min-h-screen">
-    <div class="glass-card rounded-3xl p-8 w-full max-w-md border border-white/10">
+    <div id="auth-card" class="glass-card rounded-3xl p-8 w-full max-w-md border border-white/10 fade-in-up">
       <div class="text-center mb-6">
-        <div class="text-5xl mb-3">🔐</div>
+        <div id="form-icon" class="text-5xl mb-3 transition-all duration-300">🔐</div>
         <h1 class="text-2xl font-bold" id="form-title">Sign In</h1>
         <p class="text-gray-400 text-sm mt-1" id="form-subtitle">Access your OpenRights SL account</p>
       </div>
 
-      <div id="error-box" class="hidden bg-red-900/30 border border-red-500/50 rounded-xl px-4 py-3 text-sm text-red-300 mb-4"></div>
+      <div id="msg-box" class="hidden rounded-xl px-4 py-3 text-sm mb-4 transition-all duration-300"></div>
 
-      <form id="auth-form" class="space-y-4">
-        <div id="name-field" class="hidden">
-          <label for="fullName" class="block text-sm text-gray-400 mb-1">Full Name</label>
-          <input type="text" id="fullName" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition" placeholder="Your full name">
-        </div>
-        <div>
-          <label for="email" class="block text-sm text-gray-400 mb-1">Email</label>
-          <input type="email" id="email" required class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition">
-        </div>
-        <div>
-          <label for="password" class="block text-sm text-gray-400 mb-1">Password</label>
-          <input type="password" id="password" required minlength="6" class="w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition">
-        </div>
-        <button type="submit" id="auth-submit-btn" class="w-full bg-purple-600 hover:bg-purple-500 font-bold py-3 rounded-xl transition shadow-lg">Sign In</button>
-      </form>
+      <div id="form-view" class="view-transition view-visible">
+        <form id="auth-form" class="space-y-4">
+          <div id="name-field" class="hidden">
+            <label for="fullName" class="block text-sm text-gray-400 mb-1">Full Name</label>
+            <input type="text" id="fullName" autocomplete="name"
+              class="input-glow w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition"
+              placeholder="Your full name">
+          </div>
+          <div>
+            <label for="email" class="block text-sm text-gray-400 mb-1">Email</label>
+            <input type="email" id="email" required autocomplete="email"
+              class="input-glow w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition">
+          </div>
+          <div class="relative">
+            <label for="password" class="block text-sm text-gray-400 mb-1">Password</label>
+            <input type="password" id="password" required minlength="6" autocomplete="current-password"
+              class="input-glow w-full bg-black/30 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-purple-500 outline-none transition pr-12">
+            <button type="button" id="pw-toggle" class="pw-toggle" aria-label="Toggle password visibility">
+              <svg id="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg id="eye-closed" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <div id="pw-strength" class="hidden">
+            <div class="flex gap-1 mt-1">
+              <div class="strength-bar flex-1 bg-white/10" id="str-0"></div>
+              <div class="strength-bar flex-1 bg-white/10" id="str-1"></div>
+              <div class="strength-bar flex-1 bg-white/10" id="str-2"></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-1" id="str-label"></p>
+          </div>
+          <button type="submit" id="auth-submit-btn"
+            class="w-full bg-purple-600 hover:bg-purple-500 disabled:opacity-60 disabled:cursor-not-allowed font-bold py-3 rounded-xl transition shadow-lg">
+            Sign In
+          </button>
+        </form>
 
-      <p class="text-center text-sm text-gray-400 mt-4">
-        <span id="toggle-text">Don't have an account?</span>
-        <button id="toggle-mode" class="text-purple-400 hover:underline ml-1">Sign Up</button>
-      </p>
+        <p class="text-center text-sm text-gray-400 mt-6">
+          <span id="toggle-text">Don't have an account?</span>
+          <button id="toggle-mode" class="text-purple-400 hover:text-purple-300 font-medium hover:underline ml-1 transition">Sign Up</button>
+        </p>
+      </div>
+
+      <div id="verify-view" class="view-transition view-hidden hidden space-y-5">
+        <div class="text-center">
+          <div class="text-4xl mb-2">✉️</div>
+          <p class="text-sm text-gray-300">Enter the 6-digit code sent to</p>
+          <p id="verify-email" class="text-purple-300 font-medium text-sm mt-1 break-all"></p>
+        </div>
+
+        <div id="code-inputs" class="flex justify-center gap-2">
+          <input type="text" inputmode="numeric" maxlength="1" class="code-digit rounded-xl bg-black/30 border border-white/20 text-white focus:border-purple-500 outline-none transition">
+          <input type="text" inputmode="numeric" maxlength="1" class="code-digit rounded-xl bg-black/30 border border-white/20 text-white focus:border-purple-500 outline-none transition">
+          <input type="text" inputmode="numeric" maxlength="1" class="code-digit rounded-xl bg-black/30 border border-white/20 text-white focus:border-purple-500 outline-none transition">
+          <input type="text" inputmode="numeric" maxlength="1" class="code-digit rounded-xl bg-black/30 border border-white/20 text-white focus:border-purple-500 outline-none transition">
+          <input type="text" inputmode="numeric" maxlength="1" class="code-digit rounded-xl bg-black/30 border border-white/20 text-white focus:border-purple-500 outline-none transition">
+          <input type="text" inputmode="numeric" maxlength="1" class="code-digit rounded-xl bg-black/30 border border-white/20 text-white focus:border-purple-500 outline-none transition">
+        </div>
+
+        <button type="button" id="verify-btn"
+          class="w-full bg-green-600 hover:bg-green-500 disabled:opacity-60 disabled:cursor-not-allowed font-bold py-3 rounded-xl transition shadow-lg">
+          Verify Code
+        </button>
+
+        <p class="text-center text-xs text-gray-500">
+          Didn't get it?
+          <button id="resend-code" class="text-purple-400 hover:text-purple-300 font-medium hover:underline transition">
+            Resend
+          </button>
+          <span id="resend-timer" class="text-gray-600 hidden"></span>
+        </p>
+
+        <button id="back-to-form" class="w-full text-sm text-gray-500 hover:text-gray-300 transition flex items-center justify-center gap-1">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to sign in
+        </button>
+      </div>
 
     </div>
   </main>
 
   <script>
+    const FUNCTIONS_URL = 'https://psdyioqkdawmfhzeaaxk.supabase.co/functions/v1';
+
+    const invokeFunction = async (name, body) => {
+      const res = await fetch(`${FUNCTIONS_URL}/${name}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Request failed' }));
+        throw new Error(err.error || 'Request failed');
+      }
+      return res.json();
+    };
+
+    const setLoading = (btn, loading) => {
+      btn.disabled = loading;
+    };
+
+    const showMessage = (msg, type) => {
+      const box = document.getElementById('msg-box');
+      box.textContent = msg;
+      box.className = 'rounded-xl px-4 py-3 text-sm mb-4 transition-all duration-300';
+      if (type === 'success') {
+        box.classList.add('bg-green-900/30', 'border', 'border-green-500/50', 'text-green-300');
+      } else {
+        box.classList.add('bg-red-900/30', 'border', 'border-red-500/50', 'text-red-300');
+      }
+      box.classList.remove('hidden');
+    };
+
+    const switchView = (show) => {
+      const form = document.getElementById('form-view');
+      const verify = document.getElementById('verify-view');
+      const hide = show === 'form' ? verify : form;
+      const showEl = show === 'form' ? form : verify;
+      hide.classList.remove('view-visible');
+      hide.classList.add('view-hidden');
+      setTimeout(() => {
+        hide.classList.add('hidden');
+        showEl.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          showEl.classList.remove('view-hidden');
+          showEl.classList.add('view-visible');
+        });
+      }, 200);
+    };
+
+    const getCodeValue = () => {
+      return Array.from(document.querySelectorAll('.code-digit')).map(i => i.value).join('');
+    };
+
+    const clearCode = () => {
+      document.querySelectorAll('.code-digit').forEach((inp, i) => {
+        inp.value = '';
+        inp.classList.remove('filled');
+        if (i === 0) inp.focus();
+      });
+    };
+
+    const resetForm = () => {
+      document.getElementById('auth-form').reset();
+      document.getElementById('msg-box').classList.add('hidden');
+      document.getElementById('pw-strength').classList.add('hidden');
+    };
+
     let isSignUp = false;
-    const form = document.getElementById('auth-form');
-    const nameField = document.getElementById('name-field');
-    const fullNameInput = document.getElementById('fullName');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const submitBtn = document.getElementById('auth-submit-btn');
-    const title = document.getElementById('form-title');
-    const subtitle = document.getElementById('form-subtitle');
-    const toggleText = document.getElementById('toggle-text');
+    let pendingEmail = '';
+    let resendCooldown = 0;
+
     const toggleBtn = document.getElementById('toggle-mode');
-    const errorBox = document.getElementById('error-box');
+    const formTitle = document.getElementById('form-title');
+    const formSubtitle = document.getElementById('form-subtitle');
+    const submitBtn = document.getElementById('auth-submit-btn');
+    const toggleText = document.getElementById('toggle-text');
+    const nameField = document.getElementById('name-field');
+    const msgBox = document.getElementById('msg-box');
+    const codeInputs = document.querySelectorAll('.code-digit');
+    const verifyBtn = document.getElementById('verify-btn');
+    const resendBtn = document.getElementById('resend-code');
+    const resendTimer = document.getElementById('resend-timer');
 
     toggleBtn.addEventListener('click', () => {
       isSignUp = !isSignUp;
       nameField.classList.toggle('hidden', !isSignUp);
-      title.textContent = isSignUp ? 'Sign Up' : 'Sign In';
-      subtitle.textContent = isSignUp ? 'Create your OpenRights SL account' : 'Access your OpenRights SL account';
+      formTitle.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+      formSubtitle.textContent = isSignUp ? 'Create your OpenRights SL account' : 'Access your OpenRights SL account';
       submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
       toggleText.textContent = isSignUp ? 'Already have an account?' : "Don't have an account?";
       toggleBtn.textContent = isSignUp ? 'Sign In' : 'Sign Up';
-      errorBox.classList.add('hidden');
+      document.getElementById('form-icon').textContent = isSignUp ? '📝' : '🔐';
+      switchView('form');
+      msgBox.classList.add('hidden');
+      resetForm();
     });
 
-    const showError = (msg) => {
-      errorBox.textContent = msg;
-      errorBox.classList.remove('hidden');
-    };
-
-    form.addEventListener('submit', async (e) => {
+    document.getElementById('auth-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Please wait...';
-      errorBox.classList.add('hidden');
+      setLoading(submitBtn, true);
+      msgBox.classList.add('hidden');
 
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
 
       if (!window._supabase) {
-        showError('Supabase client not loaded. Check your internet connection.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+        showMessage('Supabase client not loaded. Check your internet connection.', 'error');
+        setLoading(submitBtn, false);
         return;
       }
 
       try {
-        let result;
         if (isSignUp) {
-          const fullName = fullNameInput.value.trim();
+          const fullName = document.getElementById('fullName').value.trim();
           if (!fullName) {
-            showError('Please enter your full name.');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Sign Up';
+            showMessage('Please enter your full name.', 'error');
+            setLoading(submitBtn, false);
             return;
           }
-          result = await window._supabase.auth.signUp({
-            email,
-            password,
+          const { error } = await window._supabase.auth.signUp({
+            email, password,
             options: { data: { full_name: fullName } }
           });
-          if (result.error) throw result.error;
-          showError('✅ Account created! Check your email for a confirmation link before signing in.');
-          isSignUp = false;
-          nameField.classList.add('hidden');
-          title.textContent = 'Sign In';
-          submitBtn.textContent = 'Sign In';
-          toggleText.textContent = "Don't have an account?";
-          toggleBtn.textContent = 'Sign Up';
+          if (error) throw error;
+          try { await invokeFunction('send-verification', { email }); } catch (_) { /* ok */ }
+          pendingEmail = email;
+          document.getElementById('verify-email').textContent = email;
+          switchView('verify');
+          showMessage('✅ Account created! Check your email for the verification code.', 'success');
+          setTimeout(() => clearCode(), 300);
+          startResendCooldown();
         } else {
-          result = await window._supabase.auth.signInWithPassword({ email, password });
-          if (result.error) throw result.error;
+          const { error } = await window._supabase.auth.signInWithPassword({ email, password });
+          if (error) throw error;
           const redirectTo = localStorage.getItem('redirectAfterLogin') || '/index.html';
           localStorage.removeItem('redirectAfterLogin');
           window.location.href = redirectTo;
         }
       } catch (err) {
-        showError(err.message);
+        showMessage(err.message, 'error');
       }
-
-      submitBtn.disabled = false;
-      submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+      setLoading(submitBtn, false);
     });
+
+    codeInputs.forEach((input, idx) => {
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '').slice(0, 1);
+        input.classList.toggle('filled', !!input.value);
+        if (input.value && idx < 5) codeInputs[idx + 1].focus();
+        if (getCodeValue().length === 6) verifyBtn.click();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && idx > 0) {
+          codeInputs[idx - 1].focus();
+          codeInputs[idx - 1].value = '';
+          codeInputs[idx - 1].classList.remove('filled');
+        }
+        if (e.key === 'ArrowLeft' && idx > 0) codeInputs[idx - 1].focus();
+        if (e.key === 'ArrowRight' && idx < 5) codeInputs[idx + 1].focus();
+      });
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+        paste.split('').forEach((char, i) => {
+          if (codeInputs[i]) {
+            codeInputs[i].value = char;
+            codeInputs[i].classList.toggle('filled', !!char);
+          }
+        });
+        const next = Math.min(paste.length, 5);
+        codeInputs[next].focus();
+        if (paste.length === 6) verifyBtn.click();
+      });
+    });
+
+    verifyBtn.addEventListener('click', async () => {
+      const code = getCodeValue();
+      if (code.length !== 6) {
+        showMessage('Please enter the full 6-digit code.', 'error');
+        return;
+      }
+      setLoading(verifyBtn, true);
+      try {
+        await invokeFunction('verify-code', { email: pendingEmail, code });
+        showMessage('✅ Email verified! Redirecting...', 'success');
+        setTimeout(() => {
+          const redirectTo = localStorage.getItem('redirectAfterLogin') || '/profile.html';
+          localStorage.removeItem('redirectAfterLogin');
+          window.location.href = redirectTo;
+        }, 1500);
+      } catch (err) {
+        showMessage(err.message, 'error');
+        clearCode();
+      }
+      setLoading(verifyBtn, false);
+    });
+
+    const startResendCooldown = () => {
+      resendCooldown = 30;
+      resendBtn.disabled = true;
+      resendBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      resendTimer.classList.remove('hidden');
+      const tick = () => {
+        resendCooldown--;
+        resendTimer.textContent = `(${resendCooldown}s)`;
+        if (resendCooldown <= 0) {
+          resendBtn.disabled = false;
+          resendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          resendTimer.classList.add('hidden');
+          clearInterval(interval);
+        }
+      };
+      tick();
+      const interval = setInterval(tick, 1000);
+    };
+
+    resendBtn.addEventListener('click', async () => {
+      setLoading(resendBtn, true);
+      try {
+        await invokeFunction('send-verification', { email: pendingEmail });
+        showMessage('✅ Code resent! Check your email.', 'success');
+        startResendCooldown();
+      } catch (err) {
+        showMessage(err.message, 'error');
+      }
+      setLoading(resendBtn, false);
+    });
+
+    document.getElementById('back-to-form').addEventListener('click', () => {
+      switchView('form');
+      msgBox.classList.add('hidden');
+    });
+
+    document.getElementById('pw-toggle').addEventListener('click', () => {
+      const pw = document.getElementById('password');
+      const open = document.getElementById('eye-open');
+      const closed = document.getElementById('eye-closed');
+      const isPassword = pw.type === 'password';
+      pw.type = isPassword ? 'text' : 'password';
+      open.classList.toggle('hidden', !isPassword);
+      closed.classList.toggle('hidden', isPassword);
+    });
+
+    document.getElementById('fullName')?.addEventListener('input', function () {
+      this.value = this.value.replace(/^\s+/, '');
+    });
+
+    document.getElementById('email').addEventListener('blur', function () {
+      this.value = this.value.trim();
+    });
+
+    document.getElementById('password').addEventListener('input', function () {
+      const val = this.value;
+      const str = document.getElementById('pw-strength');
+      const bars = [document.getElementById('str-0'), document.getElementById('str-1'), document.getElementById('str-2')];
+      const label = document.getElementById('str-label');
+      if (val.length === 0 || !isSignUp) { str.classList.add('hidden'); return; }
+      str.classList.remove('hidden');
+      let score = 0;
+      if (val.length >= 6) score++;
+      if (val.length >= 10) score++;
+      if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+      const colors = ['bg-red-500', 'bg-yellow-500', 'bg-green-500'];
+      const labels = ['Weak', 'Medium', 'Strong'];
+      bars.forEach((bar, i) => {
+        bar.className = `strength-bar flex-1 ${i < score ? colors[Math.min(i, 2)] : 'bg-white/10'}`;
+      });
+      label.textContent = labels[Math.min(score, 2) - 1] || '';
+    });
+
+    document.getElementById('email').focus();
 
     window._supabase?.auth.getSession().then(({ data: { session } }) => {
       if (session) window.location.href = '/index.html';
