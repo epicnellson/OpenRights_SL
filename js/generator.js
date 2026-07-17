@@ -843,7 +843,9 @@ function downloadMetadata() {
   const a = document.createElement('a');
   a.href = url;
   a.download = `${data.projectName.replace(/\s+/g, '-')}-metadata.json`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
   showToast('Metadata downloaded!');
 }
