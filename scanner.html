@@ -410,7 +410,9 @@ function downloadScanReport() {
   const a = document.createElement('a');
   a.href = url;
   a.download = 'license-scan-report.txt';
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
   showToast('Report downloaded!');
 }
@@ -435,18 +437,20 @@ function scanRepo() {
   const owner = parts[0], repo = parts[1];
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
   fetch(`https://api.github.com/repos/${owner}/${repo}/license`, { signal: controller.signal })
     .then(r => {
-      if (!r.ok) throw new Error('Not found');
+      if (r.status === 403) throw new Error('RATE_LIMIT');
+      if (r.status === 404) throw new Error('NOT_FOUND');
+      if (!r.ok) throw new Error('HTTP_' + r.status);
       return r.json();
     })
     .then(data => {
       clearTimeout(timeout);
       hideLoading();
-      if (!data || !data.license) throw new Error('Invalid API response');
-      if (data.license.spdx_id === 'NOASSERTION') throw new Error('NOASSERTION');
+      if (!data || !data.license) throw new Error('NO_LICENSE');
+      if (data.license.spdx_id === 'NOASSERTATION') throw new Error('NOASSERTATION');
       const spdx = data.license.spdx_id || 'Unknown';
       document.getElementById('scan-results').classList.remove('hidden');
       document.getElementById('scan-results').innerHTML = `
@@ -464,14 +468,45 @@ function scanRepo() {
       clearTimeout(timeout);
       hideLoading();
       const msg = err && err.message;
-      const isNoAssert = msg === 'NOASSERTION';
+      const isRateLimit = msg === 'RATE_LIMIT';
+      const isNotFound = msg === 'NOT_FOUND';
+      const isNoLicense = msg === 'NO_LICENSE';
+      const isNoAssert = msg === 'NOASSERTATION';
       const isTimeout = msg && msg.includes('aborted');
+
+      let title, desc, icon;
+      if (isRateLimit) {
+        title = 'Rate Limit Exceeded';
+        desc = 'GitHub API allows 60 requests/hour without auth. Wait a few minutes and try again, or use the Paste Dependencies tab.';
+        icon = '🚦';
+      } else if (isNotFound) {
+        title = 'Repository Not Found';
+        desc = `Could not find <strong>${owner}/${repo}</strong>. Check the URL — the repo may be private or the name may be misspelled.`;
+        icon = '🔍';
+      } else if (isNoLicense) {
+        title = 'No License File Found';
+        desc = `The repository <strong>${owner}/${repo}</strong> exists but has no LICENSE file. You can still scan using the Paste Dependencies tab.`;
+        icon = '📄';
+      } else if (isNoAssert) {
+        title = 'Unrecognised License';
+        desc = 'This repo has a license file but GitHub could not identify it. Make sure the file is named <strong>LICENSE</strong> (not LICENSE.txt) with standard text.';
+        icon = '⚠️';
+      } else if (isTimeout) {
+        title = 'Request Timed Out';
+        desc = 'GitHub API took too long to respond. Try again or use the Paste Dependencies tab.';
+        icon = '⏱️';
+      } else {
+        title = 'Could Not Scan';
+        desc = 'Something went wrong. Try the Paste Dependencies tab — it works offline and is instant.';
+        icon = '⚠️';
+      }
+
       document.getElementById('scan-results').classList.remove('hidden');
       document.getElementById('scan-results').innerHTML = `
         <div class="glass-card rounded-2xl p-8 text-center">
-          <span class="text-5xl mb-4 block">⚠️</span>
-          <h3 class="text-2xl font-bold text-yellow-400 mb-2">${isNoAssert ? 'Unrecognised License' : 'Could Not Scan'}</h3>
-          <p class="text-gray-400">${isNoAssert ? 'This repo has a license file but GitHub could not identify it. Make sure the file is named <strong>LICENSE</strong> (not LICENSE.txt) with standard text.' : isTimeout ? 'Request timed out — GitHub API took too long. Try again or use Paste Dependencies tab.' : 'GitHub API unreachable or no license file found.'}</p>
+          <span class="text-5xl mb-4 block">${icon}</span>
+          <h3 class="text-2xl font-bold ${isRateLimit ? 'text-orange-400' : isNotFound ? 'text-red-400' : 'text-yellow-400'} mb-2">${title}</h3>
+          <p class="text-gray-400">${desc}</p>
           <p class="text-gray-500 text-sm mt-2">Try the Paste Dependencies tab instead — it works offline and is instant.</p>
         </div>
       `;
