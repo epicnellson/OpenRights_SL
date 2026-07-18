@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.0.7';
+const CACHE_VERSION = 'v1.0.8';
 const CACHE_NAME = `openrights-sl-${CACHE_VERSION}`;
 
 const ASSETS_TO_CACHE = [
@@ -36,8 +36,7 @@ const ASSETS_TO_CACHE = [
   './data/licenses.json',
   './data/sl-legal-context.js',
   './data/sl-legal-knowledge.json',
-  './manifest.json',
-  './js/config.js'
+  './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {

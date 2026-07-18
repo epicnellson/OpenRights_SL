@@ -1,6 +1,6 @@
 const ANALYZER_SYSTEM_PROMPT = `You are a legal expert specializing in Sierra Leone law, specifically the Copyright Act 2011 and Cyber Security and Crime Act 2021.
 
-${SL_LEGAL_CONTEXT}
+${typeof SL_LEGAL_CONTEXT !== 'undefined' ? SL_LEGAL_CONTEXT : ''}
 
 The user will provide a contract, Terms of Service, EULA, or NDA.
 You must analyze the text against Sierra Leone law and output a JSON response with the following structure:
@@ -25,7 +25,7 @@ async function analyzeContract() {
     return;
   }
 
-  const apiKey = localStorage.getItem('groqApiKey');
+  const apiKey = localStorage.getItem('groqApiKey') || (window.CONFIG && window.CONFIG.GROQ_API_KEY);
   if (!apiKey) {
     showToast('AI features require a Groq API Key. Please set it in the Chat Assistant first.');
     document.getElementById('btn-analyze').classList.add('animate-pulse');

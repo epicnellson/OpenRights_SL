@@ -123,7 +123,7 @@ function initGenerator() {
     if (!selectedLicenseKey) throw new Error('No license key found');
     
     const nameEl = document.getElementById('license-name');
-    nameEl.textContent = selectedLicense.name || 'Unknown License';
+    if (nameEl) nameEl.textContent = selectedLicense.name || 'Unknown License';
     
     // Apply visual branding class to di selected license container badge
     const badgeContainer = document.getElementById('license-badge');
@@ -193,14 +193,21 @@ function updateHealthDashboard(licenseKey) {
   const data = healthData[licenseKey] || { openness: 50, protection: 50, commercial: 50 };
 
   setTimeout(() => {
-    document.getElementById('bar-openness').style.width = data.openness + '%';
-    document.getElementById('health-openness').textContent = data.openness + '%';
+    const barOpenness = document.getElementById('bar-openness');
+    const healthOpenness = document.getElementById('health-openness');
+    const barProtection = document.getElementById('bar-protection');
+    const healthProtection = document.getElementById('health-protection');
+    const barCommercial = document.getElementById('bar-commercial');
+    const healthCommercial = document.getElementById('health-commercial');
 
-    document.getElementById('bar-protection').style.width = data.protection + '%';
-    document.getElementById('health-protection').textContent = data.protection + '%';
+    if (barOpenness) barOpenness.style.width = data.openness + '%';
+    if (healthOpenness) healthOpenness.textContent = data.openness + '%';
 
-    document.getElementById('bar-commercial').style.width = data.commercial + '%';
-    document.getElementById('health-commercial').textContent = data.commercial + '%';
+    if (barProtection) barProtection.style.width = data.protection + '%';
+    if (healthProtection) healthProtection.textContent = data.protection + '%';
+
+    if (barCommercial) barCommercial.style.width = data.commercial + '%';
+    if (healthCommercial) healthCommercial.textContent = data.commercial + '%';
   }, 300);
 }
 
@@ -210,10 +217,10 @@ function updateHealthDashboard(licenseKey) {
  */
 function getFormData() {
   return {
-    creatorName: document.getElementById('creatorName').value.trim(),
-    projectName: document.getElementById('projectName').value.trim(),
-    projectYear: document.getElementById('projectYear').value.trim(),
-    projectDescription: document.getElementById('projectDescription').value.trim(),
+    creatorName: (document.getElementById('creatorName') || {}).value?.trim() || '',
+    projectName: (document.getElementById('projectName') || {}).value?.trim() || '',
+    projectYear: (document.getElementById('projectYear') || {}).value?.trim() || '',
+    projectDescription: (document.getElementById('projectDescription') || {}).value?.trim() || '',
     licenseKey: selectedLicenseKey
   };
 }
@@ -908,7 +915,7 @@ window.generateCustomClause = async function () {
     return;
   }
 
-  const apiKey = localStorage.getItem('groqApiKey');
+  const apiKey = localStorage.getItem('groqApiKey') || (window.CONFIG && window.CONFIG.GROQ_API_KEY);
   if (!apiKey) {
     showToast('AI features require a Groq API Key. Please set it in the Chat Assistant first.');
     return;
